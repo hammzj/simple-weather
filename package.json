@@ -1,0 +1,60 @@
+{
+    "name": "simple-weather",
+    "version": "0.1.0",
+    "private": true,
+    "scripts": {
+        "install:hooks": "husky install",
+        "install:cypress": "cypress install",
+        "util:verify-cypress": "cypress verify",
+        "util:clear-cypress-cache": "cypress cache clear",
+        "cypress:open": "cypress open",
+        "cypress:run": "cypress run",
+        "dev:start": "react-scripts start",
+        "dev:build": "react-scripts build",
+        "dev:test": "react-scripts test",
+        "dev:eject": "react-scripts eject"
+    },
+    "eslintConfig": {
+        "extends": [
+            "react-app",
+            "react-app/jest"
+        ]
+    },
+    "browserslist": {
+        "production": [
+            ">0.2%",
+            "not dead",
+            "not op_mini all"
+        ],
+        "development": [
+            "last 1 chrome version",
+            "last 1 firefox version",
+            "last 1 safari version"
+        ]
+    },
+    "dependencies": {
+        "@testing-library/jest-dom": "^5.17.0",
+        "@testing-library/react": "^13.4.0",
+        "@testing-library/user-event": "^13.5.0",
+        "react": "^18.2.0",
+        "react-dom": "^18.2.0",
+        "react-scripts": "5.0.1",
+        "web-vitals": "^2.1.4"
+    },
+    "devDependencies": {
+        "@typescript-eslint/eslint-plugin": "^6.11.0",
+        "@typescript-eslint/parser": "^6.11.0",
+        "chai": "^4.3.10",
+        "chai-colors": "^1.0.1",
+        "chai-string": "^1.5.0",
+        "cypress": "^13.5.0",
+        "eslint": "^8.53.0",
+        "eslint-config-prettier": "^9.0.0",
+        "eslint-plugin-prettier": "^5.0.1",
+        "husky": "^8.0.3",
+        "lint-staged": "^15.1.0",
+        "prettier": "^3.1.0",
+        "stylelint": "^15.11.0",
+        "typescript": "^5.2.2"
+    }
+}
