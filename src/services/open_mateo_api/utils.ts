@@ -10,14 +10,16 @@ export const extractCoordinatesFromALocation =
 export const mapDataFromFetchWeatherResponse =
     (fetchWeatherResponse) => {
         const mapLocationDataToTime = (block, units) => {
+            const isContainingOnlyOneTime = isEqual([block.time].flat().length, 1);
             return [block.time]  // Handle when the time is just a string
                 .flat()
                 .map((timeString, i) => {
                     const e: { [index: string]: any } = {}
                     for (const k of Object.keys(block)) {
-                        const v = block[k][i] ?? block[k];
+                        const v = isContainingOnlyOneTime ? block[k] : block[k][i];
                         switch (true) {
                             case(isNil(units[k])):
+                                //Case can be removed by trimming the default's string
                                 e[k] = `${v}`;
                                 break;
                             case(includes(['time', 'sunrise', 'sunset', `is_day`], k)):
@@ -36,25 +38,21 @@ export const mapDataFromFetchWeatherResponse =
         }
 
         const {
-            current_units,
+            latitude,
+            longitude,
             current,
-            hourly_units,
+            current_units,
             hourly,
+            hourly_units,
+            daily,
             daily_units,
-            daily
         } = fetchWeatherResponse;
-        const data = {
-            ...fetchWeatherResponse.latitude,
-            ...fetchWeatherResponse.longitude
+
+        return {
+            latitude,
+            longitude,
+            current_weather: (current && current_units) ? mapLocationDataToTime(current, current_units) : [],
+            hourly_weather: (hourly && hourly_units) ? mapLocationDataToTime(hourly, hourly_units) : [],
+            daily_weather: (daily && daily_units) ? mapLocationDataToTime(daily, daily_units) : [],
         };
-        if (current && current_units) {
-            data.current_weather = mapLocationDataToTime(current, current_units);
-        }
-        if (hourly && hourly_units) {
-            data.hourly_weather = mapLocationDataToTime(hourly, hourly_units);
-        }
-        if (daily && daily_units) {
-            data.daily_weather = mapLocationDataToTime(daily, daily_units);
-        }
-        return data;
     }
