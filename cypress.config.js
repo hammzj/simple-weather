@@ -3,7 +3,7 @@ export default defineConfig({
   e2e: {
     video: false,
     defaultCommandTimeout: 10000,
-    //chromeWebSecurity: false,
+    chromeWebSecurity: false,
     env: {},
     retries: {
       runMode: 1,
@@ -12,7 +12,7 @@ export default defineConfig({
     reporter: "spec",
     testIsolation: true,
     experimentalInteractiveRunEvents: true,
-    watchForFileChanges: true,
+    watchForFileChanges: false,
   },
 
   component: {
