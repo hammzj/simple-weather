@@ -1,12 +1,12 @@
 import React from 'react';
 import {DateTime, Zone} from 'luxon';
 import {isEqual} from "lodash";
-import {convertWeatherCode} from "./utils";
+import {weatherCodeToSvg} from "./utils";
 
 type  WeatherSummaryRowTimeType = 'hourly' | 'daily';
 
 
-const getTimeString = (type: WeatherSummaryRowTimeType, dateTime: string, timezone?: string | undefined): string => {
+const getTimeString = (type: WeatherSummaryRowTimeType, dateTime: string, timezone?: Zone | string): string => {
     const localeString = isEqual(type, 'daily') ?
         DateTime.DATE_MED :
         DateTime.TIME_SIMPLE; //Consider 24-hour format
@@ -29,26 +29,24 @@ export default function WeatherSummaryRow({
     const hasMinMaxTemp = temperature_2m_min && temperature_2m_max;
     const precipitationProbability = precipitation_probability_max ?? precipitation_probability;
     return (
-        <>
-            <div id="time">
+        <div id={`${type}-weather-summary-row`}>
+            <span id="time">
                 {getTimeString(type, time, timezone)}
-            </div>
-            <div>
-            </div>
-            <div>
+            </span>
+            <span>
                 {hasMinMaxTemp && (
-                    <div id='min-max-temperature'>{`${temperature_2m_min} / ${temperature_2m_max}`}</div>
+                    <span id='min-max-temperature'>{`${temperature_2m_min} / ${temperature_2m_max}`}</span>
                 )}
                 {!hasMinMaxTemp && (
-                    <div id='temperature'>{temperature_2m || "N/A"}</div>
+                    <span id='temperature'>{temperature_2m || "N/A"}</span>
                 )}
                 {weather_code && (
-                    <div id='weather'>{convertWeatherCode(weather_code)}</div>
+                    <span id='weather-icon'>{weatherCodeToSvg(weather_code)}</span>
                 )}
                 {precipitationProbability && (
-                    <div id='precipitation-probability'>{precipitationProbability}</div>
+                    <span id='precipitation-probability'>{precipitationProbability}</span>
                 )}
-            </div>
-        </>
+            </span>
+        </div>
     )
 }

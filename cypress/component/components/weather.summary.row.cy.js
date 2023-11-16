@@ -12,17 +12,20 @@ describe('WeatherSummaryRow', function () {
         specify('can create a row from hourly data', function () {
             cy.get(`@mappedWeatherData`).then(mappedWeatherData => {
                 const firstHour = mappedWeatherData.hourly_weather[0];
+
                 cy.mount(<WeatherSummaryRow
                     type='hourly'
                     time={firstHour.time}
                     timezone={firstHour.timezone}
                     temperature_2m={firstHour.temperature_2m}
-                    temperature_2m_min={firstHour.temperature_2m_min}
-                    temperature_2m_max={firstHour.temperature_2m_max}
-                    precipitation_probability_max={firstHour.precipitation_probability_max}
                     precipitation_probability={firstHour.precipitation_probability}
                     weather_code={firstHour.weather_code}
                 />)
+
+                cy.get('#time').should('have.text', '12:00 AM');
+                cy.get('#temperature').should('have.text', firstHour.temperature_2m);
+                cy.get('#weather-icon').find('svg').should('exist');
+                cy.get('#precipitation-probability').should('have.text', firstHour.precipitation_probability);
             })
         })
     })

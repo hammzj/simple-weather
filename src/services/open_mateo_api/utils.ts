@@ -1,4 +1,4 @@
-import {Coordinates, Latitude, Longitude, WeatherCodes} from "./forecast_api/types";
+import {Coordinates, Latitude, Longitude, WeatherCode} from "./forecast_api/types";
 import {WeatherApiResponse} from "@openmeteo/sdk/weather-api-response";
 import {isEqual, isNil, includes} from "lodash";
 

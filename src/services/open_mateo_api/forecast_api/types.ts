@@ -133,7 +133,7 @@ export enum CurrentWeatherParameters {
 /**
  WMO Weather interpretation codes (WW)
  */
-export enum WeatherCodes {
+export enum WeatherCode {
     CLEAR_SKY = 0,
     MAINLY_CLEAR = 1,
     PARTLY_CLOUDY = 2,
