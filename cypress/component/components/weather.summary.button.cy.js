@@ -1,7 +1,7 @@
-import WeatherSummaryRow from '../../../src/components/weather.summary.row';
+import WeatherSummaryButton from '../../../src/components/weather.summary.button';
 import {mapDataFromFetchWeatherResponse} from "../../../src/services/open_mateo_api/utils";
 
-describe('WeatherSummaryRow', function () {
+describe('WeatherSummaryButton', function () {
     beforeEach(function () {
         cy.fixture('/open_meteo_api/forecast_api/fetch.all.weather.for.location.200.json')
             .then(fetchWeatherResponseFixture => {
@@ -9,11 +9,11 @@ describe('WeatherSummaryRow', function () {
             }).as('mappedWeatherData');
     })
     context('Hourly', function () {
-        specify('can create a row from hourly data', function () {
+        specify('can create a row button from hourly data', function () {
             cy.get(`@mappedWeatherData`).then(mappedWeatherData => {
                 const firstHour = mappedWeatherData.hourly_weather[0];
 
-                cy.mount(<WeatherSummaryRow
+                cy.mount(<WeatherSummaryButton
                     type='hourly'
                     time={firstHour.time}
                     timezone={firstHour.timezone}

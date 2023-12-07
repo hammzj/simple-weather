@@ -1,12 +1,13 @@
 import React from 'react';
+
 import {DateTime, Zone} from 'luxon';
 import {isEqual} from "lodash";
 import {weatherCodeToSvg} from "./utils";
 
-type  WeatherSummaryRowTimeType = 'hourly' | 'daily';
+type  WeatherSummaryButtonTimeType = 'hourly' | 'daily';
 
 
-const getTimeString = (type: WeatherSummaryRowTimeType, dateTime: string, timezone?: Zone | string): string => {
+const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, timezone?: Zone | string): string => {
     const localeString = isEqual(type, 'daily') ?
         DateTime.DATE_MED :
         DateTime.TIME_SIMPLE; //Consider 24-hour format
@@ -15,7 +16,7 @@ const getTimeString = (type: WeatherSummaryRowTimeType, dateTime: string, timezo
     return dt.toLocaleString(localeString);
 }
 
-export default function WeatherSummaryRow({
+export default function WeatherSummaryButton({
                                               type,
                                               time,
                                               timezone,
