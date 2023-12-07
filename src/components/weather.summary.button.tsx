@@ -1,5 +1,6 @@
 import React from 'react';
-
+import {Card, Grid, Typography, SvgIcon} from '@mui/material';
+import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import {DateTime, Zone} from 'luxon';
 import {isEqual} from "lodash";
 import {weatherCodeToSvg} from "./utils";
@@ -16,38 +17,60 @@ const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, tim
     return dt.toLocaleString(localeString);
 }
 
+//TODO: would an accordion work where the detail container is in the dropdown?
 export default function WeatherSummaryButton({
-                                              type,
-                                              time,
-                                              timezone,
-                                              temperature_2m,
-                                              temperature_2m_min,
-                                              temperature_2m_max,
-                                              precipitation_probability_max,
-                                              precipitation_probability,
-                                              weather_code,
-                                          }) {
+                                                 type,
+                                                 time,
+                                                 timezone,
+                                                 temperature_2m,
+                                                 temperature_2m_min,
+                                                 temperature_2m_max,
+                                                 precipitation_probability_max,
+                                                 precipitation_probability,
+                                                 weather_code,
+                                             }) {
     const hasMinMaxTemp = temperature_2m_min && temperature_2m_max;
     const precipitationProbability = precipitation_probability_max ?? precipitation_probability;
     return (
-        <div id={`${type}-weather-summary-row`}>
-            <span id="time">
-                {getTimeString(type, time, timezone)}
-            </span>
-            <span>
+        <Card>
+            <Grid
+                container
+                direction="row"
+                justifyContent="flex-start"
+                alignItems="center"
+                spacing={2}
+                id={`${type}-weather-summary-row`}
+            >
+                <Grid item xs={6}>
+                    <Typography id="time">
+                        {getTimeString(type, time, timezone)}
+                    </Typography>
+                </Grid>
                 {hasMinMaxTemp && (
-                    <span id='min-max-temperature'>{`${temperature_2m_min} / ${temperature_2m_max}`}</span>
+                    <Grid item>
+                        <Typography
+                            id='min-max-temperature'>{`${temperature_2m_min} / ${temperature_2m_max}`}</Typography>
+                    </Grid>
                 )}
                 {!hasMinMaxTemp && (
-                    <span id='temperature'>{temperature_2m || "N/A"}</span>
+                    <Grid item>
+                        <Typography id='temperature'>{temperature_2m || "N/A"}</Typography>
+                    </Grid>
                 )}
                 {weather_code && (
-                    <span id='weather-icon'>{weatherCodeToSvg(weather_code)}</span>
+                    <Grid item>
+                        <span id='weather-icon'>{weatherCodeToSvg(weather_code)}</span>
+                    </Grid>
                 )}
                 {precipitationProbability && (
-                    <span id='precipitation-probability'>{precipitationProbability}</span>
+                    <Grid item>
+                        <div style={{display: "flex", justifyContent: "center"}}>
+                            <WaterDropIcon/>
+                            <Typography id='precipitation-probability'>{precipitationProbability}</Typography>
+                        </div>
+                    </Grid>
                 )}
-            </span>
-        </div>
+            </Grid>
+        </Card>
     )
 }
