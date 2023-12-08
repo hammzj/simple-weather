@@ -1,10 +1,10 @@
 import React from 'react';
+import Grid from '@mui/material/Grid';
 import {isEqual, isNil} from "lodash";
 import {WeatherCode} from "../services/open_mateo_api/forecast_api/types";
 
 //TODO: move to general types
-type  DetailedViewType = 'hourly' | 'daily';
-
+type  AdditionalWeatherDetailsGridType = 'hourly' | 'daily';
 
 const NOT_AVAILABLE_TEXT = "N/A";
 
@@ -30,7 +30,6 @@ function DetailedViewHourly({
                                 wind_direction_10m,
                                 wind_gusts_10m,
                             }) {
-    console.log("what are these?", wind_speed_10m, wind_direction_10m)
     const wind = (wind_speed_10m && wind_direction_10m) ?
         `${wind_speed_10m} ${wind_direction_10m}` :
         NOT_AVAILABLE_TEXT;
@@ -144,7 +143,7 @@ function DetailedViewDaily({
 }
 
 
-export default function DetailedViewContainer({
+export default function AdditionalWeatherDetailsGrid({
                                                   type,
                                                   properties = {}
                                               }) {

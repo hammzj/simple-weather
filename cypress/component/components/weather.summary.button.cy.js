@@ -15,11 +15,7 @@ describe('WeatherSummaryButton', function () {
 
                 cy.mount(<WeatherSummaryButton
                     type='hourly'
-                    time={firstHour.time}
-                    timezone={firstHour.timezone}
-                    temperature_2m={firstHour.temperature_2m}
-                    precipitation_probability={firstHour.precipitation_probability}
-                    weather_code={firstHour.weather_code}
+                    properties={firstHour}
                 />)
 
                 cy.get('#time').should('have.text', '12:00 AM');
