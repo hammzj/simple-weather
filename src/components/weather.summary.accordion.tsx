@@ -1,15 +1,13 @@
 import React from 'react';
 import {isEqual} from "lodash";
 import {DateTime, Zone} from 'luxon';
+import {weatherCodeToSvg} from "./utils";
 import {Accordion, AccordionSummary, AccordionDetails, Grid, Typography, SvgIcon} from '@mui/material';
 import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AdditionalWeatherDetailsGrid from "./additional.weather.details.grid";
-import {weatherCodeToSvg} from "./utils";
-
+import AdditionalWeatherDetails from "./additional.weather.details";
 
 type  WeatherSummaryButtonTimeType = 'hourly' | 'daily';
-
 
 const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, timezone?: Zone | string): string => {
     const localeString = isEqual(type, 'daily') ?
@@ -20,7 +18,7 @@ const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, tim
     return dt.toLocaleString(localeString);
 }
 
-export default function WeatherSummaryButton({
+export default function WeatherSummaryAccordion({
                                                  type,
                                                  properties = {}
                                              }) {
@@ -81,7 +79,7 @@ export default function WeatherSummaryButton({
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>
-                <AdditionalWeatherDetailsGrid
+                <AdditionalWeatherDetails
                     type={type}
                     properties={properties}
                 />

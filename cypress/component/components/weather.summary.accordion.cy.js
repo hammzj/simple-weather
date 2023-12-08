@@ -1,4 +1,4 @@
-import WeatherSummaryButton from '../../../src/components/weather.summary.button';
+import WeatherSummaryAccordion from '../../../src/components/weather.summary.accordion';
 import {mapDataFromFetchWeatherResponse} from "../../../src/services/open_mateo_api/utils";
 
 describe('WeatherSummaryButton', function () {
@@ -13,7 +13,7 @@ describe('WeatherSummaryButton', function () {
             cy.get(`@mappedWeatherData`).then(mappedWeatherData => {
                 const firstHour = mappedWeatherData.hourly_weather[0];
 
-                cy.mount(<WeatherSummaryButton
+                cy.mount(<WeatherSummaryAccordion
                     type='hourly'
                     properties={firstHour}
                 />)

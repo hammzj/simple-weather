@@ -1,4 +1,4 @@
-import DetailedViewContainer from '../../../src/components/additional.weather.details.grid';
+import DetailedViewContainer from '../../../src/components/additional.weather.details';
 import {mapDataFromFetchWeatherResponse} from "../../../src/services/open_mateo_api/utils";
 
 
