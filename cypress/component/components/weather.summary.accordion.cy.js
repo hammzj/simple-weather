@@ -15,13 +15,13 @@ describe('WeatherSummaryButton', function () {
 
                 cy.mount(<WeatherSummaryAccordion
                     type='hourly'
-                    properties={firstHour}
+                    mappedWeatherData={firstHour}
                 />)
 
                 cy.get('#time').should('have.text', '12:00 AM');
                 cy.get('#temperature').should('have.text', firstHour.temperature_2m);
                 cy.get('#weather-icon').find('svg').should('exist');
-                cy.get('#precipitation-probability').should('have.text', firstHour.precipitation_probability);
+                cy.get('#precipitation-item').should('have.text', firstHour.precipitation_probability);
             })
         })
     })

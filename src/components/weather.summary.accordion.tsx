@@ -3,9 +3,10 @@ import {isEqual} from "lodash";
 import {DateTime, Zone} from 'luxon';
 import {weatherCodeToSvg} from "./utils";
 import {Accordion, AccordionSummary, AccordionDetails, Grid, Typography, SvgIcon} from '@mui/material';
-import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {NOT_AVAILABLE_TEXT} from './constants';
 import AdditionalWeatherDetails from "./additional.weather.details";
+import PrecipitationItem from './precipitation.item';
 
 type  WeatherSummaryButtonTimeType = 'hourly' | 'daily';
 
@@ -19,9 +20,9 @@ const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, tim
 }
 
 export default function WeatherSummaryAccordion({
-                                                 type,
-                                                 properties = {}
-                                             }) {
+                                                    type,
+                                                    mappedWeatherData = {}
+                                                }) {
     const {
         time,
         timezone,
@@ -31,14 +32,20 @@ export default function WeatherSummaryAccordion({
         precipitation_probability_max,
         precipitation_probability,
         weather_code
-    } = properties;
-    const hasMinMaxTemp = temperature_2m_min && temperature_2m_max;
-    const precipitationProbability = precipitation_probability_max ?? precipitation_probability;
+    } = mappedWeatherData;
+
+    const isHourly = isEqual(type, 'hourly');
+    const timeString = getTimeString(type, time, timezone);
+    const temperature = isHourly ?
+        temperature_2m :
+        `${temperature_2m_min} / ${temperature_2m_max}`;
+    const precipitationProbability =
+        (isHourly ?
+            precipitation_probability :
+            precipitation_probability_max) ?? NOT_AVAILABLE_TEXT;
     return (
         <Accordion>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon/>}
-            >
+            <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                 <Grid
                     container
                     direction="row"
@@ -49,39 +56,25 @@ export default function WeatherSummaryAccordion({
                 >
                     <Grid item xs={6}>
                         <Typography id="time">
-                            {getTimeString(type, time, timezone)}
+                            {timeString}
                         </Typography>
                     </Grid>
-                    {hasMinMaxTemp && (
-                        <Grid item>
-                            <Typography
-                                id='min-max-temperature'>{`${temperature_2m_min} / ${temperature_2m_max}`}</Typography>
-                        </Grid>
-                    )}
-                    {!hasMinMaxTemp && (
-                        <Grid item>
-                            <Typography id='temperature'>{temperature_2m || "N/A"}</Typography>
-                        </Grid>
-                    )}
-                    {weather_code && (
-                        <Grid item>
-                            <span id='weather-icon'>{weatherCodeToSvg(weather_code)}</span>
-                        </Grid>
-                    )}
-                    {precipitationProbability && (
-                        <Grid item>
-                            <div style={{display: "flex", justifyContent: "center"}}>
-                                <WaterDropIcon/>
-                                <Typography id='precipitation-probability'>{precipitationProbability}</Typography>
-                            </div>
-                        </Grid>
-                    )}
+                    <Grid item>
+                        <Typography
+                            id='temperature'>{temperature}</Typography>
+                    </Grid>
+                    <Grid item>
+                        <SvgIcon id='weather-icon'>{weatherCodeToSvg(weather_code)}</SvgIcon>
+                    </Grid>
+                    <Grid item>
+                        <PrecipitationItem precipitation={precipitationProbability}/>
+                    </Grid>
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>
                 <AdditionalWeatherDetails
                     type={type}
-                    properties={properties}
+                    mappedWeatherData={mappedWeatherData}
                 />
             </AccordionDetails>
         </Accordion>

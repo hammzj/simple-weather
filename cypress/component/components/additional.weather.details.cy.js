@@ -18,7 +18,7 @@ describe('DetailedViewContainer', function () {
                 cy.log('firstHour', firstHour)
                 cy.mount(<DetailedViewContainer
                     type='hourly'
-                    properties={firstHour}
+                    mappedWeatherData={firstHour}
                 />)
 /*
 Precipitation:	0 inch
