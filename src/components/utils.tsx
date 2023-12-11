@@ -1,6 +1,6 @@
 import React from 'react';
+import {includes, isEqual, isNil} from "lodash";
 import {WeatherCode} from "../services/open_mateo_api/forecast_api/types";
-import {includes, isEqual} from "lodash";
 import CloudIcon from '@mui/icons-material/Cloud';
 import FilterDramaIcon from '@mui/icons-material/FilterDrama';
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
@@ -8,6 +8,7 @@ import ShowerIcon from '@mui/icons-material/Shower';
 import AcUnitIcon from '@mui/icons-material/AcUnit';
 import WavesIcon from '@mui/icons-material/Waves';
 import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import {NOT_AVAILABLE_TEXT} from "./constants";
 
 // import ClearDayIcon from "./icons/weather_icons/clear-day.icon";
 // import CloudyIcon from "./icons/weather_icons/cloudy.icon";
@@ -64,5 +65,15 @@ export const weatherCodeToSvg = (weatherCode: number | WeatherCode) => {
         default:
             //Default return nothing
             return <></>
+    }
+}
+
+export const weatherCodeToText = (weatherCode: number | null | undefined) => {
+    if (!isNil(WeatherCode[weatherCode])) {
+        return WeatherCode[weatherCode]
+            .replace(/_/g, ' ')
+            .toLowerCase();
+    } else {
+        return NOT_AVAILABLE_TEXT;
     }
 }

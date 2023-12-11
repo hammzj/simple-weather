@@ -3,85 +3,62 @@ import {isEqual} from "lodash";
 import {DateTime, Zone} from 'luxon';
 import {weatherCodeToSvg} from "./utils";
 import {Accordion, AccordionSummary, AccordionDetails, Grid, Typography, SvgIcon} from '@mui/material';
-import WaterDropIcon from '@mui/icons-material/WaterDrop';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import {NOT_AVAILABLE_TEXT} from './constants';
 import AdditionalWeatherDetails from "./additional.weather.details";
+import PrecipitationItem from './precipitation.item';
+import WeatherIcon from "./weather.icon";
 
 type  WeatherSummaryButtonTimeType = 'hourly' | 'daily';
 
 const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, timezone?: Zone | string): string => {
-    const localeString = isEqual(type, 'daily') ?
+    const isDaily = isEqual(type, 'daily');
+    const localeString = isDaily ?
         DateTime.DATE_MED :
-        DateTime.TIME_SIMPLE; //Consider 24-hour format
+        DateTime.DATETIME_MED; //Consider 24-hour format
     let dt = DateTime.fromISO(dateTime);
     if (timezone) dt = dt.setZone(timezone);
     return dt.toLocaleString(localeString);
 }
 
 export default function WeatherSummaryAccordion({
-                                                 type,
-                                                 properties = {}
-                                             }) {
-    const {
-        time,
-        timezone,
-        temperature_2m,
-        temperature_2m_min,
-        temperature_2m_max,
-        precipitation_probability_max,
-        precipitation_probability,
-        weather_code
-    } = properties;
-    const hasMinMaxTemp = temperature_2m_min && temperature_2m_max;
-    const precipitationProbability = precipitation_probability_max ?? precipitation_probability;
+                                                    type,
+                                                    mappedWeatherData = {},
+                                                    timezone,
+                                                }) {
+    const timeString = getTimeString(type, mappedWeatherData.time, timezone);
+
     return (
-        <Accordion>
-            <AccordionSummary
-                expandIcon={<ExpandMoreIcon/>}
-            >
+        <Accordion id='weather-summary-accordion'>
+            <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                 <Grid
                     container
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
                     spacing={2}
-                    id={`${type}-weather-summary-row`}
                 >
-                    <Grid item xs={6}>
+                    <Grid item xs={4}>
                         <Typography id="time">
-                            {getTimeString(type, time, timezone)}
+                            {timeString}
                         </Typography>
                     </Grid>
-                    {hasMinMaxTemp && (
-                        <Grid item>
-                            <Typography
-                                id='min-max-temperature'>{`${temperature_2m_min} / ${temperature_2m_max}`}</Typography>
-                        </Grid>
-                    )}
-                    {!hasMinMaxTemp && (
-                        <Grid item>
-                            <Typography id='temperature'>{temperature_2m || "N/A"}</Typography>
-                        </Grid>
-                    )}
-                    {weather_code && (
-                        <Grid item>
-                            <span id='weather-icon'>{weatherCodeToSvg(weather_code)}</span>
-                        </Grid>
-                    )}
-                    {precipitationProbability && (
-                        <Grid item>
-                            <div style={{display: "flex", justifyContent: "center"}}>
-                                <WaterDropIcon/>
-                                <Typography id='precipitation-probability'>{precipitationProbability}</Typography>
-                            </div>
-                        </Grid>
-                    )}
+                    <Grid item>
+                        <Typography
+                            id='temperature'>{mappedWeatherData.temperature}</Typography>
+                    </Grid>
+                    <Grid item>
+                        <WeatherIcon weatherCode={mappedWeatherData.weather_code}/>
+                    </Grid>
+                    <Grid item>
+                        <PrecipitationItem precipitation={mappedWeatherData.precipitation_probability}/>
+                    </Grid>
                 </Grid>
             </AccordionSummary>
             <AccordionDetails>
                 <AdditionalWeatherDetails
                     type={type}
-                    properties={properties}
+                    mappedWeatherData={mappedWeatherData}
                 />
             </AccordionDetails>
         </Accordion>

@@ -1,6 +1,5 @@
 import React from 'react';
 import {isEqual, isNil} from "lodash";
-import {WeatherCode} from "../services/open_mateo_api/forecast_api/types";
 import Box from '@mui/material/Box';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
@@ -8,21 +7,13 @@ import TableCell from '@mui/material/TableCell';
 import TableContainer from '@mui/material/TableContainer';
 import TableRow from '@mui/material/TableRow';
 import Typography from '@mui/material/Typography';
+import {NOT_AVAILABLE_TEXT} from './constants';
+import {weatherCodeToText} from './utils';
+import {DateTime} from "luxon";
 
 //TODO: move to general types
 type  AdditionalWeatherDetailsType = 'hourly' | 'daily';
 
-const NOT_AVAILABLE_TEXT = "N/A";
-
-const convertWeatherCodeToText = (weatherCode: number | null | undefined) => {
-    if (!isNil(WeatherCode[weatherCode])) {
-        return WeatherCode[weatherCode]
-            .replace(/_/g, ' ')
-            .toLowerCase();
-    } else {
-        return NOT_AVAILABLE_TEXT;
-    }
-}
 
 const Row = ({title, value}) => {
     const id = `tr-${title.replace(':', '').replace(/\s/g, '-').toLowerCase()}`;
@@ -32,7 +23,7 @@ const Row = ({title, value}) => {
                 <Typography>{title}</Typography>
             </TableCell>
             <TableCell align='left'>
-                <Typography>{value || NOT_AVAILABLE_TEXT}</Typography>
+                <Typography>{value ?? NOT_AVAILABLE_TEXT}</Typography>
             </TableCell>
         </TableRow>
     )
@@ -40,82 +31,68 @@ const Row = ({title, value}) => {
 
 export default function AdditionalWeatherDetails({
                                                      type,
-                                                     properties = {}
+                                                     mappedWeatherData = {}
                                                  }) {
     //handle state change when updated by newly selected row
-    const hourlyDetails = (properties) => {
+    const hourlyDetails = (mappedWeatherData) => {
         const {
-            temperature_2m,
+            temperature,
             precipitation_probability,
             precipitation,
-            relative_humidity_2m,
+            humidity,
             weather_code,
             cloud_cover,
-            wind_speed_10m,
-            wind_direction_10m,
-            wind_gusts_10m,
-        } = properties;
-        const wind = (wind_speed_10m && wind_direction_10m) ?
-            `${wind_speed_10m} ${wind_direction_10m}` :
-            NOT_AVAILABLE_TEXT;
+            wind,
+            wind_gusts,
+        } = mappedWeatherData;
         return [
-            {title: "Temperature:", value: temperature_2m},
-            {title: "Conditions:", value: convertWeatherCodeToText(weather_code)},
+            {title: "Temperature:", value: temperature},
+            {title: "Conditions:", value: weatherCodeToText(weather_code)},
             {title: "Precipitation:", value: precipitation},
             {title: "Precipitation probability:", value: precipitation_probability},
-            {title: "Humidity:", value: relative_humidity_2m},
+            {title: "Humidity:", value: humidity},
             {title: "Cloud cover:", value: cloud_cover},
             {title: "Wind:", value: wind},
-            {title: "Wind gusts:", value: wind_gusts_10m},
+            {title: "Wind gusts:", value: wind_gusts},
         ]
     }
-    const dailyDetails = (properties) => {
+    const dailyDetails = (mappedWeatherData) => {
         const {
+            temperature_range,
             weather_code,
-            temperature_2m_min,
-            temperature_2m_max,
             sunrise,
             sunset,
-            precipitation_sum,
-            precipitation_hours, //Idk how to use this
-            precipitation_probability_max,
-            wind_speed_10m_max,
-            wind_direction_10m_dominant,
-            wind_gusts_10m_max,
-        } = properties;
+            precipitation_probability,
+            precipitation,
+            wind,
+            wind_gusts,
+        } = mappedWeatherData;
 
-        //TODO: convert to time
         const convertToTime = (time) => {
-            return time
+            return DateTime.fromISO(time).toLocaleString(DateTime.TIME_SIMPLE);
         }
-        const minMaxTemp = (temperature_2m_min && temperature_2m_max) ?
-            `${temperature_2m_min} / ${temperature_2m_max}` :
-            NOT_AVAILABLE_TEXT;
-        //Maybe consider an icon explaining this is the dominant direction?
-        const wind = (wind_speed_10m_max && wind_direction_10m_dominant) ?
-            `${wind_speed_10m_max} ${wind_direction_10m_dominant}` :
-            NOT_AVAILABLE_TEXT;
+
         return [
-            {title: "Temperature Low/High:", value: minMaxTemp},
-            {title: "Conditions:", value: convertWeatherCodeToText(weather_code)},
+            {title: "Temperature Low/High:", value: temperature_range},
+            {title: "Conditions:", value: weatherCodeToText(weather_code)},
             {title: "Sunrise:", value: convertToTime(sunrise)},
             {title: "Sunset:", value: convertToTime(sunset)},
-            {title: "Precipitation probability:", value: precipitation_probability_max},
-            {title: "Precipitation accumulation:", value: precipitation_sum},
+            {title: "Precipitation probability:", value: precipitation_probability},
+            {title: "Precipitation accumulation:", value: precipitation},
             {title: "Wind (with dominant direction):", value: wind},
-            {title: "Wind gusts:", value: wind_gusts_10m_max},
+            {title: "Wind gusts:", value: wind_gusts},
         ];
     }
 
     const details = isEqual(type, 'hourly') ?
-        hourlyDetails(properties) :
-        dailyDetails(properties);
+        hourlyDetails(mappedWeatherData) :
+        dailyDetails(mappedWeatherData);
     return (
         <Box id="additional-weather-details">
             <TableContainer>
                 <Table>
                     <TableBody>
-                        {details.map(({title, value}) => <Row title={title} value={value}/>)}
+                        {details.map(({title, value}, i) => <Row key={i} title={title} value={value}/>)}
                     </TableBody>
                 </Table>
             </TableContainer>

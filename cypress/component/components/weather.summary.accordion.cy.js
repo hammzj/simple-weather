@@ -1,29 +1,43 @@
 import WeatherSummaryAccordion from '../../../src/components/weather.summary.accordion';
-import {mapDataFromFetchWeatherResponse} from "../../../src/services/open_mateo_api/utils";
 
-describe('WeatherSummaryButton', function () {
+describe('WeatherSummaryAccordion', function () {
     beforeEach(function () {
-        cy.fixture('/open_meteo_api/forecast_api/fetch.all.weather.for.location.200.json')
-            .then(fetchWeatherResponseFixture => {
-                return mapDataFromFetchWeatherResponse(fetchWeatherResponseFixture);
-            }).as('mappedWeatherData');
-    })
+        cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'});
+    });
     context('Hourly', function () {
-        specify('can create a row button from hourly data', function () {
-            cy.get(`@mappedWeatherData`).then(mappedWeatherData => {
-                const firstHour = mappedWeatherData.hourly_weather[0];
+        it.only('displays a summary of the hourly data', function () {
+            cy.get(`@weatherData`).then(weatherData => {
+                const firstHour = weatherData.hourly_weather[0];
 
                 cy.mount(<WeatherSummaryAccordion
                     type='hourly'
-                    properties={firstHour}
+                    mappedWeatherData={firstHour.mapped}
                 />)
 
-                cy.get('#time').should('have.text', '12:00 AM');
-                cy.get('#temperature').should('have.text', firstHour.temperature_2m);
+                cy.get('#time').should('have.text', 'Nov 14, 2023, 12:00 AM');
+                cy.get('#temperature').should('have.text', '49 °F');
                 cy.get('#weather-icon').find('svg').should('exist');
-                cy.get('#precipitation-probability').should('have.text', firstHour.precipitation_probability);
+                cy.get('#precipitation-item').should('have.text', '28 %');
             })
         })
+
     })
-    context('Daily', function () {})
+    context('Daily', function () {
+        it.only('displays a summary of the daily data', function () {
+            cy.get(`@weatherData`).then(weatherData => {
+                const firstDay = weatherData.daily_weather[0];
+
+                cy.mount(<WeatherSummaryAccordion
+                    type='daily'
+                    mappedWeatherData={firstDay.mapped}
+                />)
+
+                cy.get('#time').should('have.text', 'Nov 14, 2023');
+                cy.get('#temperature').should('have.text', '48 °F / 55 °F');
+                cy.get('#weather-icon').find('svg').should('exist');
+                cy.get('#precipitation-item').should('have.text', '100 %');
+            })
+        })
+
+    })
 })
