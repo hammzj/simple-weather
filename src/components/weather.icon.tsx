@@ -1,8 +1,9 @@
 import React from "react";
-import {weatherCodeToSvg} from "./utils";
+import Tooltip from "@mui/material/Tooltip";
+import {weatherCodeToSvg, weatherCodeToText} from "./utils";
 
 export default function WeatherIcon({weatherCode}) {
     return (
-        <span id='weather-icon'>{weatherCodeToSvg(weatherCode)}</span>
+        <Tooltip id='weather-icon' title={weatherCodeToText(weatherCode)}>{weatherCodeToSvg(weatherCode)}</Tooltip>
     )
 }

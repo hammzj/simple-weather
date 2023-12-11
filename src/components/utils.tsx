@@ -1,5 +1,5 @@
 import React from 'react';
-import {includes, isEqual, isNil} from "lodash";
+import {capitalize, includes, isEqual, isNil} from "lodash";
 import {WeatherCode} from "../services/open_mateo_api/forecast_api/types";
 import CloudIcon from '@mui/icons-material/Cloud';
 import FilterDramaIcon from '@mui/icons-material/FilterDrama';
@@ -70,9 +70,8 @@ export const weatherCodeToSvg = (weatherCode: number | WeatherCode) => {
 
 export const weatherCodeToText = (weatherCode: number | null | undefined) => {
     if (!isNil(WeatherCode[weatherCode])) {
-        return WeatherCode[weatherCode]
-            .replace(/_/g, ' ')
-            .toLowerCase();
+        return capitalize(WeatherCode[weatherCode]
+            .replace(/_/g, ' '))
     } else {
         return NOT_AVAILABLE_TEXT;
     }

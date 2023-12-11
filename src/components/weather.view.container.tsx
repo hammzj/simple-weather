@@ -20,7 +20,7 @@ const WeatherRowsTabPanel = (props) => {
     </Box>)
 }
 
-export default function WeatherView({weatherData}) {
+export default function WeatherViewContainer({weatherData}) {
     const [value, setValue] = React.useState(0);
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);

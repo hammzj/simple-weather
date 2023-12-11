@@ -1,6 +1,6 @@
-import CurrentWeatherContainer from '../../../src/components/current.weather.container';
+import CurrentWeatherCard from '../../../src/components/current.weather.card';
 
-describe('CurrentWeatherContainer', function () {
+describe(CurrentWeatherCard.name, function () {
     beforeEach(function () {
         cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'})
     })
@@ -10,13 +10,14 @@ describe('CurrentWeatherContainer', function () {
             const currentLocationName = 'Raleigh';
             const {current_weather} = weatherData;
 
-            cy.mount(<CurrentWeatherContainer
+            cy.mount(<CurrentWeatherCard
                 locationName={currentLocationName}
-                weatherData={current_weather.mapped}
-            />)
+                currentWeatherData={current_weather.mapped}
+            />);
+
             cy.get(`#location`).should('have.text', 'Raleigh');
             cy.get(`#temperature`).should('have.text', '51 °F');
-            cy.get(`#precipitation-item`).should('have.text', '0.500 inch');
+            cy.get(`#precipitation`).should('have.text', '0.500 inch');
             cy.get(`#weather-icon`).should('exist');
             cy.get(`#time`).should('have.text', 'Last updated: Nov 14, 2023, 9:30 PM');
 

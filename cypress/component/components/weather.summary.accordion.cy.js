@@ -1,6 +1,6 @@
 import WeatherSummaryAccordion from '../../../src/components/weather.summary.accordion';
 
-describe('WeatherSummaryAccordion', function () {
+describe(WeatherSummaryAccordion.name, function () {
     beforeEach(function () {
         cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'});
     });
@@ -17,7 +17,7 @@ describe('WeatherSummaryAccordion', function () {
                 cy.get('#time').should('have.text', 'Nov 14, 2023, 12:00 AM');
                 cy.get('#temperature').should('have.text', '49 °F');
                 cy.get('#weather-icon').find('svg').should('exist');
-                cy.get('#precipitation-item').should('have.text', '28 %');
+                cy.get('#precipitation').should('have.text', '28 %');
             })
         })
 
@@ -35,7 +35,7 @@ describe('WeatherSummaryAccordion', function () {
                 cy.get('#time').should('have.text', 'Nov 14, 2023');
                 cy.get('#temperature').should('have.text', '48 °F / 55 °F');
                 cy.get('#weather-icon').find('svg').should('exist');
-                cy.get('#precipitation-item').should('have.text', '100 %');
+                cy.get('#precipitation').should('have.text', '100 %');
             })
         })
 

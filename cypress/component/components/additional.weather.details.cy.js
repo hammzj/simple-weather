@@ -1,6 +1,6 @@
-import DetailedViewContainer from '../../../src/components/additional.weather.details';
+import AdditionalWeatherDetails from "../../../src/components/additional.weather.details";
 
-describe('DetailedViewContainer', function () {
+describe(AdditionalWeatherDetails.name, function () {
     beforeEach(function () {
         cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'});
     });

@@ -11,7 +11,7 @@ import {
 } from "../open_mateo_api/forecast_api/types";
 import * as T from "./types";
 import {DateTime} from "luxon";
-import {includes, isEqual, isNil} from "lodash";
+import {gte, includes, isEqual, isNil} from "lodash";
 
 
 const createEnumerableFromKeys = (block: VariablesWithTime) => {
@@ -74,9 +74,8 @@ export default class SimpleWeatherAPI {
                 mapped
             }
         }
-        const createHourlyWeatherData = (block: VariablesWithTime, units: object, maxHourlySets = SimpleWeatherAPI.MAX_HOURLY_SETS): T.HourlyWeatherData => {
-            const valueSet = createEnumerableFromKeys(block);
-            return valueSet
+        const createHourlyWeatherData = (block: VariablesWithTime, units: object, currentWeatherTime = undefined, maxHourlySets = SimpleWeatherAPI.MAX_HOURLY_SETS): T.HourlyWeatherData => {
+            let valueSet = createEnumerableFromKeys(block)
                 .map(values => {
                     const {
                         time,
@@ -129,7 +128,14 @@ export default class SimpleWeatherAPI {
                         mapped
                     }
                 })
-                .slice(0, maxHourlySets)
+            //TODO: only grab those greater than the current hour
+            const isGteCurrentWeatherTime = (v) => {
+                return gte(DateTime.fromISO(v.values.time).toMillis(), DateTime.fromISO(currentWeatherTime).startOf('hour').toMillis());
+            }
+            if (!isNil(currentWeatherTime)) {
+                valueSet = valueSet.filter(isGteCurrentWeatherTime);
+            }
+            return valueSet.slice(0, maxHourlySets);
         }
         const createDailyWeatherData = (block: VariablesWithTime, units: object, maxDailySets = SimpleWeatherAPI.MAX_DAILY_SETS): T.DailyWeatherData => {
             const valueSet = createEnumerableFromKeys(block);
@@ -203,7 +209,7 @@ export default class SimpleWeatherAPI {
             mappedWeatherData.current_weather = createCurrentWeatherData(current, current_units);
         }
         if (hourly && hourly_units) {
-            mappedWeatherData.hourly_weather = createHourlyWeatherData(hourly, hourly_units);
+            mappedWeatherData.hourly_weather = createHourlyWeatherData(hourly, hourly_units, current.time);
         }
         if (daily && daily_units) {
             mappedWeatherData.daily_weather = createDailyWeatherData(daily, daily_units);
