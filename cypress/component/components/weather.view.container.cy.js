@@ -1,6 +1,6 @@
 import {DateTime} from "luxon";
-import WeatherViewContainer from '../../../src/components/weather.view.container';
 import {NOT_AVAILABLE_TEXT} from "../../../src/components/constants";
+import WeatherViewContainer from '../../../src/components/weather.view.container';
 import WeatherViewContainerObject from '../../page_objects/weather.view.container.object';
 
 describe(WeatherViewContainer.name, function () {
@@ -21,11 +21,11 @@ describe(WeatherViewContainer.name, function () {
 
         wvco.hourlyButton.click();
 
-        wvco.HourlyWeatherSummaryAccordion((hwsa) => {
-            hwsa.container.should('have.lengthOf', 25);
+        wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+            obj.container.should('have.lengthOf', 25);
         });
-        wvco.DailyWeatherSummaryAccordion((dwsa) => {
-            dwsa.container.should('not.exist');
+        wvco.DailyWeatherSummaryAccordionObject((obj) => {
+            obj.container.should('not.exist');
         });
         cy.get(`@weatherData`).then(weatherData => {
             const {hourly_weather} = weatherData;
@@ -33,14 +33,14 @@ describe(WeatherViewContainer.name, function () {
                 const time = DateTime.fromISO(mapped.time).toLocaleString(DateTime.DATETIME_MED);
                 const precipitationProbability = mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
 
-                wvco.HourlyWeatherSummaryAccordion((hwsa) => {
-                    hwsa.scopedIndex = i;
-                    hwsa.time.should('have.text', time);
-                    hwsa.temperature.should('have.text', mapped.temperature);
-                    hwsa.WeatherIconObject(function (wio) {
+                wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+                    obj.scopedIndex = i;
+                    obj.time.should('have.text', time);
+                    obj.temperature.should('have.text', mapped.temperature);
+                    obj.WeatherIconObject(function (wio) {
                         wio.svg.should('exist');
                     });
-                    hwsa.PrecipitationItemObject((pio) => {
+                    obj.PrecipitationItemObject((pio) => {
                         pio._assertValue(precipitationProbability);
                     });
                 });
@@ -54,11 +54,11 @@ describe(WeatherViewContainer.name, function () {
 
         wvco.dailyButton.click();
 
-        wvco.DailyWeatherSummaryAccordion((dwsa) => {
-            dwsa.container.should('have.lengthOf', 7);
+        wvco.DailyWeatherSummaryAccordionObject((obj) => {
+            obj.container.should('have.lengthOf', 7);
         });
-        wvco.HourlyWeatherSummaryAccordion((hwsa) => {
-            hwsa.container.should('not.exist');
+        wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+            obj.container.should('not.exist');
         });
         cy.get(`@weatherData`).then(weatherData => {
             const {daily_weather} = weatherData;
@@ -66,54 +66,48 @@ describe(WeatherViewContainer.name, function () {
                 const time = DateTime.fromISO(mapped.time).toLocaleString(DateTime.DATE_MED);
                 const precipitationProbability = mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
 
-                wvco.DailyWeatherSummaryAccordion((dwsa) => {
-                    dwsa.scopedIndex = i;
-                    dwsa.time.should('have.text', time);
-                    dwsa.temperature.should('have.text', mapped.temperature);
-                    dwsa.WeatherIconObject(function (wio) {
+                wvco.DailyWeatherSummaryAccordionObject((obj) => {
+                    obj.scopedIndex = i;
+                    obj.time.should('have.text', time);
+                    obj.temperature.should('have.text', mapped.temperature);
+                    obj.WeatherIconObject(function (wio) {
                         wio.svg.should('exist');
                     });
-                    dwsa.PrecipitationItemObject((pio) => {
+                    obj.PrecipitationItemObject((pio) => {
                         pio._assertValue(precipitationProbability);
                     });
                 });
                 cy.wait(50);
             }
         });
-
-        // cy.contains(`[role="tab"]`, 'Daily').click();
-        //
-        // cy.get(`[id="daily-weather-summary-accordion"]`).should('have.lengthOf', 7);
-        // cy.get(`[id="hourly-weather-summary-accordion"`).should('not.exist');
-        //
-        // cy.get(`@weatherData`).then(weatherData => {
-        //     const {daily_weather} = weatherData;
-        //     for (const [i, {mapped}] of daily_weather.entries()) {
-        //         const time = DateTime.fromISO(mapped.time).toLocaleString(DateTime.DATE_MED);
-        //         const precipitationProbability = mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
-        //
-        //         cy.get(`[id="daily-weather-summary-accordion"]`).eq(i).as('accordion');
-        //         cy.get(`@accordion`).find('#time').should('have.text', time);
-        //         cy.get(`@accordion`).find('#temperature').should('have.text', mapped.temperature);
-        //         cy.get(`@accordion`).find('#weather-icon-div').find('svg').should('exist');
-        //         cy.get(`@accordion`).find('#precipitation').should('have.text', precipitationProbability);
-        //     }
-        // });
     });
 
     //TODO
-    specify.skip("Opening the details for one accordion should close any other open ones", function () {
-        cy.get(`@weatherData`).then(weatherData => {
-            const {hourly_weather} = weatherData;
-            const firstHourWeather = hourly_weather[0];
-            const secondHourWeather = hourly_weather[1];
+    specify.only("Opening the details for one accordion should close any other open ones", function () {
+        const wvco = new WeatherViewContainerObject();
+        wvco.hourlyButton.click();
 
-            cy.contains(`[role="tab"]`, 'Hourly').click();
+        wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+            const firstAccordion = obj.__clone();
+            firstAccordion._scopedIndex = 0;
+
+            const secondAccordion = obj.__clone();
+            secondAccordion._scopedIndex = 1;
 
 
-            cy.get(`[id="hourly-weather-summary-accordion"]`).eq(1).click();
+            //Arrange: make sure that the first one is opened
+            firstAccordion.container.click();
+            firstAccordion.container.should('have.class', 'Mui-expanded');
 
+            //Arrange: the second one is starting as closed
+            secondAccordion.container.should('not.have.class', 'Mui-expanded');
 
+            //Act: Open the second one
+            secondAccordion.container.click();
+
+            //Assertion: Only the second one should be opened
+            firstAccordion.container.should('not.have.class', 'Mui-expanded');
+            secondAccordion.container.should('have.class', 'Mui-expanded');
         });
     });
 });

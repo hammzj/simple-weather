@@ -22,11 +22,11 @@ class WeatherViewContainerObject extends ElementCollection {
         return this.container.find(`#tabpanel-daily`);
     }
 
-    HourlyWeatherSummaryAccordion(fn) {
+    HourlyWeatherSummaryAccordionObject(fn) {
         return this.weatherTabPanelHourly.within(() => fn(new WeatherSummaryAccordionObject('hourly')))
     }
 
-    DailyWeatherSummaryAccordion(fn) {
+    DailyWeatherSummaryAccordionObject(fn) {
         return this.weatherTabPanelDaily.within(() => fn(new WeatherSummaryAccordionObject('daily')))
     }
 }

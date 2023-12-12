@@ -7,6 +7,13 @@ import Tab from "@mui/material/Tab";
 import WeatherSummaryAccordion from "./weather.summary.accordion";
 
 const WeatherRowsTabPanel = (props) => {
+    const [expanded, setExpanded] = React.useState<string | boolean>(false);
+    const handleChange =
+        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+            setExpanded(isExpanded ? panel : false);
+        };
+
+
     const {timeBasedWeatherData, type, value, index} = props;
     return (<Box
         role="tabpanel"
@@ -14,14 +21,21 @@ const WeatherRowsTabPanel = (props) => {
         id={`tabpanel-${type}`}
         aria-labelledby={`tabpanel-${type}`}
     >
-        {isEqual(value, index) && timeBasedWeatherData.map(tbwd => {
-            return <WeatherSummaryAccordion type={type} mappedWeatherData={tbwd.mapped}/>
+        {isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
+            const accordionId = `accordion-${i}`
+            return <WeatherSummaryAccordion
+                expanded={isEqual(expanded, accordionId)}
+                onChange={handleChange(accordionId)}
+                type={type}
+                mappedWeatherData={tbwd.mapped}
+            />
         })}
     </Box>)
 }
 
 export default function WeatherViewContainer({weatherData}) {
     const [value, setValue] = React.useState(0);
+
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
     }

@@ -65,12 +65,23 @@ export default class CompoElementCollection {
     }
 
     /**
-     * Useful for when we need to attach a parent ElementCollection to a child ElementCollection
-     * for creating element chains. "Cloning" the original parent allows us to avoid circular dependencies.
+     * Useful for when we need to test multiple scoped or indexed ElementCollection instances by setting `_scopedIndex`.
+     * for creating element chains. "Cloning" the original allows us to avoid circular dependencies.
      * @return clonedSelf {ElementCollection}
+     * @example <summary>Testing two different ElementCollection instances</summary>
+     *      wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+            const firstAccordion = clone(obj);
+            firstAccordion._scopedIndex = 0;
+
+            const secondAccordion = clone(obj);
+            secondAccordion._scopedIndex = 1;
+
+            firstAccordion.container.should('have.class', 'Mui-expanded');
+            secondAccordion.should('have.not.class', 'Mui-expanded');
+        });
      * @private
      */
-    __clone() {
+     __clone() {
         return clone(this);
     }
 }

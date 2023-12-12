@@ -23,10 +23,11 @@ export default function WeatherSummaryAccordion({
                                                     type,
                                                     mappedWeatherData = {},
                                                     timezone,
+                                                    ...props
                                                 }) {
     const timeString = getTimeString(type, mappedWeatherData.time, timezone);
     return (
-        <Accordion id={`${type}-weather-summary-accordion`}>
+        <Accordion id={`${type}-weather-summary-accordion`} {...props}>
             <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
                 <Stack
                     direction="row"
