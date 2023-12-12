@@ -6,10 +6,10 @@ import {NOT_AVAILABLE_TEXT} from "./constants";
 
 export default function PrecipitationItem({precipitation, ...props}) {
     return (
-        <Tooltip title="Precipitation" id='precipitation'>
-            <div style={{display: "flex", justifyContent: "center"}}>
+        <Tooltip title="Precipitation">
+            <div style={{display: "flex", justifyContent: "center"}} id='precipitation'>
                 <WaterDropIcon/>
-                <Typography>{precipitation ?? NOT_AVAILABLE_TEXT}</Typography>
+                <Typography sx={{fontSize: '0.9rem'}}>{precipitation ?? NOT_AVAILABLE_TEXT}</Typography>
             </div>
         </Tooltip>
     )

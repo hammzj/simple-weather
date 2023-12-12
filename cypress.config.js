@@ -17,7 +17,7 @@ export default defineConfig({
     },
 
     component: {
-        defaultCommandTimeout: 2000,
+        defaultCommandTimeout: 1000,
         devServer: {
             framework: "create-react-app",
             bundler: "webpack",

@@ -28,7 +28,7 @@ export default function WeatherViewContainer({weatherData}) {
 
     const {hourly_weather, daily_weather} = weatherData;
 
-    return (<Container>
+    return (<Container id='weather-view'>
             <Tabs
                 value={value}
                 onChange={handleChange}

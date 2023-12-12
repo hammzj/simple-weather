@@ -18,7 +18,7 @@ describe(CurrentWeatherCard.name, function () {
             cy.get(`#location`).should('have.text', 'Raleigh');
             cy.get(`#temperature`).should('have.text', '51 °F');
             cy.get(`#precipitation`).should('have.text', '0.500 inch');
-            cy.get(`#weather-icon`).should('exist');
+            cy.get(`#weather-icon-div`).should('exist');
             cy.get(`#time`).should('have.text', 'Last updated: Nov 14, 2023, 9:30 PM');
 
         })

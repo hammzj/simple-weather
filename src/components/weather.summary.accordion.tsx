@@ -1,7 +1,7 @@
 import React from 'react';
 import {isEqual} from "lodash";
 import {DateTime, Zone} from 'luxon';
-import {Accordion, AccordionSummary, AccordionDetails, Grid, Stack, Typography} from '@mui/material';
+import {Accordion, AccordionSummary, AccordionDetails, Stack, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AdditionalWeatherDetails from "./additional.weather.details";
 import PrecipitationItem from './precipitation.item';
@@ -25,7 +25,6 @@ export default function WeatherSummaryAccordion({
                                                     timezone,
                                                 }) {
     const timeString = getTimeString(type, mappedWeatherData.time, timezone);
-
     return (
         <Accordion id={`${type}-weather-summary-accordion`}>
             <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
@@ -36,7 +35,7 @@ export default function WeatherSummaryAccordion({
                     spacing={3}
                 >
                     <Typography id="time">{timeString}</Typography>
-                    <Typography id='temperature'>{mappedWeatherData.temperature}</Typography>
+                    <Typography id='temperature' sx={{fontSize: '0.9rem'}}>{mappedWeatherData.temperature}</Typography>
                     <WeatherIcon weatherCode={mappedWeatherData.weather_code}/>
                     <PrecipitationItem precipitation={mappedWeatherData.precipitation_probability}/>
                 </Stack>

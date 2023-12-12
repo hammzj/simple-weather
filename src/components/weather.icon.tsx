@@ -4,6 +4,10 @@ import {weatherCodeToSvg, weatherCodeToText} from "./utils";
 
 export default function WeatherIcon({weatherCode}) {
     return (
-        <Tooltip id='weather-icon' title={weatherCodeToText(weatherCode)}>{weatherCodeToSvg(weatherCode)}</Tooltip>
+        <Tooltip title={weatherCodeToText(weatherCode)}>
+            <div id='weather-icon-div'>
+                {weatherCodeToSvg(weatherCode)}
+            </div>
+        </Tooltip>
     )
 }

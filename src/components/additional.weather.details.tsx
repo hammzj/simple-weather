@@ -16,7 +16,7 @@ type  AdditionalWeatherDetailsType = 'hourly' | 'daily';
 
 
 const Row = ({title, value}) => {
-    const id = `tr-${title.replace(':', '').replace(/\s/g, '-').toLowerCase()}`;
+    const id = `${title.replace(':', '').replace(/\s/g, '-').toLowerCase()}`;
     return (
         <TableRow id={id}>
             <TableCell align='left'>
@@ -50,15 +50,15 @@ export default function AdditionalWeatherDetails({
             {title: "Conditions:", value: weatherCodeToText(weather_code)},
             {title: "Precipitation:", value: precipitation},
             {title: "Precipitation probability:", value: precipitation_probability},
-            {title: "Humidity:", value: humidity},
-            {title: "Cloud cover:", value: cloud_cover},
             {title: "Wind:", value: wind},
             {title: "Wind gusts:", value: wind_gusts},
+            {title: "Humidity:", value: humidity},
+            {title: "Cloud cover:", value: cloud_cover},
         ]
     }
     const dailyDetails = (mappedWeatherData) => {
         const {
-            temperature_range,
+            temperature,
             weather_code,
             sunrise,
             sunset,
@@ -73,14 +73,14 @@ export default function AdditionalWeatherDetails({
         }
 
         return [
-            {title: "Temperature Low/High:", value: temperature_range},
+            {title: "Temperature Low/High:", value: temperature},
             {title: "Conditions:", value: weatherCodeToText(weather_code)},
-            {title: "Sunrise:", value: convertToTime(sunrise)},
-            {title: "Sunset:", value: convertToTime(sunset)},
+            {title: "Precipitation:", value: precipitation},
             {title: "Precipitation probability:", value: precipitation_probability},
-            {title: "Precipitation accumulation:", value: precipitation},
             {title: "Wind (with dominant direction):", value: wind},
             {title: "Wind gusts:", value: wind_gusts},
+            {title: "Sunrise:", value: convertToTime(sunrise)},
+            {title: "Sunset:", value: convertToTime(sunset)},
         ];
     }
 

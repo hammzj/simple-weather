@@ -13,6 +13,7 @@ import * as T from "./types";
 import {DateTime} from "luxon";
 import {gte, includes, isEqual, isNil} from "lodash";
 
+const exists = (v) => !isNil(v);
 
 const createEnumerableFromKeys = (block: VariablesWithTime) => {
     const isContainingOnlyOneTime = isEqual([block.time].flat().length, 1);
@@ -48,6 +49,9 @@ export default class SimpleWeatherAPI {
     }
 
     private static _createMappedWeatherData(fetchWeatherResponse: WeatherApiResponse[]): T.MappedWeatherData {
+        //TODO: this all should be a transformer on the axios request for the Forecast API. Much more useful as a transformer
+
+        //TODO: simplify all of these methods if possible -- DRY coding
         const createCurrentWeatherData = (values, units): T.CurrentWeatherData => {
             const {
                 time,
@@ -62,11 +66,11 @@ export default class SimpleWeatherAPI {
                 weather_code,
                 is_day,
             };
-            if (temperature_2m) {
+            if (exists(temperature_2m)) {
                 mapped.temperature = `${temperature_2m.toFixed(0)} ${units.temperature_2m}`;
             }
-            if (precipitation) {
-                mapped.precipitation = `${precipitation.toFixed(3)} ${units.precipitation}`;
+            if (exists(precipitation)) {
+                mapped.precipitation = `${+precipitation.toFixed(2)} ${units.precipitation}`;
             }
             return {
                 units,
@@ -97,28 +101,30 @@ export default class SimpleWeatherAPI {
                         weather_code,
                         is_day,
                     };
-                    if (temperature_2m) {
+                    if (exists(temperature_2m)) {
                         mapped.temperature = `${temperature_2m.toFixed(0)} ${units.temperature_2m}`;
                     }
-                    if (precipitation) {
-                        mapped.precipitation = `${precipitation.toFixed(3)} ${units.precipitation}`;
+                    if (exists(precipitation)) {
+                        //+ sign removes extra zeroes
+                        //@see https://stackoverflow.com/a/12830454/6404865
+                        mapped.precipitation = `${+precipitation.toFixed(2)} ${units.precipitation}`;
                     }
-                    if (precipitation_probability) {
+                    if (exists(precipitation_probability)) {
                         mapped.precipitation_probability = `${precipitation_probability.toFixed(0)} ${units.precipitation_probability}`;
                     }
-                    if (visibility) {
+                    if (exists(visibility)) {
                         mapped.visibility = `${visibility} ${units.visibility}`;
                     }
-                    if (relative_humidity_2m) {
+                    if (exists(relative_humidity_2m)) {
                         mapped.humidity = `${relative_humidity_2m.toFixed(0)} ${units.relative_humidity_2m}`;
                     }
-                    if (cloud_cover) {
+                    if (exists(cloud_cover)) {
                         mapped.cloud_cover = `${cloud_cover} ${units.cloud_cover}`
                     }
-                    if (wind_speed_10m && wind_direction_10m) {
+                    if (exists(wind_speed_10m) && exists(wind_direction_10m)) {
                         mapped.wind = `${Math.round(wind_speed_10m)} ${units.wind_speed_10m} ${getWindDegreesAsDirection(wind_direction_10m)}`
                     }
-                    if (wind_gusts_10m) {
+                    if (exists(wind_gusts_10m)) {
                         mapped.wind_gusts = `${Math.round(wind_gusts_10m)} ${units.wind_gusts_10m}`
                     }
 
@@ -127,12 +133,14 @@ export default class SimpleWeatherAPI {
                         values,
                         mapped
                     }
-                })
-            //TODO: only grab those greater than the current hour
+                });
+
+            //Only return hourly data that is equal to or greater than the current hour
+            //No need to show historical hourly data, which is generally returned from the API endpoint
             const isGteCurrentWeatherTime = (v) => {
                 return gte(DateTime.fromISO(v.values.time).toMillis(), DateTime.fromISO(currentWeatherTime).startOf('hour').toMillis());
             }
-            if (!isNil(currentWeatherTime)) {
+            if (exists(currentWeatherTime)) {
                 valueSet = valueSet.filter(isGteCurrentWeatherTime);
             }
             return valueSet.slice(0, maxHourlySets);
@@ -158,27 +166,27 @@ export default class SimpleWeatherAPI {
                     time,
                     weather_code,
                 };
-                if (temperature_2m_min && temperature_2m_max) {
+                if (exists(temperature_2m_min) && exists(temperature_2m_max)) {
                     const min = `${Math.round(temperature_2m_min)} ${units.temperature_2m_min}`;
                     const max = `${Math.round(temperature_2m_max)} ${units.temperature_2m_max}`;
                     mapped.temperature = `${min} / ${max}`;
                 }
-                if (precipitation_sum) {
-                    mapped.precipitation = `${precipitation_sum.toFixed(3)} ${units.precipitation_sum}`;
+                if (exists(precipitation_sum)) {
+                    mapped.precipitation = `${+precipitation_sum.toFixed(2)} ${units.precipitation_sum}`;
                 }
-                if (precipitation_probability_max) {
+                if (exists(precipitation_probability_max)) {
                     mapped.precipitation_probability = `${precipitation_probability_max.toFixed(0)} ${units.precipitation_probability_max}`;
                 }
-                if (sunrise) {
+                if (exists(sunrise)) {
                     mapped.sunrise = DateTime.fromISO(sunrise);
                 }
-                if (sunset) {
+                if (exists(sunset)) {
                     mapped.sunset = DateTime.fromISO(sunset);
                 }
-                if (wind_speed_10m_max && wind_direction_10m_dominant) {
+                if (exists(wind_speed_10m_max) && exists(wind_direction_10m_dominant)) {
                     mapped.wind = `${Math.round(wind_speed_10m_max)} ${units.wind_speed_10m_max} ${getWindDegreesAsDirection(wind_direction_10m_dominant)}`
                 }
-                if (wind_gusts_10m_max) {
+                if (exists(wind_gusts_10m_max)) {
                     mapped.wind_gusts = `${Math.round(wind_gusts_10m_max)} ${units.wind_gusts_10m_max}`
                 }
 
