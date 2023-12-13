@@ -1,10 +1,16 @@
 import React from "react";
-import {isEqual} from "lodash";
+import {isEqual, isEmpty} from "lodash";
 import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
 import Tabs from "@mui/material/Tabs";
 import Tab from "@mui/material/Tab";
+import Typography from "@mui/material/Typography";
 import WeatherSummaryAccordion from "./weather.summary.accordion";
+
+const EmptyDataMessage = () => {
+    return (<Box alignContent='center' justifyContent='center'>
+        <Typography align='center'>No data could be returned for the location.</Typography>
+    </Box>)
+}
 
 const WeatherRowsTabPanel = (props) => {
     const [expanded, setExpanded] = React.useState<string | boolean>(false);
@@ -21,17 +27,23 @@ const WeatherRowsTabPanel = (props) => {
         id={`tabpanel-${type}`}
         aria-labelledby={`tabpanel-${type}`}
     >
-        {isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
-            const accordionId = `accordion-${i}`
-            return <WeatherSummaryAccordion
-                expanded={isEqual(expanded, accordionId)}
-                onChange={handleChange(accordionId)}
-                type={type}
-                mappedWeatherData={tbwd.mapped}
-            />
-        })}
+        {isEmpty(timeBasedWeatherData) ?
+            <EmptyDataMessage/> :
+            isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
+                const accordionId = `accordion-${i}`
+                return (
+                    <Box paddingBottom={'1.5em'}>
+                        <WeatherSummaryAccordion
+                            expanded={isEqual(expanded, accordionId)}
+                            onChange={handleChange(accordionId)}
+                            type={type}
+                            mappedWeatherData={tbwd.mapped}
+                        />
+                    </Box>)
+            })}
     </Box>)
 }
+
 
 export default function WeatherViewContainer({weatherData}) {
     const [value, setValue] = React.useState(0);
@@ -42,17 +54,19 @@ export default function WeatherViewContainer({weatherData}) {
 
     const {hourly_weather, daily_weather} = weatherData;
 
-    return (<Container id='weather-view'>
-            <Tabs
-                value={value}
-                onChange={handleChange}
-                centered
-            >
-                <Tab label="Hourly"/>
-                <Tab label="Daily"/>
-            </Tabs>
+    return (<Box id='weather-view'>
+            <Box paddingBottom='1em'>
+                <Tabs
+                    value={value}
+                    onChange={handleChange}
+                    centered
+                >
+                    <Tab label="Hourly"/>
+                    <Tab label="Daily"/>
+                </Tabs>
+            </Box>
             <WeatherRowsTabPanel value={value} index={0} type="hourly" timeBasedWeatherData={hourly_weather}/>
             <WeatherRowsTabPanel value={value} index={1} type="daily" timeBasedWeatherData={daily_weather}/>
-        </Container>
+        </Box>
     )
 }

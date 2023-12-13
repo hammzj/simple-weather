@@ -1,6 +1,6 @@
-import ElementCollection from "./element.collection";
+import ElementCollection from "../element.collection";
 
-class PrecipitationItemObject extends ElementCollection {
+export default class PrecipitationChanceObject extends ElementCollection {
     constructor() {
         super(() => cy.get(`div#precipitation`));
     }
@@ -13,5 +13,3 @@ class PrecipitationItemObject extends ElementCollection {
         this.container.should('have.text', value);
     }
 }
-
-export default PrecipitationItemObject;

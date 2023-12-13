@@ -1,6 +1,6 @@
-import ElementCollection from "./element.collection";
+import ElementCollection from "../element.collection";
 
-class WeatherIconObject extends ElementCollection {
+export default class WeatherIconObject extends ElementCollection {
     constructor() {
         super(() => cy.get(`div#weather-icon-div`));
     }
@@ -18,4 +18,3 @@ class WeatherIconObject extends ElementCollection {
     }
 }
 
-export default WeatherIconObject;

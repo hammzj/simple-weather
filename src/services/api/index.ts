@@ -52,14 +52,14 @@ export default class SimpleWeatherAPI {
         //TODO: this all should be a transformer on the axios request for the Forecast API. Much more useful as a transformer
 
         //TODO: simplify all of these methods if possible -- DRY coding
-        const createCurrentWeatherData = (values, units): T.CurrentWeatherData => {
+        const createCurrentWeatherData = (currentWeatherValues, currentWeatherUnits, dailyWeatherBlock?: VariablesWithTime, dailyWeatherUnits?: object): T.CurrentWeatherData => {
             const {
                 time,
                 temperature_2m,
                 precipitation,
                 weather_code,
                 is_day
-            } = values;
+            } = currentWeatherValues;
 
             const mapped = {
                 time,
@@ -67,16 +67,39 @@ export default class SimpleWeatherAPI {
                 is_day,
             };
             if (exists(temperature_2m)) {
-                mapped.temperature = `${temperature_2m.toFixed(0)} ${units.temperature_2m}`;
+                mapped.temperature = `${temperature_2m.toFixed(0)} ${currentWeatherUnits.temperature_2m}`;
             }
             if (exists(precipitation)) {
-                mapped.precipitation = `${+precipitation.toFixed(2)} ${units.precipitation}`;
+                mapped.precipitation = `${+precipitation.toFixed(2)} ${currentWeatherUnits.precipitation}`;
             }
-            return {
-                units,
-                values,
+
+            const currentWeather = {
+                units: currentWeatherUnits,
+                values: currentWeatherValues,
                 mapped
             }
+
+            //Add temperature low/high to current
+            if (dailyWeatherBlock && dailyWeatherUnits) {
+                const currentDayValues = createEnumerableFromKeys(dailyWeatherBlock).find(v => {
+                    return isEqual(DateTime.fromISO(v.time).startOf('day').toFormat('yyyy-MM-dd'),
+                        DateTime.fromISO(currentWeatherValues.time).startOf('day').toFormat('yyyy-MM-dd'))
+                })
+                if (currentDayValues) {
+                    const {temperature_2m_min, temperature_2m_max} = currentDayValues;
+                    if (exists(temperature_2m_min) && exists(temperature_2m_max)) {
+                        const min = `${Math.round(temperature_2m_min)} ${dailyWeatherUnits.temperature_2m_min}`;
+                        const max = `${Math.round(temperature_2m_max)} ${dailyWeatherUnits.temperature_2m_max}`;
+                        currentWeather.values.temperature_2m_min = currentDayValues.temperature_2m_min
+                        currentWeather.values.temperature_2m_max = currentDayValues.temperature_2m_max
+                        currentWeather.units.temperature_2m_min = dailyWeatherUnits.temperature_2m_min;
+                        currentWeather.units.temperature_2m_max = dailyWeatherUnits.temperature_2m_max;
+                        currentWeather.mapped.temperature_range = `${min} / ${max}`;
+                    }
+                }
+            }
+
+            return currentWeather;
         }
         const createHourlyWeatherData = (block: VariablesWithTime, units: object, currentWeatherTime = undefined, maxHourlySets = SimpleWeatherAPI.MAX_HOURLY_SETS): T.HourlyWeatherData => {
             let valueSet = createEnumerableFromKeys(block)
@@ -169,7 +192,7 @@ export default class SimpleWeatherAPI {
                 if (exists(temperature_2m_min) && exists(temperature_2m_max)) {
                     const min = `${Math.round(temperature_2m_min)} ${units.temperature_2m_min}`;
                     const max = `${Math.round(temperature_2m_max)} ${units.temperature_2m_max}`;
-                    mapped.temperature = `${min} / ${max}`;
+                    mapped.temperature_range = `${min} / ${max}`;
                 }
                 if (exists(precipitation_sum)) {
                     mapped.precipitation = `${+precipitation_sum.toFixed(2)} ${units.precipitation_sum}`;
@@ -213,14 +236,15 @@ export default class SimpleWeatherAPI {
             latitude,
             longitude,
         };
-        if (current && current_units) {
-            mappedWeatherData.current_weather = createCurrentWeatherData(current, current_units);
+
+        if (daily && daily_units) {
+            mappedWeatherData.daily_weather = createDailyWeatherData(daily, daily_units);
         }
         if (hourly && hourly_units) {
             mappedWeatherData.hourly_weather = createHourlyWeatherData(hourly, hourly_units, current.time);
         }
-        if (daily && daily_units) {
-            mappedWeatherData.daily_weather = createDailyWeatherData(daily, daily_units);
+        if (current && current_units) {
+            mappedWeatherData.current_weather = createCurrentWeatherData(current, current_units, daily, daily_units);
         }
 
         return mappedWeatherData;

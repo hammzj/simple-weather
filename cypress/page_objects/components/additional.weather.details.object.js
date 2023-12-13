@@ -1,6 +1,6 @@
-import ElementCollection from "./element.collection";
+import ElementCollection from "../element.collection";
 
-class AdditionalWeatherDetailsObject extends ElementCollection {
+export default class AdditionalWeatherDetailsObject extends ElementCollection {
     constructor() {
         super(() => cy.get(`#additional-weather-details`));
     }
@@ -29,5 +29,3 @@ class AdditionalWeatherDetailsObject extends ElementCollection {
         this.tr(title).find(`td`).eq(1).should('have.text', value);
     }
 }
-
-export default AdditionalWeatherDetailsObject;
