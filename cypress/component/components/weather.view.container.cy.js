@@ -1,7 +1,7 @@
 import {DateTime} from "luxon";
 import {NOT_AVAILABLE_TEXT} from "../../../src/components/constants";
 import WeatherViewContainer from '../../../src/components/weather.view.container';
-import WeatherViewContainerObject from '../../page_objects/weather.view.container.object';
+import WeatherViewContainerObject from '../../page_objects/components/weather.view.container.object';
 
 describe(WeatherViewContainer.name, function () {
     beforeEach(function () {
@@ -21,12 +21,8 @@ describe(WeatherViewContainer.name, function () {
 
         wvco.hourlyButton.click();
 
-        wvco.HourlyWeatherSummaryAccordionObject((obj) => {
-            obj.container.should('have.lengthOf', 25);
-        });
-        wvco.DailyWeatherSummaryAccordionObject((obj) => {
-            obj.container.should('not.exist');
-        });
+        wvco.HourlyWeatherSummaryAccordionObject((obj) => obj.container.should('have.lengthOf', 25));
+        wvco.DailyWeatherSummaryAccordionObject((obj) => obj.container.should('not.exist'));
         cy.get(`@weatherData`).then(weatherData => {
             const {hourly_weather} = weatherData;
             for (const [i, {mapped}] of hourly_weather.entries()) {
@@ -37,12 +33,8 @@ describe(WeatherViewContainer.name, function () {
                     obj.scopedIndex = i;
                     obj.time.should('have.text', time);
                     obj.temperature.should('have.text', mapped.temperature);
-                    obj.WeatherIconObject(function (wio) {
-                        wio.svg.should('exist');
-                    });
-                    obj.PrecipitationItemObject((pio) => {
-                        pio._assertValue(precipitationProbability);
-                    });
+                    obj.WeatherIconObject((wio) => wio.svg.should('exist'));
+                    obj.PrecipitationChanceObject((pio) => pio._assertValue(precipitationProbability));
                 });
                 cy.wait(50);
             }
@@ -54,12 +46,8 @@ describe(WeatherViewContainer.name, function () {
 
         wvco.dailyButton.click();
 
-        wvco.DailyWeatherSummaryAccordionObject((obj) => {
-            obj.container.should('have.lengthOf', 7);
-        });
-        wvco.HourlyWeatherSummaryAccordionObject((obj) => {
-            obj.container.should('not.exist');
-        });
+        wvco.DailyWeatherSummaryAccordionObject((obj) => obj.container.should('have.lengthOf', 7));
+        wvco.HourlyWeatherSummaryAccordionObject((obj) => obj.container.should('not.exist'));
         cy.get(`@weatherData`).then(weatherData => {
             const {daily_weather} = weatherData;
             for (const [i, {mapped}] of daily_weather.entries()) {
@@ -69,13 +57,9 @@ describe(WeatherViewContainer.name, function () {
                 wvco.DailyWeatherSummaryAccordionObject((obj) => {
                     obj.scopedIndex = i;
                     obj.time.should('have.text', time);
-                    obj.temperature.should('have.text', mapped.temperature);
-                    obj.WeatherIconObject(function (wio) {
-                        wio.svg.should('exist');
-                    });
-                    obj.PrecipitationItemObject((pio) => {
-                        pio._assertValue(precipitationProbability);
-                    });
+                    obj.temperature.should('have.text', mapped.temperature_range);
+                    obj.WeatherIconObject((wio) => wio.svg.should('exist'));
+                    obj.PrecipitationChanceObject((pio) => pio._assertValue(precipitationProbability));
                 });
                 cy.wait(50);
             }
@@ -108,5 +92,18 @@ describe(WeatherViewContainer.name, function () {
             firstAccordion.container.should('not.have.class', 'Mui-expanded');
             secondAccordion.container.should('have.class', 'Mui-expanded');
         });
+    });
+
+    it(`will display a warning message when no data has been returned for Hourly weather`, function () {
+        //Replace original mounted component
+        cy.mount(<WeatherViewContainer weatherData={{}}/>);
+
+        const wvco = new WeatherViewContainerObject();
+
+        wvco.hourlyButton.click();
+        wvco.weatherTabPanelHourly.should('have.text', 'No data could be returned for the location.');
+
+        wvco.dailyButton.click();
+        wvco.weatherTabPanelDaily.should('have.text', 'No data could be returned for the location.');
     });
 });

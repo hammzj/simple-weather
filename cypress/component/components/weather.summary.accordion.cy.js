@@ -1,6 +1,6 @@
 import {DateTime} from "luxon";
 import WeatherSummaryAccordion from '../../../src/components/weather.summary.accordion';
-import WeatherSummaryAccordionObject from '../../page_objects/weather.summary.accordion.object';
+import WeatherSummaryAccordionObject from '../../page_objects/components/weather.summary.accordion.object';
 
 const formatDateTimeHourly = (isoString) => DateTime.fromISO(isoString).toLocaleString(DateTime.DATETIME_MED);
 const formatDateTimeDaily = (isoString) => DateTime.fromISO(isoString).toLocaleString(DateTime.DATE_MED);
@@ -10,7 +10,7 @@ describe(WeatherSummaryAccordion.name, function () {
         cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'});
     });
     context('Hourly', function () {
-        it.only('displays a summary of the hourly data', function () {
+        it('displays a summary of the hourly data', function () {
             cy.get(`@weatherData`).then(weatherData => {
                 const firstHour = weatherData.hourly_weather[0];
                 cy.mount(<WeatherSummaryAccordion
@@ -22,7 +22,7 @@ describe(WeatherSummaryAccordion.name, function () {
                 accordion.time.should('have.text', formatDateTimeHourly(firstHour.mapped.time));
                 accordion.temperature.should('have.text', '51 °F');
                 accordion.WeatherIconObject(wio => wio._assertTooltipText('Overcast'));
-                accordion.PrecipitationItemObject(pio => pio._assertValue('15 %'));
+                accordion.PrecipitationChanceObject(pio => pio._assertValue('15 %'));
             });
         });
 
@@ -61,7 +61,7 @@ describe(WeatherSummaryAccordion.name, function () {
                 accordion.time.should('have.text', formatDateTimeDaily(firstDay.mapped.time));
                 accordion.temperature.should('have.text', '48 °F / 55 °F');
                 accordion.WeatherIconObject(wio => wio._assertTooltipText('Slight rain showers'));
-                accordion.PrecipitationItemObject(pio => pio._assertValue('100 %'));
+                accordion.PrecipitationChanceObject(pio => pio._assertValue('100 %'));
             });
         });
 

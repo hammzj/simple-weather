@@ -4,7 +4,7 @@ import {DateTime, Zone} from 'luxon';
 import {Accordion, AccordionSummary, AccordionDetails, Stack, Typography} from '@mui/material';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import AdditionalWeatherDetails from "./additional.weather.details";
-import PrecipitationItem from './precipitation.item';
+import PrecipitationChance from './precipitation.chance';
 import WeatherIcon from "./weather.icon";
 
 type  WeatherSummaryButtonTimeType = 'hourly' | 'daily';
@@ -36,9 +36,10 @@ export default function WeatherSummaryAccordion({
                     spacing={3}
                 >
                     <Typography id="time">{timeString}</Typography>
-                    <Typography id='temperature' sx={{fontSize: '0.9rem'}}>{mappedWeatherData.temperature}</Typography>
+                    <Typography id='temperature'
+                                sx={{fontSize: '0.9rem'}}>{mappedWeatherData.temperature || mappedWeatherData.temperature_range}</Typography>
                     <WeatherIcon weatherCode={mappedWeatherData.weather_code}/>
-                    <PrecipitationItem precipitation={mappedWeatherData.precipitation_probability}/>
+                    <PrecipitationChance precipitation={mappedWeatherData.precipitation_probability}/>
                 </Stack>
             </AccordionSummary>
             <AccordionDetails>

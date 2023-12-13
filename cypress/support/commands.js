@@ -9,7 +9,6 @@ Cypress.Commands.add('mount', (component, options) => {
     return mount(component, options);
 });
 
-
 Cypress.Commands.add('stubAndAliasWeatherData', ({
                                                          coordinatesFixture = 'coordinates.json',
                                                          fetchWeatherResponseFixture

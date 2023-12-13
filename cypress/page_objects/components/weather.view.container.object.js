@@ -1,7 +1,7 @@
-import ElementCollection from "./element.collection";
+import ElementCollection from "../element.collection";
 import WeatherSummaryAccordionObject from "./weather.summary.accordion.object";
 
-class WeatherViewContainerObject extends ElementCollection {
+export default class WeatherViewContainerObject extends ElementCollection {
     constructor() {
         super(() => cy.get(`#weather-view`));
     }
@@ -30,5 +30,3 @@ class WeatherViewContainerObject extends ElementCollection {
         return this.weatherTabPanelDaily.within(() => fn(new WeatherSummaryAccordionObject('daily')))
     }
 }
-
-export default WeatherViewContainerObject;

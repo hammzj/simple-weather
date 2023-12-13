@@ -10,9 +10,15 @@ import Typography from '@mui/material/Typography';
 import {NOT_AVAILABLE_TEXT} from './constants';
 import {weatherCodeToText} from './utils';
 import {DateTime} from "luxon";
+import {DailyWeatherData, HourlyWeatherData} from "../services/api/types";
 
 //TODO: move to general types
 type  AdditionalWeatherDetailsType = 'hourly' | 'daily';
+
+type AdditionalWeatherDetailsProps = {
+    type: AdditionalWeatherDetailsType
+    mappedWeatherData: HourlyWeatherData | DailyWeatherData | {}
+}
 
 
 const Row = ({title, value}) => {
@@ -29,10 +35,7 @@ const Row = ({title, value}) => {
     )
 }
 
-export default function AdditionalWeatherDetails({
-                                                     type,
-                                                     mappedWeatherData = {}
-                                                 }) {
+export default function AdditionalWeatherDetails({type, mappedWeatherData = {}}: AdditionalWeatherDetailsProps) {
     //handle state change when updated by newly selected row
     const hourlyDetails = (mappedWeatherData) => {
         const {
@@ -58,7 +61,7 @@ export default function AdditionalWeatherDetails({
     }
     const dailyDetails = (mappedWeatherData) => {
         const {
-            temperature,
+            temperature_range,
             weather_code,
             sunrise,
             sunset,
@@ -68,12 +71,12 @@ export default function AdditionalWeatherDetails({
             wind_gusts,
         } = mappedWeatherData;
 
-        const convertToTime = (time) => {
+        const convertToTime = (time: string) => {
             return DateTime.fromISO(time).toLocaleString(DateTime.TIME_SIMPLE);
         }
 
         return [
-            {title: "Temperature Low/High:", value: temperature},
+            {title: "Temperature Low/High:", value: temperature_range},
             {title: "Conditions:", value: weatherCodeToText(weather_code)},
             {title: "Precipitation:", value: precipitation},
             {title: "Precipitation probability:", value: precipitation_probability},

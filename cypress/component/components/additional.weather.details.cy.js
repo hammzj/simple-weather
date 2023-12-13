@@ -1,5 +1,5 @@
 import AdditionalWeatherDetails from "../../../src/components/additional.weather.details";
-import AdditionalWeatherDetailsObject from "../../page_objects/additional.weather.details.object";
+import AdditionalWeatherDetailsObject from "../../page_objects/components/additional.weather.details.object";
 import {DateTime} from "luxon";
 
 const formatDateTimeAsTime = (isoString) => DateTime.fromISO(isoString).toLocaleString(DateTime.TIME_SIMPLE)

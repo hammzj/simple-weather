@@ -5,9 +5,13 @@ const clone = (original) => Object.assign(Object.create(Object.getPrototypeOf(or
 /**
  * Base class for describing page objects and components, which have a collection of element selectors
  */
-export default class CompoElementCollection {
-    constructor(baseContainerFn) {
-        //This is the base selector to find the element that contains everything within it
+export default class ElementCollection {
+    /**
+     * @param baseContainerFn {function} This is a function to return the base selector that defines the container of the component/page.
+     * From this element, everything else can be found from within it
+     */
+    constructor(baseContainerFn = () => cy.get(`html`)) {
+
         this._baseContainerFn = baseContainerFn;
     }
 
@@ -24,9 +28,9 @@ export default class CompoElementCollection {
      * @param i {number}
      *
      * @example <summary>Multiple returned instances from a single parent</summary>
-               const wvco = new WeatherViewContainerObject();
-               //25 entries
-                for (const [i, {mapped}] of hourly_weather.entries()) {
+     const wvco = new WeatherViewContainerObject();
+     //25 entries
+     for (const [i, {mapped}] of hourly_weather.entries()) {
                 const precipitationProbability = mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
 
                 //Produces ~25 instances of a WeatherSummaryAccordion within itself
@@ -42,7 +46,7 @@ export default class CompoElementCollection {
                     });
 
                     //This would also fail
-                    hwsa.PrecipitationItemObject((pio) => {
+                    hwsa.PrecipitationChanceObject((pio) => {
                         pio._assertValue(precipitationProbability);
                     });
                 });
@@ -81,7 +85,7 @@ export default class CompoElementCollection {
         });
      * @private
      */
-     __clone() {
+    __clone() {
         return clone(this);
     }
 }

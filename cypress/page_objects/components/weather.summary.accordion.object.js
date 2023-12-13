@@ -1,6 +1,6 @@
-import ElementCollection from "./element.collection";
+import ElementCollection from "../element.collection";
 import WeatherIconObject from "./weather.icon.object";
-import PrecipitationItemObject from "./precipitation.item.object";
+import PrecipitationChanceObject from "./precipitation.chance.object";
 import AdditionalWeatherDetailsObject from "./additional.weather.details.object";
 
 export default class WeatherSummaryAccordionObject extends ElementCollection {
@@ -32,8 +32,8 @@ export default class WeatherSummaryAccordionObject extends ElementCollection {
         this.summary.within(() => fn(new WeatherIconObject()));
     }
 
-    PrecipitationItemObject(fn) {
-        this.summary.within(() => fn(new PrecipitationItemObject()));
+    PrecipitationChanceObject(fn) {
+        this.summary.within(() => fn(new PrecipitationChanceObject()));
     }
 
     get details() {
