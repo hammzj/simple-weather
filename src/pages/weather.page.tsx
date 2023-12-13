@@ -4,11 +4,12 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import CurrentWeatherCard from '../components/current.weather.card';
 import WeatherViewContainer from '../components/weather.view.container';
+import {getLocationName} from "../services/open_mateo_api/utils";
 
 const Weather = ({locationData, weatherData = {}}) => {
     const {current_weather} = weatherData;
     return (<Box>
-        <CurrentWeatherCard locationName={locationData.name} currentWeatherData={current_weather.mapped}/>
+        <CurrentWeatherCard locationName={getLocationName(locationData)} currentWeatherData={current_weather.mapped}/>
         <Divider/>
         <WeatherViewContainer weatherData={weatherData}/>
     </Box>)
@@ -17,7 +18,6 @@ const Weather = ({locationData, weatherData = {}}) => {
 //TODO
 export default function WeatherPage(props) {
     const {weatherData, locationData} = props;
-    console.log('WeatherPage.weatherData', props)
     return (
         <Box>
             {(weatherData && locationData ?
