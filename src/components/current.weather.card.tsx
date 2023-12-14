@@ -5,12 +5,18 @@ import Typography from '@mui/material/Typography';
 import PrecipitationChance from './precipitation.chance';
 import WeatherIcon from "./weather.icon";
 import {DateTime} from "luxon";
+import {CurrentWeatherData} from "../services/api/types";
+
+type CurrentWeatherCardParams = {
+    locationName: string,
+    currentWeatherData: CurrentWeatherData,
+}
 
 export default function CurrentWeatherCard({
                                                locationName,
-                                               currentWeatherData = {}
-                                           }) {
-    const timeString = DateTime.fromISO(currentWeatherData.time).toLocaleString(DateTime.DATETIME_MED)
+                                               currentWeatherData
+                                           }: CurrentWeatherCardParams) {
+    const timeString = DateTime.fromISO(currentWeatherData.mapped.time).toLocaleString(DateTime.DATETIME_MED)
 
     return (
         <Card>
@@ -21,10 +27,10 @@ export default function CurrentWeatherCard({
                 spacing={0.4}
             >
                 <Typography fontSize='1.5rem' id='location'>{locationName}</Typography>
-                <Typography fontSize='2.5rem' id='temperature'>{currentWeatherData.temperature}</Typography>
+                <Typography fontSize='2.5rem' id='temperature'>{currentWeatherData.mapped.temperature}</Typography>
                 {
-                    currentWeatherData.temperature_range &&
-                    <Typography id='temperature-range'>{currentWeatherData.temperature_range}</Typography>
+                    currentWeatherData.mapped.temperature_range &&
+                    <Typography id='temperature-range'>{currentWeatherData.mapped.temperature_range}</Typography>
                 }
                 <Stack direction='row'
                        justifyContent='space-evenly'
@@ -33,16 +39,16 @@ export default function CurrentWeatherCard({
                        spacing={3.5}>
 
                     {
-                        currentWeatherData.weather_code &&
-                        <WeatherIcon weatherCode={currentWeatherData.weather_code}/>
+                        currentWeatherData.mapped.weather_code &&
+                        <WeatherIcon weatherCode={currentWeatherData.mapped.weather_code}/>
                     }
                     {
-                        currentWeatherData.precipitation &&
-                        <PrecipitationChance precipitation={currentWeatherData.precipitation}/>
+                        currentWeatherData.mapped.precipitation &&
+                        <PrecipitationChance precipitation={currentWeatherData.mapped.precipitation}/>
                     }
                 </Stack>
                 {
-                    currentWeatherData.time &&
+                    currentWeatherData.mapped.time &&
                     <Typography fontSize='.8rem' fontStyle='italic' id='last-updated-time' padding={1}>Last
                         updated: {timeString}</Typography>
                 }

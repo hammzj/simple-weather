@@ -1,4 +1,3 @@
-import {WeatherApiResponse} from "@openmeteo/sdk/weather-api-response";
 import {VariablesWithTime} from "@openmeteo/sdk/variables-with-time"
 import {OpenMeteoWeatherForecastAPI} from '../open_mateo_api'
 
@@ -12,6 +11,7 @@ import {
 import * as T from "./types";
 import {DateTime} from "luxon";
 import {gte, includes, isEqual, isNil} from "lodash";
+import {TotalWeatherData} from "./types";
 
 const exists = (v) => !isNil(v);
 
@@ -48,11 +48,11 @@ export default class SimpleWeatherAPI {
         return 10;
     }
 
-    private static _createMappedWeatherData(fetchWeatherResponse: WeatherApiResponse[]): T.MappedWeatherData {
+    private static _createTotalWeatherData(fetchWeatherResponse: any): T.TotalWeatherData {
         //TODO: this all should be a transformer on the axios request for the Forecast API. Much more useful as a transformer
 
         //TODO: simplify all of these methods if possible -- DRY coding
-        const createCurrentWeatherData = (currentWeatherValues, currentWeatherUnits, dailyWeatherBlock?: VariablesWithTime, dailyWeatherUnits?: object): T.CurrentWeatherData => {
+        const createCurrentWeatherData = (currentWeatherValues, currentWeatherUnits, dailyWeatherBlock?: VariablesWithTime, dailyWeatherUnits?: any): T.CurrentWeatherData => {
             const {
                 time,
                 temperature_2m,
@@ -61,7 +61,7 @@ export default class SimpleWeatherAPI {
                 is_day
             } = currentWeatherValues;
 
-            const mapped = {
+            const mapped: any = {
                 time,
                 weather_code,
                 is_day,
@@ -101,7 +101,7 @@ export default class SimpleWeatherAPI {
 
             return currentWeather;
         }
-        const createHourlyWeatherData = (block: VariablesWithTime, units: object, currentWeatherTime = undefined, maxHourlySets = SimpleWeatherAPI.MAX_HOURLY_SETS): T.HourlyWeatherData => {
+        const createHourlyWeatherData = (block: VariablesWithTime, units: any, currentWeatherTime = undefined, maxHourlySets = SimpleWeatherAPI.MAX_HOURLY_SETS): Array<T.HourlyWeatherData> => {
             let valueSet = createEnumerableFromKeys(block)
                 .map(values => {
                     const {
@@ -119,7 +119,7 @@ export default class SimpleWeatherAPI {
                         is_day,
                     } = values;
 
-                    const mapped = {
+                    const mapped: any = {
                         time,
                         weather_code,
                         is_day,
@@ -158,17 +158,18 @@ export default class SimpleWeatherAPI {
                     }
                 });
 
-            //Only return hourly data that is equal to or greater than the current hour
-            //No need to show historical hourly data, which is generally returned from the API endpoint
-            const isGteCurrentWeatherTime = (v) => {
-                return gte(DateTime.fromISO(v.values.time).toMillis(), DateTime.fromISO(currentWeatherTime).startOf('hour').toMillis());
-            }
             if (exists(currentWeatherTime)) {
+                //@ts-ignore
+                //Only return hourly data that is equal to or greater than the current hour
+                //No need to show historical hourly data, which is generally returned from the API endpoint
+                const isGteCurrentWeatherTime = (v, currentWeatherTime) => {
+                    return gte(DateTime.fromISO(v.values.time).toMillis(), DateTime.fromISO(currentWeatherTime).startOf('hour').toMillis());
+                }
                 valueSet = valueSet.filter(isGteCurrentWeatherTime);
             }
             return valueSet.slice(0, maxHourlySets);
         }
-        const createDailyWeatherData = (block: VariablesWithTime, units: object, maxDailySets = SimpleWeatherAPI.MAX_DAILY_SETS): T.DailyWeatherData => {
+        const createDailyWeatherData = (block: VariablesWithTime, units: any, maxDailySets = SimpleWeatherAPI.MAX_DAILY_SETS): Array<T.DailyWeatherData> => {
             const valueSet = createEnumerableFromKeys(block);
             return valueSet.map(values => {
                 const {
@@ -185,7 +186,7 @@ export default class SimpleWeatherAPI {
                     wind_gusts_10m_max,
                 } = values;
 
-                const mapped = {
+                const mapped: any = {
                     time,
                     weather_code,
                 };
@@ -232,22 +233,24 @@ export default class SimpleWeatherAPI {
             daily_units,
         } = fetchWeatherResponse;
 
-        const mappedWeatherData = {
+        // const mappedWeatherData = {
+        //     latitude,
+        //     longitude,
+        // };
+        // mappedWeatherData.daily_weather = createDailyWeatherData(daily, daily_units);
+        // mappedWeatherData.hourly_weather = createHourlyWeatherData(hourly, hourly_units, current.time);
+        // mappedWeatherData.current_weather = createCurrentWeatherData(current, current_units, daily, daily_units);
+        //
+        // return mappedWeatherData;
+
+
+        return {
             latitude,
             longitude,
+            daily_weather: createDailyWeatherData(daily, daily_units),
+            hourly_weather: createHourlyWeatherData(hourly, hourly_units, current.time),
+            current_weather: createCurrentWeatherData(current, current_units, daily, daily_units)
         };
-
-        if (daily && daily_units) {
-            mappedWeatherData.daily_weather = createDailyWeatherData(daily, daily_units);
-        }
-        if (hourly && hourly_units) {
-            mappedWeatherData.hourly_weather = createHourlyWeatherData(hourly, hourly_units, current.time);
-        }
-        if (current && current_units) {
-            mappedWeatherData.current_weather = createCurrentWeatherData(current, current_units, daily, daily_units);
-        }
-
-        return mappedWeatherData;
     }
 
 
@@ -262,7 +265,7 @@ export default class SimpleWeatherAPI {
         temperature_unit: TemperatureUnit.fahrenheit,
         wind_speed_unit: WindSpeedUnit.mph,
         precipitation_unit: PrecipitationUnit.inch,
-    }): Promise<T.MappedWeatherData> {
+    }): Promise<T.TotalWeatherData> {
         const [latitude, longitude] = coordinates;
 
         //TODO: error handling
@@ -271,8 +274,7 @@ export default class SimpleWeatherAPI {
             longitude,
             ...opts,
         });
-
-        return SimpleWeatherAPI._createMappedWeatherData(fetchWeatherResponse.data);
+        return SimpleWeatherAPI._createTotalWeatherData(fetchWeatherResponse);
     }
 }
 

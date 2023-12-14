@@ -24,6 +24,7 @@ export interface CurrentWeatherData extends GenericWeatherData {
         weather_code?: WeatherCode;
         is_day?: IsDay;
         temperature?: string;
+        temperature_range?: string;
         precipitation?: string;
     }
 }
@@ -58,10 +59,10 @@ export interface DailyWeatherData extends GenericWeatherData {
     }
 }
 
-export interface MappedWeatherData {
+export interface TotalWeatherData {
     latitude: number;
     longitude: number;
     current_weather?: CurrentWeatherData;
-    hourly_weather?: HourlyWeatherData;
-    daily_weather?: DailyWeatherData;
+    hourly_weather?: HourlyWeatherData[];
+    daily_weather?: DailyWeatherData[];
 }

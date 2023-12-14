@@ -1,4 +1,3 @@
-//import { posix } from "path";
 import {fetchWeatherApi} from "openmeteo";
 import {WeatherApiResponse} from "@openmeteo/sdk/weather-api-response";
 import * as T from './types'
@@ -16,7 +15,7 @@ export default class OpenMeteoWeatherForecastAPI {
         precipitation_unit: T.PrecipitationUnit;
         forecast_days?: number;
         timezone?: T.Timezone;
-    }): Promise<WeatherApiResponse[]> {
+    }): Promise<WeatherApiResponse> {
         if (!opts.forecast_days) opts.forecast_days = 10;
         if (!opts.timezone) opts.timezone = 'auto';
 
@@ -67,6 +66,7 @@ export default class OpenMeteoWeatherForecastAPI {
         //TODO: figure out error handling
         if (response) {
         }
+        // @ts-expect-error: TS2740
         return response;
     }
 }

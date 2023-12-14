@@ -14,10 +14,9 @@ const EmptyDataMessage = () => {
 
 const WeatherRowsTabPanel = (props) => {
     const [expanded, setExpanded] = React.useState<string | boolean>(false);
-    const handleChange =
-        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-            setExpanded(isExpanded ? panel : false);
-        };
+    const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
 
     const {timeBasedWeatherData, type, value, index} = props;
@@ -30,7 +29,9 @@ const WeatherRowsTabPanel = (props) => {
         {isEmpty(timeBasedWeatherData) ?
             <EmptyDataMessage/> :
             isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
-                const accordionId = `accordion-${i}`
+                const accordionId = `accordion-${i}`;
+
+                //@ts-ignore: TS2322
                 return (
                     <Box paddingBottom={'1.5em'}>
                         <WeatherSummaryAccordion

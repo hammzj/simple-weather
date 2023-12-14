@@ -17,13 +17,14 @@ export default function LocationDataButton({locationData}: { locationData: Locat
 
     return (
         <Box id='location-data-button'>
-            <Button
-                type="submit"
-                variant="outlined"
-                value={coordinates}>
-                onClick={handleOnClick}
+            <form>
+                <Button
+                    variant="outlined"
+                    value={coordinates}
+                    onClick={handleOnClick}>
                 <span>{locationName}</span>
             </Button>
-        </Box>
-    )
+        </form>
+</Box>
+)
 }

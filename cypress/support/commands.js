@@ -10,14 +10,14 @@ Cypress.Commands.add('mount', (component, options) => {
 });
 
 Cypress.Commands.add('stubAndAliasWeatherData', ({
-                                                         coordinatesFixture = 'coordinates.json',
-                                                         fetchWeatherResponseFixture
-                                                     }, alias = 'weatherData') => {
+                                                     coordinatesFixture = 'coordinates.json',
+                                                     fetchWeatherResponseFixture
+                                                 }, alias = 'weatherData') => {
     cy.fixture(`/open_meteo_api/forecast_api/${fetchWeatherResponseFixture}`)
         .then(fetchWeatherResponseFixture => {
             cy.fixture(`/open_meteo_api/forecast_api/${coordinatesFixture}`)
                 .then(coordinatesFixture => {
-                    cy.stub(OpenMeteoWeatherForecastAPI, 'fetchAllWeatherForLocation').returns({data: fetchWeatherResponseFixture});
+                    cy.stub(OpenMeteoWeatherForecastAPI, 'fetchAllWeatherForLocation').returns(fetchWeatherResponseFixture);
                     cy.wrap(SimpleWeatherAPI.getWeather(coordinatesFixture)).as(alias);
                 });
         });
