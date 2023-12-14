@@ -4,7 +4,7 @@ import {getLocationName} from "../../../src/services/open_mateo_api/utils";
 
 const weatherPage = new WeatherPageObject();
 
-describe('WeatherPage', function () {
+describe(WeatherPage.name, function () {
     beforeEach(function () {
         cy.fixture('/open_meteo_api/geocoding_api/individual.location').as('locationData');
         cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'})
