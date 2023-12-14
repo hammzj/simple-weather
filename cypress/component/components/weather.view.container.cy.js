@@ -68,6 +68,7 @@ describe(WeatherViewContainer.name, function () {
 
     specify("Opening the details for one accordion should close any other open ones", function () {
         const wvco = new WeatherViewContainerObject();
+
         wvco.hourlyButton.click();
 
         wvco.HourlyWeatherSummaryAccordionObject((obj) => {

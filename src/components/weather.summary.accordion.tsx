@@ -9,6 +9,14 @@ import WeatherIcon from "./weather.icon";
 
 type  WeatherSummaryButtonTimeType = 'hourly' | 'daily';
 
+interface WeatherSummaryAccordionProps {
+    type: WeatherSummaryButtonTimeType,
+    mappedWeatherData: any,
+    timezone?: string | 'local' | Zone,
+    onChange?: any,
+    props?: any
+}
+
 const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, timezone?: Zone | string): string => {
     const isDaily = isEqual(type, 'daily');
     const localeString = isDaily ?
@@ -19,13 +27,14 @@ const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, tim
     return dt.toLocaleString(localeString);
 }
 
+//TODO: fix typing to correctly include "expanded" and "onChange"
 export default function WeatherSummaryAccordion({
                                                     type,
-                                                    mappedWeatherData = {},
+                                                    mappedWeatherData,
                                                     timezone,
                                                     ...props
-                                                }) {
-    const timeString = getTimeString(type, mappedWeatherData.time, timezone);
+                                                }: WeatherSummaryAccordionProps | any) {
+    const timeString = getTimeString(type, mappedWeatherData.time, timezone || 'local');
     return (
         <Accordion id={`${type}-weather-summary-accordion`} {...props}>
             <AccordionSummary expandIcon={<ExpandMoreIcon/>}>

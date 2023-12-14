@@ -69,10 +69,9 @@ export const weatherCodeToSvg = (weatherCode: number | WeatherCode) => {
 }
 
 export const weatherCodeToText = (weatherCode: number | null | undefined) => {
-    if (!isNil(WeatherCode[weatherCode])) {
-        return capitalize(WeatherCode[weatherCode]
-            .replace(/_/g, ' '))
-    } else {
+    if (isNil(weatherCode)) {
         return NOT_AVAILABLE_TEXT;
+    } else {
+        return capitalize(WeatherCode[weatherCode]).replace(/_/g, ' ');
     }
 }
