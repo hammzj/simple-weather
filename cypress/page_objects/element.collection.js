@@ -11,7 +11,6 @@ export default class ElementCollection {
      * From this element, everything else can be found from within it
      */
     constructor(baseContainerFn = () => cy.get(`html`)) {
-
         this._baseContainerFn = baseContainerFn;
     }
 
@@ -56,6 +55,29 @@ export default class ElementCollection {
      */
     set scopedIndex(i) {
         this._scopedIndex = i;
+    }
+
+    /**
+     * This allows the `_baseContainerFn` to be chained, allowing to scope the instances of the base containers returned to a smaller set
+     * of instances or even just an individual element. Useful for finding a single button from a list using its text, for example
+     *
+     * @param newBaseContainerFn {function} `function(origBaseContainerFn)` Chain off of the originalBaseContainerFn in the method body
+     *
+     * @example
+     *     //Select only the button(s) with the specified button text
+     *     if (buttonText) {
+            this._buttonText = buttonText;
+            this.updateBaseContainerFunction = (origFn) => {
+                return origFn
+                    .contains('span', this._buttonText)
+                    .parents(this.#BASE_CONTAINER_ID);
+                 }
+            }
+     */
+    set updateBaseContainerFunction(newBaseContainerFn) {
+        const origBaseContainerFn = this._baseContainerFn;
+        delete this._baseContainerFn();
+        this._baseContainerFn = () => newBaseContainerFn(origBaseContainerFn);
     }
 
     /**

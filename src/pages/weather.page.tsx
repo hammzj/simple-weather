@@ -15,7 +15,7 @@ const Weather = ({locationData, weatherData = {}}) => {
     </Box>)
 }
 
-//TODO
+//TODO: rename to
 export default function WeatherPage(props) {
     const {weatherData, locationData} = props;
     return (

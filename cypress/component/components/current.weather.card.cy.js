@@ -8,7 +8,6 @@ describe(CurrentWeatherCard.name, function () {
         cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'})
     })
     specify('can display current weather details for a given location', function () {
-        //TODO: add fixture for location data
         cy.get(`@locationData`).then(locationData => {
             cy.get(`@weatherData`).then(weatherData => {
                 cy.mount(<CurrentWeatherCard

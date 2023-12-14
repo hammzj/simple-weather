@@ -1,5 +1,4 @@
 {
-  "data": {
     "results": [
       {
         "id": 2950159,
@@ -220,43 +219,4 @@
       }
     ],
     "generationtime_ms": 1.0260344
-  },
-  "status": 200,
-  "statusText": "OK",
-  "headers": {
-    "content-type": "application/json; charset=utf-8"
-  },
-  "config": {
-    "transitional": {
-      "silentJSONParsing": true,
-      "forcedJSONParsing": true,
-      "clarifyTimeoutError": false
-    },
-    "adapter": [
-      "xhr",
-      "http"
-    ],
-    "transformRequest": [
-      null
-    ],
-    "transformResponse": [
-      null
-    ],
-    "timeout": 0,
-    "xsrfCookieName": "XSRF-TOKEN",
-    "xsrfHeaderName": "X-XSRF-TOKEN",
-    "maxContentLength": -1,
-    "maxBodyLength": -1,
-    "env": {},
-    "headers": {
-      "Accept": "application/json, text/plain, */*"
-    },
-    "baseURL": "https://geocoding-api.open-meteo.com",
-    "params": {
-      "name": "Berlin"
-    },
-    "method": "get",
-    "url": "/v1/search"
-  },
-  "request": {}
 }
