@@ -1,4 +1,10 @@
-import {WeatherCode} from '../open_mateo_api/forecast_api/types';
+import {
+    PrecipitationUnit,
+    TemperatureUnit,
+    Timezone,
+    WeatherCode,
+    WindSpeedUnit
+} from '../open_mateo_api/forecast_api/types';
 import {DateTime} from "luxon";
 
 type IsDay = boolean | undefined;
@@ -65,4 +71,11 @@ export interface TotalWeatherData {
     current_weather?: CurrentWeatherData;
     hourly_weather?: HourlyWeatherData[];
     daily_weather?: DailyWeatherData[];
+}
+
+export interface GetWeatherOpts {
+    timezone: Timezone | 'auto',
+    temperature_unit: TemperatureUnit,
+    wind_speed_unit: WindSpeedUnit,
+    precipitation_unit: PrecipitationUnit,
 }

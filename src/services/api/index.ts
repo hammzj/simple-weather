@@ -11,7 +11,6 @@ import {
 import * as T from "./types";
 import {DateTime} from "luxon";
 import {gte, includes, isEqual, isNil} from "lodash";
-import {TotalWeatherData} from "./types";
 
 const exists = (v) => !isNil(v);
 
@@ -253,14 +252,8 @@ export default class SimpleWeatherAPI {
         };
     }
 
-
 //TODO: allow for units of measurement and temperature units (m vs inch; C vs F)
-    static async getWeather(coordinates: Coordinates, opts: {
-        timezone: Timezone,
-        temperature_unit: TemperatureUnit,
-        wind_speed_unit: WindSpeedUnit,
-        precipitation_unit: PrecipitationUnit,
-    } = {
+    static async getWeather(coordinates: Coordinates, opts: T.GetWeatherOpts = {
         timezone: 'auto',
         temperature_unit: TemperatureUnit.fahrenheit,
         wind_speed_unit: WindSpeedUnit.mph,

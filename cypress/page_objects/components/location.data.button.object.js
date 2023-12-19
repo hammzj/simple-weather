@@ -17,8 +17,12 @@ export default class LocationDataButtonObject extends ElementCollection {
         }
     }
 
+    get link() {
+        return this.container.find(`a`);
+    }
+
     get name() {
-        return this.container.find(`span`);
+        return this.container.contains(`span`, this._buttonText);
     }
 }
 
