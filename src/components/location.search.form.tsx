@@ -9,12 +9,18 @@ import PATHS from '../routes/paths';
 export default function LocationSearchForm(props) {
     const [location, setLocation] = useState('');
 
-    function handleSubmit(event) {
+    function handleSubmit(event: React.ChangeEvent<HTMLDivElement>) {
         event.preventDefault();
+        console.log(location)
         //TODO: code to submit form with text field value
         redirect(PATHS.WEATHER);
     }
 
+    function handleChange(event) {
+        setLocation(event.target.value);
+    }
+
+    //@ts-ignore: TS2339
     return (
         <Box component="form" id='location-search-form' onSubmit={handleSubmit}>
             <Stack direction='row' spacing='1.5em'>
@@ -22,7 +28,7 @@ export default function LocationSearchForm(props) {
                            label="Search for a location"
                            variant="outlined"
                            size="small"
-                           onInput={e => setLocation(e.target.value)}
+                           onChange={handleChange}
                 />
                 <Button
                     type="submit"

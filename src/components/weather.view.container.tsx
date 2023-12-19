@@ -30,7 +30,7 @@ const WeatherRowsTabPanel = (props) => {
         {isEmpty(timeBasedWeatherData) ?
             <EmptyDataMessage/> :
             isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
-                const accordionId = `accordion-${i}`
+                const accordionId = `accordion-${i}`;
                 return (
                     <Box paddingBottom={'1.5em'}>
                         <WeatherSummaryAccordion

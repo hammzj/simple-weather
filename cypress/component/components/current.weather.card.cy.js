@@ -10,9 +10,10 @@ describe(CurrentWeatherCard.name, function () {
     specify('can display current weather details for a given location', function () {
         cy.get(`@locationData`).then(locationData => {
             cy.get(`@weatherData`).then(weatherData => {
+
                 cy.mount(<CurrentWeatherCard
                     locationName={getLocationName(locationData)}
-                    currentWeatherData={weatherData.current_weather.mapped}
+                    currentWeatherData={weatherData.current_weather}
                 />);
 
                 const cwco = new CurrentWeatherCardObject();

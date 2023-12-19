@@ -7,6 +7,7 @@
     "cypress:open": "cypress open",
     "cypress:run:component": "cypress run --component",
     "cypress:run:e2e": "cypress run --e2e",
+    "dev:tsc": "tsc",
     "dev:start": "react-scripts start",
     "dev:build": "react-scripts build",
     "dev:test": "react-scripts test",
