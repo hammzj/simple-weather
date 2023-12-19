@@ -3,6 +3,7 @@ const PATHS = {
     ABOUT: `/about`,
     RESULTS: '/results',
     WEATHER: '/weather',
+    WILDCARD: '*'
 }
 
 export default PATHS;

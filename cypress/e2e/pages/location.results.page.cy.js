@@ -1,6 +1,6 @@
+import OpenMeteoGeocodingAPI from "../../../src/services/open_mateo_api/geocoding_api";
 import LocationResultsPage from "../../../src/pages/location.results.page";
 import LocationResultsPageObject from '../../page_objects/pages/location.results.page.object';
-
 const locationResultsPageObject = new LocationResultsPageObject();
 
 describe(LocationResultsPage.name, function () {
@@ -8,10 +8,10 @@ describe(LocationResultsPage.name, function () {
         cy.fixture('/open_meteo_api/geocoding_api/search.for.locations.200').as('locationDataResults');
     });
 
-    it.only('renders correctly when all necessary data is provided', function () {
+    it('renders correctly when all necessary data is provided', function () {
         cy.get(`@locationDataResults`).then(locationDataResults => {
-            cy.mount(<LocationResultsPage locationDataResults={locationDataResults}/>);
-
+            cy.stub(OpenMeteoGeocodingAPI, 'searchForLocations').returns({data: locationDataResults})
+            cy.mount(<LocationResultsPage/>);
             //TODO
         });
     });

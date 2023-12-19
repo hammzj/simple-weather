@@ -11,10 +11,9 @@ interface LocationDataButtonParams {
     locationData: LocationData
 }
 
-const buildGetWeatherSearchParams = (coordinates: Coordinates, opts?: any) => {
-    const [latitude, longitude] = coordinates;
-    //Typecasting to avoid TS errors but it's completely unnecessary
-    return new URLSearchParams({latitude: latitude.toString(), longitude: longitude.toString()}).toString();
+//TODO: use the ID. we will refetch the locations, then get the coords from it to hit the weather api
+const createWeatherPageSearchParams = (locationName: string, opts?: any) => {
+    return new URLSearchParams({locationName}).toString();
 }
 
 export default function LocationDataButton({locationData}: LocationDataButtonParams) {
@@ -23,10 +22,12 @@ export default function LocationDataButton({locationData}: LocationDataButtonPar
 
     return (
         <Box id='location-data-button'>
-            <Link to={{
-                pathname: PATHS.WEATHER,
-                search: buildGetWeatherSearchParams(coordinates),
-            }}>
+            <Link
+                state={{locationData}}
+                to={{
+                    pathname: PATHS.WEATHER,
+                    search: createWeatherPageSearchParams(locationName, coordinates),
+                }}>
                 <Button variant="outlined">
                     <span>{locationName}</span>
                 </Button>

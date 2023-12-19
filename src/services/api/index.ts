@@ -10,7 +10,7 @@ import {
 } from "../open_mateo_api/forecast_api/types";
 import * as T from "./types";
 import {DateTime} from "luxon";
-import {gte, includes, isEqual, isNil} from "lodash";
+import {gte,  isEqual, isNil} from "lodash";
 
 const exists = (v) => !isNil(v);
 
@@ -233,16 +233,6 @@ export default class SimpleWeatherAPI {
             daily_units,
         } = fetchWeatherResponse;
 
-        // const mappedWeatherData = {
-        //     latitude,
-        //     longitude,
-        // };
-        // mappedWeatherData.daily_weather = createDailyWeatherData(daily, daily_units);
-        // mappedWeatherData.hourly_weather = createHourlyWeatherData(hourly, hourly_units, current.time);
-        // mappedWeatherData.current_weather = createCurrentWeatherData(current, current_units, daily, daily_units);
-        //
-        // return mappedWeatherData;
-
         return {
             latitude,
             longitude,
@@ -260,12 +250,10 @@ export default class SimpleWeatherAPI {
         precipitation_unit: PrecipitationUnit.inch,
     }): Promise<T.TotalWeatherData> {
         const [latitude, longitude] = coordinates;
-
-        //TODO: error handling
         const fetchWeatherResponse = await OpenMeteoWeatherForecastAPI.fetchAllWeatherForLocation({
-            latitude,
-            longitude,
-            ...opts,
+            latitude: [latitude],
+            longitude: [longitude],
+            ...opts
         });
         return SimpleWeatherAPI._createTotalWeatherData(fetchWeatherResponse);
     }
