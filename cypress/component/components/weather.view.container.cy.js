@@ -72,24 +72,25 @@ describe(WeatherViewContainer.name, function () {
         wvco.hourlyButton.click();
 
         wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+            //Arrange: make sure that the first accordion is expanded
+            //Set the scope to the first-found accordion
             const firstAccordion = obj.__clone();
             firstAccordion._scopedIndex = 0;
 
+            //Set the scope to the second-found accordion
             const secondAccordion = obj.__clone();
             secondAccordion._scopedIndex = 1;
 
-
-            //Arrange: make sure that the first one is opened
             firstAccordion.container.click();
             firstAccordion.container.should('have.class', 'Mui-expanded');
 
-            //Arrange: the second one is starting as closed
+            //Arrange: the second one is starting as collapsed
             secondAccordion.container.should('not.have.class', 'Mui-expanded');
 
-            //Act: Open the second one
+            //Act: Click the second one to expand it
             secondAccordion.container.click();
 
-            //Assertion: Only the second one should be opened
+            //Assertion: Only the second one should be expanded
             firstAccordion.container.should('not.have.class', 'Mui-expanded');
             secondAccordion.container.should('have.class', 'Mui-expanded');
         });
