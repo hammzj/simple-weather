@@ -35,4 +35,8 @@ describe(WeatherPage.name, function () {
             });
         });
     })
+
+    it('displays a warning message when not provided location data', function(){
+        cy.visit(locationResultsPageObject.url())
+    })
 })

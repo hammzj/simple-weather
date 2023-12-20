@@ -27,3 +27,8 @@ Cypress.Commands.add('stubAndAliasWeatherData', ({
                 });
         });
 });
+
+Cypress.Commands.add("setValue", {prevSubject: true}, function (subject, text, opts = {}) {
+    cy.wrap(subject).clear();
+    cy.wrap(subject).type(text, opts);
+});

@@ -7,7 +7,14 @@
     "noEmit": false,
     "sourceMap": false,
     "target": "es5",
-    "lib": ["es5", "dom"],
-    "types": ["cypress", "node"]
+    "lib": [
+      "es5",
+      "dom"
+    ],
+    "types": [
+      "cypress",
+      "chai",
+      "node"
+    ]
   }
 }

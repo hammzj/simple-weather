@@ -4,14 +4,14 @@ import PageObject from "./page.object";
 
 export default class LocationResultsPageObject extends PageObject {
     constructor() {
-        super();
+        super(`/results`);
     }
 
     LocationSearchFormObject(fn) {
         this.container.within(() => fn(new LocationSearchFormObject()));
     }
 
-    LocationButtonsList(fn) {
+    LocationButtonsListObject(fn) {
         this.container.within(() => fn(new LocationButtonsListObject()));
     }
 

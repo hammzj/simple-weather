@@ -51,6 +51,7 @@ export default function LocationResultsPage() {
             try {
                 const params = {name, language}
                 const response = await OpenMeteoGeocodingAPI.searchForLocations(params);
+                console.debug('searchForLocations response', response);
                 setLocationDataResults(response.data);
             } catch (err) {
                 console.error(err);

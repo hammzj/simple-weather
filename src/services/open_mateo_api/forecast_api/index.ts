@@ -1,5 +1,3 @@
-import {fetchWeatherApi} from "openmeteo";
-import {WeatherApiResponse} from "@openmeteo/sdk/weather-api-response";
 import * as T from './types'
 import axios, {AxiosResponse} from "axios";
 import {lt, gt} from "lodash";
