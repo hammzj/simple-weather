@@ -15,5 +15,13 @@ export default class LocationResultsPageObject extends PageObject {
         this.container.within(() => fn(new LocationButtonsListObject()));
     }
 
+    //TODO: make this work
+    _selectLocation(locationName) {
+        this.LocationButtonsListObject(locationButtonsListObject => {
+            locationButtonsListObject.LocationDataButtonObject(button => {
+                button.container.click();
+            }, locationName);
+        });
+    }
 }
 

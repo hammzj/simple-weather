@@ -7,8 +7,8 @@ import CurrentWeatherCard from '../components/current.weather.card';
 import WeatherViewContainer from '../components/weather.view.container';
 import LoadingMessage from "../components/loading.message";
 import SimpleWeatherAPI from "../services/api";
-import {getLocationName} from "../services/open_mateo_api/utils";
-import {PrecipitationUnit, TemperatureUnit, WindSpeedUnit} from "../services/open_mateo_api/forecast_api/types";
+import {getLocationName} from "../services/open_meteo_api/utils";
+import {PrecipitationUnit, TemperatureUnit, WindSpeedUnit} from "../services/open_meteo_api/forecast_api/types";
 import {DateTime} from "luxon";
 
 const WeatherPageContainer = ({locationName, weatherData = {}}: {

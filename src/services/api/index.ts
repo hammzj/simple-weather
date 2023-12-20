@@ -1,5 +1,5 @@
 import {VariablesWithTime} from "@openmeteo/sdk/variables-with-time"
-import {OpenMeteoWeatherForecastAPI} from '../open_mateo_api'
+import {OpenMeteoWeatherForecastAPI} from '../open_meteo_api'
 
 import {
     Coordinates,
@@ -7,7 +7,7 @@ import {
     TemperatureUnit,
     WindSpeedUnit,
     PrecipitationUnit,
-} from "../open_mateo_api/forecast_api/types";
+} from "../open_meteo_api/forecast_api/types";
 import * as T from "./types";
 import {DateTime} from "luxon";
 import {gte, isEqual, isNil} from "lodash";

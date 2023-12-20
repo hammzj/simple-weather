@@ -9,7 +9,7 @@ import Typography from "@mui/material/Typography";
 import LoadingMessage from '../components/loading.message';
 import LocationSearchForm from '../components/location.search.form';
 import LocationDataButton from '../components/location.data.button';
-import OpenMeteoGeocodingAPI from '../services/open_mateo_api/geocoding_api';
+import OpenMeteoGeocodingAPI from '../services/open_meteo_api/geocoding_api';
 
 const NoLocationsMessage = () => {
     return (<Box alignContent='center' justifyContent='center'>

@@ -1,6 +1,6 @@
 import React from 'react';
 import {capitalize, includes, isEqual, isNil} from "lodash";
-import {WeatherCode} from "../services/open_mateo_api/forecast_api/types";
+import {WeatherCode} from "../services/open_meteo_api/forecast_api/types";
 import CloudIcon from '@mui/icons-material/Cloud';
 import FilterDramaIcon from '@mui/icons-material/FilterDrama';
 import ThunderstormIcon from '@mui/icons-material/Thunderstorm';

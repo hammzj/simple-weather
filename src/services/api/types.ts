@@ -4,7 +4,7 @@ import {
     Timezone,
     WeatherCode,
     WindSpeedUnit
-} from '../open_mateo_api/forecast_api/types';
+} from '../open_meteo_api/forecast_api/types';
 import {DateTime} from "luxon";
 
 type IsDay = boolean | undefined;

@@ -1,7 +1,7 @@
 // React 16, 17
 import {mount} from 'cypress/react18'
 import {MemoryRouter} from 'react-router-dom'
-import {OpenMeteoWeatherForecastAPI} from "../../src/services/open_mateo_api";
+import {OpenMeteoWeatherForecastAPI} from "../../src/services/open_meteo_api";
 import SimpleWeatherAPI from "../../src/services/api";
 
 

@@ -1,6 +1,6 @@
 import CurrentWeatherCard from '../../../src/components/current.weather.card';
 import CurrentWeatherCardObject from '../../page_objects/components/current.weather.card.object';
-import {getLocationName} from "../../../src/services/open_mateo_api/utils";
+import {getLocationName} from "../../../src/services/open_meteo_api/utils";
 
 describe(CurrentWeatherCard.name, function () {
     beforeEach(function () {

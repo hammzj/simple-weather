@@ -1,6 +1,6 @@
 import LocationDataButton from '../../../src/components/location.data.button';
 import LocationDataButtonObject from '../../page_objects/components/location.data.button.object';
-import {getLocationName} from "../../../src/services/open_mateo_api/utils";
+import {getLocationName} from "../../../src/services/open_meteo_api/utils";
 
 describe(LocationDataButton.name, function () {
     context('General tests', function () {

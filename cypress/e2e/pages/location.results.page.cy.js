@@ -1,5 +1,5 @@
 import LocationResultsPageObject from '../../page_objects/pages/location.results.page.object';
-import {getLocationName} from "../../../src/services/open_mateo_api/utils";
+import {getLocationName} from "../../../src/services/open_meteo_api/utils";
 
 const locationResultsPageObject = new LocationResultsPageObject();
 
