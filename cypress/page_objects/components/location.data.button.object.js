@@ -4,7 +4,7 @@ export default class LocationDataButtonObject extends ElementCollection {
     #BASE_CONTAINER_ID = '#location-data-button';
 
     constructor(buttonText = undefined) {
-        super(() => cy.get('#location-data-button'));
+        super(() => cy.get('div[id="location-data-button"]'));
 
         //Select only the button(s) with the specified buttonText
         if (buttonText) {

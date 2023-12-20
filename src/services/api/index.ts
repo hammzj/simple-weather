@@ -10,7 +10,7 @@ import {
 } from "../open_mateo_api/forecast_api/types";
 import * as T from "./types";
 import {DateTime} from "luxon";
-import {gte, includes, isEqual, isNil} from "lodash";
+import {gte, isEqual, isNil} from "lodash";
 
 const exists = (v) => !isNil(v);
 
@@ -233,16 +233,6 @@ export default class SimpleWeatherAPI {
             daily_units,
         } = fetchWeatherResponse;
 
-        // const mappedWeatherData = {
-        //     latitude,
-        //     longitude,
-        // };
-        // mappedWeatherData.daily_weather = createDailyWeatherData(daily, daily_units);
-        // mappedWeatherData.hourly_weather = createHourlyWeatherData(hourly, hourly_units, current.time);
-        // mappedWeatherData.current_weather = createCurrentWeatherData(current, current_units, daily, daily_units);
-        //
-        // return mappedWeatherData;
-
         return {
             latitude,
             longitude,
@@ -252,20 +242,19 @@ export default class SimpleWeatherAPI {
         };
     }
 
-//TODO: allow for units of measurement and temperature units (m vs inch; C vs F)
-    static async getWeather(coordinates: Coordinates, opts: T.GetWeatherOpts = {
-        timezone: 'auto',
+    //TODO: allow for units of measurement and temperature units (m vs inch; C vs F)
+    //TODO: pass in timezone from system
+    static async getWeather(coordinates: Coordinates, timezone: Timezone | 'auto' = 'auto', opts: T.GetWeatherOpts = {
         temperature_unit: TemperatureUnit.fahrenheit,
         wind_speed_unit: WindSpeedUnit.mph,
         precipitation_unit: PrecipitationUnit.inch,
     }): Promise<T.TotalWeatherData> {
         const [latitude, longitude] = coordinates;
-
-        //TODO: error handling
         const fetchWeatherResponse = await OpenMeteoWeatherForecastAPI.fetchAllWeatherForLocation({
-            latitude,
-            longitude,
-            ...opts,
+            latitude: [latitude],
+            longitude: [longitude],
+            timezone,
+            ...opts
         });
         return SimpleWeatherAPI._createTotalWeatherData(fetchWeatherResponse);
     }

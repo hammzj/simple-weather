@@ -9,6 +9,7 @@ describe(WeatherSummaryAccordion.name, function () {
     beforeEach(function () {
         cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'});
     });
+
     context('Hourly', function () {
         it('displays a summary of the hourly data', function () {
             cy.get(`@weatherData`).then(weatherData => {

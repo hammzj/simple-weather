@@ -1,5 +1,6 @@
 import LocationDataButton from '../../../src/components/location.data.button';
 import LocationDataButtonObject from '../../page_objects/components/location.data.button.object';
+import {getLocationName} from "../../../src/services/open_mateo_api/utils";
 
 describe(LocationDataButton.name, function () {
     context('General tests', function () {
@@ -17,9 +18,9 @@ describe(LocationDataButton.name, function () {
 
         it('has a link to the weather page with the correct coordinates', function () {
             cy.get('@locationData').then(locationData => {
-                const {latitude, longitude} = locationData;
+                const searchParams = new URLSearchParams({locationName: getLocationName(locationData)}).toString();
                 const ldbo = new LocationDataButtonObject('Berlin');
-                ldbo.link.should('have.attr', 'href', `/weather?latitude=${latitude}&longitude=${longitude}`);
+                ldbo.link.should('have.attr', 'href', `/weather?${searchParams}`);
             });
         });
     });

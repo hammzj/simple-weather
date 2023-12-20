@@ -1,12 +1,15 @@
-import React from "react";
-import {isEmpty} from "lodash";
+import React, {useState, useEffect} from "react";
+import {useLocation, useParams} from "react-router-dom";
+import {isEmpty, isNil} from "lodash";
 import Container from "@mui/material/Container";
 import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
+import LoadingMessage from '../components/loading.message';
 import LocationSearchForm from '../components/location.search.form';
 import LocationDataButton from '../components/location.data.button';
+import OpenMeteoGeocodingAPI from '../services/open_mateo_api/geocoding_api';
 
 const NoLocationsMessage = () => {
     return (<Box alignContent='center' justifyContent='center'>
@@ -15,28 +18,57 @@ const NoLocationsMessage = () => {
 }
 
 const LocationButtonsForm = ({locationDataResults}) => {
-    return !isEmpty(locationDataResults.results) ?
-        (
-            <form id='location-data-form'>
-                <Stack
-                    direction='column'
-                    spacing={3}
-                    alignItems="center"
-                    paddingTop={2}
-                >
-                    {locationDataResults.results.map(locationData => {
-                        return <LocationDataButton locationData={locationData}/>
-                    })}
-                </Stack>
-            </form>
-        ) :
-        (
-            <NoLocationsMessage/>
-        )
+    return (
+        <form id='location-data-form'>
+            <Stack
+                direction='column'
+                spacing={3}
+                alignItems="center"
+                paddingTop={2}
+            >
+                <Box textAlign="center">
+                    <Typography variant={'h4'}>Select a location to view the weather forecast:</Typography>
+                </Box>
+                {
+                    !isEmpty(locationDataResults.results) ?
+                        locationDataResults.results.map(locationData => {
+                            return <LocationDataButton locationData={locationData}/>
+                        }) :
+                        <NoLocationsMessage/>
+                }
+            </Stack>
+        </form>
+    )
 }
 
-export default function LocationResultsPage(props) {
-    const {locationDataResults} = props;
+
+export default function LocationResultsPage() {
+    const location = useLocation();
+    const [locationDataResults, setLocationDataResults] = useState({});
+    const [isLoading, setIsLoading] = useState<boolean>(true);
+    const name = new URLSearchParams(location.search).get('name');
+    const language = new URLSearchParams(location.search).get('language') || undefined;
+
+    //TODO: when hitting the back button, return to the index page ALWAYS
+
+    useEffect(() => {
+        //TODO: get other params, like pagination
+        const searchForLocationsAndSetResults = async (name) => {
+            try {
+                setIsLoading(true);
+                const response = await OpenMeteoGeocodingAPI.searchForLocations({name, language});
+                console.debug('searchForLocations response', response);
+                setLocationDataResults(response.data);
+            } catch (err) {
+                console.error(err);
+            } finally {
+                setIsLoading(false);
+            }
+        };
+
+        searchForLocationsAndSetResults(name);
+    }, [name]);
+
     return (
         <Container>
             <Box
@@ -46,6 +78,12 @@ export default function LocationResultsPage(props) {
                 <LocationSearchForm/>
             </Box>
             <Divider orientation='horizontal'/>
-            <LocationButtonsForm locationDataResults={locationDataResults}/>
-        </Container>)
+            {
+                isLoading ? <LoadingMessage/> :
+                    isNil(locationDataResults) ?
+                        <NoLocationsMessage/> :
+                        <LocationButtonsForm locationDataResults={locationDataResults}/>
+            }
+        </Container>
+    )
 }

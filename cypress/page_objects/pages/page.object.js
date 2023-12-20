@@ -7,11 +7,7 @@ export default class PageObject extends ElementCollection {
         this._baseUrl = baseUrl;
     }
 
-    _visit(path) {
-        return cy.visit(this.#url(path));
-    }
-
-    #url(path) {
+    url(path) {
         return this.#urlObject(path).toString();
     }
 
