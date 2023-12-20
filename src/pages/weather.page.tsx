@@ -5,8 +5,11 @@ import Divider from "@mui/material/Divider";
 import Typography from "@mui/material/Typography";
 import CurrentWeatherCard from '../components/current.weather.card';
 import WeatherViewContainer from '../components/weather.view.container';
+import LoadingMessage from "../components/loading.message";
 import SimpleWeatherAPI from "../services/api";
 import {getLocationName} from "../services/open_mateo_api/utils";
+import {PrecipitationUnit, TemperatureUnit, WindSpeedUnit} from "../services/open_mateo_api/forecast_api/types";
+import {DateTime} from "luxon";
 
 const WeatherPageContainer = ({locationName, weatherData = {}}: {
     locationName: string;
@@ -26,37 +29,51 @@ const WeatherPageContainer = ({locationName, weatherData = {}}: {
 export default function WeatherPage() {
     const location = useLocation();
     const {locationData} = location.state;
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const [locationName, setLocationName] = useState('');
     const [weatherData, setWeatherData] = useState({});
 
-    //Used for the current weather to display the name
-    useEffect(() => {
-        setLocationName(getLocationName(locationData));
-    }, [locationData]);
-
-    //Get all weather data
     useEffect(() => {
         const getWeatherData = async ([latitude, longitude]) => {
             try {
-                const data = await SimpleWeatherAPI.getWeather([latitude, longitude]);
+                const systemTimezone = DateTime.local().zoneName || 'auto';
+
+                const data = await SimpleWeatherAPI.getWeather(
+                    [latitude, longitude],
+                    systemTimezone,
+                    {
+                        temperature_unit: TemperatureUnit.fahrenheit,
+                        wind_speed_unit: WindSpeedUnit.mph,
+                        precipitation_unit: PrecipitationUnit.inch,
+                    });
                 //@ts-ignore
                 setWeatherData(data);
             } catch (err) {
                 console.error(err);
             }
         };
+
+        setIsLoading(true);
+
+        //Used for the current weather to display the name
+        setLocationName(getLocationName(locationData));
+
+        //Get all weather data
         const {latitude, longitude} = locationData;
         if (latitude && longitude) {
             getWeatherData([latitude, longitude]);
         }
+        setIsLoading(false);
     }, [locationData]);
 
     return (
         <Box>
-            {(weatherData && locationName ?
-                    <WeatherPageContainer locationName={locationName} weatherData={weatherData}/> :
-                    <Typography>TODO No data available TODO</Typography>
-            )}
+            {
+                isLoading ? <LoadingMessage/> :
+                    (weatherData && locationName ?
+                            <WeatherPageContainer locationName={locationName} weatherData={weatherData}/> :
+                            <Typography>TODO No data available TODO</Typography>
+                    )}
         </Box>
     )
 };

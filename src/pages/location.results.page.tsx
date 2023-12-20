@@ -6,9 +6,10 @@ import Box from "@mui/material/Box";
 import Divider from "@mui/material/Divider";
 import Stack from "@mui/material/Stack";
 import Typography from "@mui/material/Typography";
-import OpenMeteoGeocodingAPI from '../services/open_mateo_api/geocoding_api';
+import LoadingMessage from '../components/loading.message';
 import LocationSearchForm from '../components/location.search.form';
 import LocationDataButton from '../components/location.data.button';
+import OpenMeteoGeocodingAPI from '../services/open_mateo_api/geocoding_api';
 
 const NoLocationsMessage = () => {
     return (<Box alignContent='center' justifyContent='center'>
@@ -25,6 +26,9 @@ const LocationButtonsForm = ({locationDataResults}) => {
                 alignItems="center"
                 paddingTop={2}
             >
+                <Box textAlign="center">
+                    <Typography variant={'h4'}>Select a location to view the weather forecast:</Typography>
+                </Box>
                 {
                     !isEmpty(locationDataResults.results) ?
                         locationDataResults.results.map(locationData => {
@@ -37,9 +41,11 @@ const LocationButtonsForm = ({locationDataResults}) => {
     )
 }
 
+
 export default function LocationResultsPage() {
     const location = useLocation();
     const [locationDataResults, setLocationDataResults] = useState({});
+    const [isLoading, setIsLoading] = useState<boolean>(true);
     const name = new URLSearchParams(location.search).get('name');
     const language = new URLSearchParams(location.search).get('language') || undefined;
 
@@ -49,14 +55,17 @@ export default function LocationResultsPage() {
         //TODO: get other params, like pagination
         const searchForLocationsAndSetResults = async (name) => {
             try {
-                const params = {name, language}
-                const response = await OpenMeteoGeocodingAPI.searchForLocations(params);
+                setIsLoading(true);
+                const response = await OpenMeteoGeocodingAPI.searchForLocations({name, language});
                 console.debug('searchForLocations response', response);
                 setLocationDataResults(response.data);
             } catch (err) {
                 console.error(err);
+            } finally {
+                setIsLoading(false);
             }
         };
+
         searchForLocationsAndSetResults(name);
     }, [name]);
 
@@ -70,9 +79,10 @@ export default function LocationResultsPage() {
             </Box>
             <Divider orientation='horizontal'/>
             {
-                isNil(locationDataResults) ?
-                    <NoLocationsMessage/> :
-                    <LocationButtonsForm locationDataResults={locationDataResults}/>
+                isLoading ? <LoadingMessage/> :
+                    isNil(locationDataResults) ?
+                        <NoLocationsMessage/> :
+                        <LocationButtonsForm locationDataResults={locationDataResults}/>
             }
         </Container>
     )

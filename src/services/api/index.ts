@@ -10,7 +10,7 @@ import {
 } from "../open_mateo_api/forecast_api/types";
 import * as T from "./types";
 import {DateTime} from "luxon";
-import {gte,  isEqual, isNil} from "lodash";
+import {gte, isEqual, isNil} from "lodash";
 
 const exists = (v) => !isNil(v);
 
@@ -242,9 +242,9 @@ export default class SimpleWeatherAPI {
         };
     }
 
-//TODO: allow for units of measurement and temperature units (m vs inch; C vs F)
-    static async getWeather(coordinates: Coordinates, opts: T.GetWeatherOpts = {
-        timezone: 'auto',
+    //TODO: allow for units of measurement and temperature units (m vs inch; C vs F)
+    //TODO: pass in timezone from system
+    static async getWeather(coordinates: Coordinates, timezone: Timezone | 'auto' = 'auto', opts: T.GetWeatherOpts = {
         temperature_unit: TemperatureUnit.fahrenheit,
         wind_speed_unit: WindSpeedUnit.mph,
         precipitation_unit: PrecipitationUnit.inch,
@@ -253,6 +253,7 @@ export default class SimpleWeatherAPI {
         const fetchWeatherResponse = await OpenMeteoWeatherForecastAPI.fetchAllWeatherForLocation({
             latitude: [latitude],
             longitude: [longitude],
+            timezone,
             ...opts
         });
         return SimpleWeatherAPI._createTotalWeatherData(fetchWeatherResponse);

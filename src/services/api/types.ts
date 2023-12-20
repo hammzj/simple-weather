@@ -74,7 +74,6 @@ export interface TotalWeatherData {
 }
 
 export interface GetWeatherOpts {
-    timezone: Timezone | 'auto',
     temperature_unit: TemperatureUnit,
     wind_speed_unit: WindSpeedUnit,
     precipitation_unit: PrecipitationUnit,
