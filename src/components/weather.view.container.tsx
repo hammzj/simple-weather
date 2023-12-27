@@ -1,18 +1,17 @@
 import React from "react";
-import {isEqual, isEmpty} from "lodash";
-import Box from "@mui/material/Box";
-import Tabs from "@mui/material/Tabs";
-import Tab from "@mui/material/Tab";
-import Typography from "@mui/material/Typography";
+import {Box, Tabs, Tab, Typography} from "@mui/material";
 import WeatherSummaryAccordion from "./weather.summary.accordion";
+import {isEqual, isEmpty} from "lodash";
 
-const EmptyDataMessage = () => {
-    return (<Box alignContent='center' justifyContent='center'>
-        <Typography align='center'>No data could be returned for the location.</Typography>
-    </Box>)
+const EmptyDataMessage = (): React.ReactElement => {
+    return (
+        <Box alignContent='center' justifyContent='center'>
+            <Typography align='center'>No data could be returned for the location.</Typography>
+        </Box>
+    )
 }
 
-const WeatherRowsTabPanel = (props) => {
+const WeatherRowsTabPanel = (props): React.ReactElement => {
     const [expanded, setExpanded] = React.useState<string | boolean>(false);
     const handleChange =
         (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
@@ -21,31 +20,33 @@ const WeatherRowsTabPanel = (props) => {
 
 
     const {timeBasedWeatherData, type, value, index} = props;
-    return (<Box
-        role="tabpanel"
-        hidden={!isEqual(value, index)}
-        id={`tabpanel-${type}`}
-        aria-labelledby={`tabpanel-${type}`}
-    >
-        {isEmpty(timeBasedWeatherData) ?
-            <EmptyDataMessage/> :
-            isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
-                const accordionId = `accordion-${i}`;
-                return (
-                    <Box paddingBottom={'1.5em'}>
-                        <WeatherSummaryAccordion
-                            expanded={isEqual(expanded, accordionId)}
-                            onChange={handleChange(accordionId)}
-                            type={type}
-                            mappedWeatherData={tbwd.mapped}
-                        />
-                    </Box>)
-            })}
-    </Box>)
+    return (
+        <Box
+            role="tabpanel"
+            hidden={!isEqual(value, index)}
+            id={`tabpanel-${type}`}
+            aria-labelledby={`tabpanel-${type}`}
+        >
+            {isEmpty(timeBasedWeatherData) ?
+                <EmptyDataMessage/> :
+                isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
+                    const accordionId = `accordion-${i}`;
+                    return (
+                        <Box paddingBottom={'1.5em'}>
+                            <WeatherSummaryAccordion
+                                expanded={isEqual(expanded, accordionId)}
+                                onChange={handleChange(accordionId)}
+                                type={type}
+                                mappedWeatherData={tbwd.mapped}
+                            />
+                        </Box>
+                    )
+                })}
+        </Box>
+    )
 }
 
-
-export default function WeatherViewContainer({weatherData}) {
+export default function WeatherViewContainer({weatherData}): React.ReactElement {
     const [value, setValue] = React.useState(0);
 
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
@@ -54,7 +55,8 @@ export default function WeatherViewContainer({weatherData}) {
 
     const {hourly_weather, daily_weather} = weatherData;
 
-    return (<Box id='weather-view'>
+    return (
+        <Box id='weather-view'>
             <Box paddingBottom='1em'>
                 <Tabs
                     value={value}

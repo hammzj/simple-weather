@@ -1,8 +1,7 @@
 import React, {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Typography from "@mui/material/Typography";
+import {Box, Divider, Typography} from "@mui/material";
+import Page from '../components/page';
 import CurrentWeatherCard from '../components/current.weather.card';
 import WeatherViewContainer from '../components/weather.view.container';
 import LoadingMessage from "../components/loading.message";
@@ -14,7 +13,7 @@ import {DateTime} from "luxon";
 const WeatherPageContainer = ({locationName, weatherData = {}}: {
     locationName: string;
     weatherData: any;
-}) => {
+}): React.ReactElement => {
     const {current_weather} = weatherData;
     return (<Box>
         {current_weather && (
@@ -25,8 +24,7 @@ const WeatherPageContainer = ({locationName, weatherData = {}}: {
     </Box>)
 }
 
-//TODO: rename to WeatherContainer???
-export default function WeatherPage() {
+export default function WeatherPage(): React.ReactElement {
     const location = useLocation();
     const {locationData} = location.state;
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -67,13 +65,13 @@ export default function WeatherPage() {
     }, [locationData]);
 
     return (
-        <Box>
+        <Page>
             {
                 isLoading ? <LoadingMessage/> :
                     (weatherData && locationName ?
                             <WeatherPageContainer locationName={locationName} weatherData={weatherData}/> :
                             <Typography>TODO No data available TODO</Typography>
                     )}
-        </Box>
+        </Page>
     )
 };

@@ -1,6 +1,4 @@
 import React from 'react';
-import {isEqual, isNil} from "lodash";
-import {DateTime, Zone} from 'luxon';
 import {
     Accordion,
     AccordionSummary,
@@ -20,6 +18,8 @@ import WeatherIcon from "./weather.icon";
 import {NOT_AVAILABLE_TEXT} from './constants';
 import {weatherCodeToText} from './utils';
 import {DailyWeatherData, HourlyWeatherData} from "../services/api/types";
+import {isEqual} from "lodash";
+import {DateTime, Zone} from 'luxon';
 
 type  WeatherSummaryTimeType = 'hourly' | 'daily';
 
@@ -51,7 +51,7 @@ const getTimeStringForSummary = (type: WeatherSummaryTimeType, dateTime: string,
     return dt.toLocaleString(localeString);
 }
 
-const AdditionalWeatherDetailsRow: React.FC<AdditionalWeatherDetailsRowProps> = ({title, value}) => {
+const AdditionalWeatherDetailsRow = ({title, value}): React.ReactElement => {
     const id = `${title.replace(':', '').replace(/\s/g, '-').toLowerCase()}`;
     return (
         <TableRow id={id}>
@@ -69,7 +69,7 @@ const AdditionalWeatherDetailsRow: React.FC<AdditionalWeatherDetailsRowProps> = 
 * This component is the container for the rows with additional details displayed when the accordion is expanded
 * Exporting for use in testing
 */
-export const AdditionalWeatherDetails: React.FC<AdditionalWeatherDetailsProps> = ({type, mappedWeatherData = {}}) => {
+export const AdditionalWeatherDetails = ({type, mappedWeatherData = {}}): React.ReactElement => {
     //handle state change when updated by newly selected row
     const hourlyDetails = (mappedWeatherData) => {
         const {

@@ -1,42 +1,37 @@
 import React from 'react';
-import {capitalize, includes, isEqual, isNil} from "lodash";
-import {WeatherCode} from "../services/open_meteo_api/forecast_api/types";
-import CloudIcon from '@mui/icons-material/Cloud';
-import FilterDramaIcon from '@mui/icons-material/FilterDrama';
-import ThunderstormIcon from '@mui/icons-material/Thunderstorm';
-import ShowerIcon from '@mui/icons-material/Shower';
-import AcUnitIcon from '@mui/icons-material/AcUnit';
-import WavesIcon from '@mui/icons-material/Waves';
-import WbSunnyIcon from '@mui/icons-material/WbSunny';
+import {AcUnit, Cloud, FilterDrama, Thunderstorm, Shower, WbSunny, Waves} from '@mui/icons-material';
 import {NOT_AVAILABLE_TEXT} from "./constants";
+import {WeatherCode} from "../services/open_meteo_api/forecast_api/types";
+import {capitalize, includes, isEqual, isNil} from "lodash";
 
+//TODO: still determining if we should use these icons...
 // import ClearDayIcon from "./icons/weather_icons/clear-day.icon";
 // import CloudyIcon from "./icons/weather_icons/cloudy.icon";
 // import OvercastDayIcon from "./icons/weather_icons/overcast-day.icon";
 // import FogDayIcon from "./icons/weather_icons/fog-day.icon";
 
-export const weatherCodeToSvg = (weatherCode: number | WeatherCode) => {
+export const weatherCodeToSvg = (weatherCode: number | WeatherCode): JSX.Element => {
 //TODO: find a way to utilize day/night
     weatherCode = Number(weatherCode);
     switch (true) {
         case(isEqual(WeatherCode.CLEAR_SKY, weatherCode)):
             //return <ClearDayIcon/>;
-            return <WbSunnyIcon/>
+            return <WbSunny/>
         case(includes([WeatherCode.MAINLY_CLEAR, WeatherCode.PARTLY_CLOUDY], weatherCode)):
             //return <CloudyIcon/>;
-            return <FilterDramaIcon/>
+            return <FilterDrama/>
         case(isEqual(WeatherCode.OVERCAST, weatherCode)):
             //return <OvercastDayIcon/>;
-            return <CloudIcon/>
+            return <Cloud/>
         case(includes([WeatherCode.FOG, WeatherCode.DEPOSITING_RIME_FOG], weatherCode)):
             //return <FogDayIcon/>;
-            return <WavesIcon/>
+            return <Waves/>
         case(includes([
             WeatherCode.THUNDERSTORM,
             WeatherCode.THUNDERSTORM_WITH_SLIGHT_HAIL,
             WeatherCode.THUNDERSTORM_WITH_HEAVY_HAIL,
         ], weatherCode)):
-            return <ThunderstormIcon/>
+            return <Thunderstorm/>
         case(includes([
             WeatherCode.SLIGHT_RAIN,
             WeatherCode.HEAVY_RAIN,
@@ -52,7 +47,7 @@ export const weatherCodeToSvg = (weatherCode: number | WeatherCode) => {
             WeatherCode.LIGHT_FREEZING_DRIZZLE,
             WeatherCode.DENSE_FREEZING_DRIZZLE,
         ], weatherCode)):
-            return <ShowerIcon/>
+            return <Shower/>
         case(includes([
             WeatherCode.SNOW_GRAINS,
             WeatherCode.SLIGHT_SNOWFALL,
@@ -61,14 +56,14 @@ export const weatherCodeToSvg = (weatherCode: number | WeatherCode) => {
             WeatherCode.LIGHT_SNOW_SHOWERS,
             WeatherCode.HEAVY_SNOW_SHOWERS,
         ], weatherCode)):
-            return <AcUnitIcon/>
+            return <AcUnit/>
         default:
             //Default return nothing
             return <></>
     }
 }
 
-export const weatherCodeToText = (weatherCode: number | null | undefined) => {
+export const weatherCodeToText = (weatherCode: number | null | undefined): string => {
     if (isNil(weatherCode)) {
         return NOT_AVAILABLE_TEXT;
     } else {

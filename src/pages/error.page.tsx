@@ -1,19 +1,18 @@
 import React from "react";
-import Box from "@mui/material/Box";
-import Container from "@mui/material/Container";
-import Typography from "@mui/material/Typography";
+import {Box, Typography} from "@mui/material";
+import Page from "../components/page";
 
-const GenericErrorMessage = () => {
+const GenericErrorMessage = (): React.ReactElement => {
     return (<Box>
         <Typography variant={'h1'}>404 Not Found</Typography>
         <Typography>Sorry, an error occurred.</Typography>
     </Box>);
 }
 
-export default function ErrorPage(props) {
+export default function ErrorPage(): React.ReactElement {
     return (
-        <Container>
+        <Page>
             <GenericErrorMessage/>
-        </Container>
+        </Page>
     )
 };

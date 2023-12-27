@@ -1,23 +1,31 @@
 import React, {useState, useEffect} from "react";
 import {useLocation, useParams} from "react-router-dom";
 import {isEmpty, isNil} from "lodash";
-import Container from "@mui/material/Container";
-import Box from "@mui/material/Box";
-import Divider from "@mui/material/Divider";
-import Stack from "@mui/material/Stack";
-import Typography from "@mui/material/Typography";
+import {Box, Divider, Stack, Typography} from "@mui/material";
+import Page from "../components/page";
 import LoadingMessage from '../components/loading.message';
 import LocationSearchForm from '../components/location.search.form';
 import LocationDataButton from '../components/location.data.button';
 import OpenMeteoGeocodingAPI from '../services/open_meteo_api/geocoding_api';
 
-const NoLocationsMessage = () => {
-    return (<Box alignContent='center' justifyContent='center'>
-        <Typography align='center'>No locations could be found.</Typography>
-    </Box>)
+const NoLocationsMessage = (): React.ReactElement => {
+    return (
+        <Box alignContent='center' justifyContent='center'>
+            <Typography align='center'>No locations could be found.</Typography>
+        </Box>
+    )
 }
 
-const LocationButtonsForm = ({locationDataResults}) => {
+const SelectLocationMessage = (): React.ReactElement => {
+    return (
+        <Box textAlign="center" justifyContent='center'>
+            <Typography align='center' variant={'h4'}>Select a location to view the weather forecast:</Typography>
+        </Box>
+    )
+}
+
+const LocationButtonsForm = ({locationDataResults}): React.ReactElement => {
+    const hasResults = !isEmpty(locationDataResults.results);
     return (
         <form id='location-data-form'>
             <Stack
@@ -26,23 +34,20 @@ const LocationButtonsForm = ({locationDataResults}) => {
                 alignItems="center"
                 paddingTop={2}
             >
-                <Box textAlign="center">
-                    <Typography variant={'h4'}>Select a location to view the weather forecast:</Typography>
-                </Box>
-                {
-                    !isEmpty(locationDataResults.results) ?
-                        locationDataResults.results.map(locationData => {
+                {hasResults ? (
+                    <>
+                        <SelectLocationMessage/>
+                        {locationDataResults.results.map(locationData => {
                             return <LocationDataButton locationData={locationData}/>
-                        }) :
-                        <NoLocationsMessage/>
-                }
+                        })}
+                    </>
+                ) : <NoLocationsMessage/>}
             </Stack>
         </form>
     )
 }
 
-
-export default function LocationResultsPage() {
+export default function LocationResultsPage(): React.ReactElement {
     const location = useLocation();
     const [locationDataResults, setLocationDataResults] = useState({});
     const [isLoading, setIsLoading] = useState<boolean>(true);
@@ -50,7 +55,6 @@ export default function LocationResultsPage() {
     const language = new URLSearchParams(location.search).get('language') || undefined;
 
     //TODO: when hitting the back button, return to the index page ALWAYS
-
     useEffect(() => {
         //TODO: get other params, like pagination
         const searchForLocationsAndSetResults = async (name) => {
@@ -70,7 +74,7 @@ export default function LocationResultsPage() {
     }, [name]);
 
     return (
-        <Container>
+        <Page>
             <Box
                 alignItems="center"
                 paddingBottom={2}
@@ -84,6 +88,6 @@ export default function LocationResultsPage() {
                         <NoLocationsMessage/> :
                         <LocationButtonsForm locationDataResults={locationDataResults}/>
             }
-        </Container>
+        </Page>
     )
 }

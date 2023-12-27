@@ -1,7 +1,6 @@
 import React from 'react';
 import {Link} from "react-router-dom";
-import Box from '@mui/material/Box';
-import Button from "@mui/material/Button";
+import {Box, Button} from '@mui/material';
 import PATHS from "../routes/paths";
 import {getLocationName} from "../services/open_meteo_api/utils";
 import {LocationData} from "../services/open_meteo_api/geocoding_api/types";
@@ -16,7 +15,7 @@ const createWeatherPageSearchParams = (locationName: string, opts?: any) => {
     return new URLSearchParams({locationName}).toString();
 }
 
-export default function LocationDataButton({locationData}: LocationDataButtonParams) {
+export default function LocationDataButton({locationData}: LocationDataButtonParams): React.ReactElement {
     const locationName = getLocationName(locationData);
     const coordinates: Coordinates = [locationData.latitude, locationData.longitude]
 

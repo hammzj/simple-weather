@@ -1,8 +1,7 @@
 import React from "react";
-import Box from '@mui/material/Box';
-import Typography from '@mui/material/Typography';
+import {Box, Typography} from '@mui/material';
 
-export default function LoadingMessage() {
+export default function LoadingMessage(): React.ReactElement {
     return (
         <Box>
             <Typography>Loading...</Typography>
