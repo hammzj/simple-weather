@@ -3,25 +3,20 @@ import {useLocation, useParams} from "react-router-dom";
 import {isEmpty, isNil} from "lodash";
 import {Box, Divider, Stack, Typography} from "@mui/material";
 import Page from "../components/page";
+import Message from '../components/message';
 import LoadingMessage from '../components/loading.message';
 import LocationSearchForm from '../components/location.search.form';
 import LocationDataButton from '../components/location.data.button';
 import OpenMeteoGeocodingAPI from '../services/open_meteo_api/geocoding_api';
 
 const NoLocationsMessage = (): React.ReactElement => {
-    return (
-        <Box alignContent='center' justifyContent='center'>
-            <Typography align='center'>No locations could be found.</Typography>
-        </Box>
-    )
+    return <Message value='No locations could be found.'/>
 }
 
 const SelectLocationMessage = (): React.ReactElement => {
-    return (
-        <Box textAlign="center" justifyContent='center'>
-            <Typography align='center' variant={'h4'}>Select a location to view the weather forecast:</Typography>
-        </Box>
-    )
+    return <Message
+        typographyProps={{variant: 'h4'}}
+        value='Select a location to view the weather forecast:'/>
 }
 
 const LocationButtonsForm = ({locationDataResults}): React.ReactElement => {
@@ -37,8 +32,8 @@ const LocationButtonsForm = ({locationDataResults}): React.ReactElement => {
                 {hasResults ? (
                     <>
                         <SelectLocationMessage/>
-                        {locationDataResults.results.map(locationData => {
-                            return <LocationDataButton locationData={locationData}/>
+                        {locationDataResults.results.map((locationData, i) => {
+                            return <LocationDataButton key={i} locationData={locationData}/>
                         })}
                     </>
                 ) : <NoLocationsMessage/>}

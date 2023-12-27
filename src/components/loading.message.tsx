@@ -1,10 +1,6 @@
 import React from "react";
-import {Box, Typography} from '@mui/material';
+import Message from './message'
 
 export default function LoadingMessage(): React.ReactElement {
-    return (
-        <Box>
-            <Typography>Loading...</Typography>
-        </Box>
-    );
+    return <Message value='Loading...'/>
 }

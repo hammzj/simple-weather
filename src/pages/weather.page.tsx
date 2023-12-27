@@ -1,77 +1,112 @@
 import React, {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
-import {Box, Divider, Typography} from "@mui/material";
+import {Box, Divider} from "@mui/material";
 import Page from '../components/page';
+import Message from "../components/message";
+import LoadingMessage from "../components/loading.message";
 import CurrentWeatherCard from '../components/current.weather.card';
 import WeatherViewContainer from '../components/weather.view.container';
-import LoadingMessage from "../components/loading.message";
+import LocationSearchForm from "../components/location.search.form";
 import SimpleWeatherAPI from "../services/api";
-import {getLocationName} from "../services/open_meteo_api/utils";
+import {OpenMeteoGeocodingAPI} from "../services/open_meteo_api";
 import {PrecipitationUnit, TemperatureUnit, WindSpeedUnit} from "../services/open_meteo_api/forecast_api/types";
+import {getLocationName} from "../services/open_meteo_api/utils";
 import {DateTime} from "luxon";
 
-const WeatherPageContainer = ({locationName, weatherData = {}}: {
+interface WeatherPageContainerProps {
     locationName: string;
     weatherData: any;
-}): React.ReactElement => {
+}
+
+const ErrorMessage = () => {
+    return <Message value='An error occurred when loading the data.'/>
+}
+
+//TODO: use loading message instead of error messages when processing data
+const WeatherPageContainer = ({locationName, weatherData = {}}: WeatherPageContainerProps): React.ReactElement => {
     const {current_weather} = weatherData;
+    const hasNeededData = weatherData.current_weather && locationName
     return (<Box>
-        {current_weather && (
-            <CurrentWeatherCard locationName={locationName} currentWeatherData={current_weather}/>
-        )}
-        <Divider/>
-        <WeatherViewContainer weatherData={weatherData}/>
-    </Box>)
+            <LocationSearchForm/>
+            <Divider/>
+            {hasNeededData ?
+                (
+                    <>
+                        <CurrentWeatherCard locationName={locationName} currentWeatherData={current_weather}/>
+                        <Divider/>
+                        <WeatherViewContainer weatherData={weatherData}/>
+                    </>
+                ) :
+                <ErrorMessage/>
+            }
+        </Box>
+    )
 }
 
 export default function WeatherPage(): React.ReactElement {
-    const location = useLocation();
-    const {locationData} = location.state;
+    const {search} = useLocation();
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [locationName, setLocationName] = useState('');
     const [weatherData, setWeatherData] = useState({});
 
+    //Get location name and weather data
     useEffect(() => {
-        const getWeatherData = async ([latitude, longitude]) => {
-            try {
-                const systemTimezone = DateTime.local().zoneName || 'auto';
-
-                const data = await SimpleWeatherAPI.getWeather(
-                    [latitude, longitude],
-                    systemTimezone,
-                    {
-                        temperature_unit: TemperatureUnit.fahrenheit,
-                        wind_speed_unit: WindSpeedUnit.mph,
-                        precipitation_unit: PrecipitationUnit.inch,
-                    });
-                //@ts-ignore
-                setWeatherData(data);
-            } catch (err) {
-                console.error(err);
+        const getGeocodingAndWeatherData = async (locationId) => {
+            const requestLocationData = async (id) => {
+                try {
+                    const {data} = await OpenMeteoGeocodingAPI.getLocation(id);
+                    return data;
+                } catch (err) {
+                    console.log(err);
+                }
             }
-        };
+            const requestWeatherData = async ([latitude, longitude]) => {
+                try {
+                    const systemTimezone = DateTime.local().zoneName || 'auto';
+                    const data = await SimpleWeatherAPI.getWeather(
+                        [latitude, longitude],
+                        systemTimezone,
+                        {
+                            temperature_unit: TemperatureUnit.fahrenheit,
+                            wind_speed_unit: WindSpeedUnit.mph,
+                            precipitation_unit: PrecipitationUnit.inch,
+                        });
+                    //@ts-ignore
+                    setWeatherData(data);
+                } catch (err) {
+                    console.error(err);
+                }
+            };
 
-        setIsLoading(true);
-
-        //Used for the current weather to display the name
-        setLocationName(getLocationName(locationData));
-
-        //Get all weather data
-        const {latitude, longitude} = locationData;
-        if (latitude && longitude) {
-            getWeatherData([latitude, longitude]);
+            const locationData = await requestLocationData(locationId);
+            if (locationData) {
+                const {latitude, longitude} = locationData;
+                //Used for the current weather to display the name
+                setLocationName(getLocationName(locationData));
+                if (latitude && longitude) {
+                    requestWeatherData([latitude, longitude]);
+                }
+            }
         }
-        setIsLoading(false);
-    }, [locationData]);
+
+        try {
+            const id = new URLSearchParams(search).get('id');
+            setIsLoading(true);
+            getGeocodingAndWeatherData(id);
+        } catch (err) {
+            console.log(err)
+        } finally {
+            setIsLoading(false);
+        }
+    }, [search]);
 
     return (
         <Page>
             {
-                isLoading ? <LoadingMessage/> :
-                    (weatherData && locationName ?
-                            <WeatherPageContainer locationName={locationName} weatherData={weatherData}/> :
-                            <Typography>TODO No data available TODO</Typography>
-                    )}
+                isLoading ?
+                    <LoadingMessage/> :
+                    <WeatherPageContainer locationName={locationName} weatherData={weatherData}/>
+            }
         </Page>
     )
 };

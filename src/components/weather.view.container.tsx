@@ -3,6 +3,7 @@ import {Box, Tabs, Tab, Typography} from "@mui/material";
 import WeatherSummaryAccordion from "./weather.summary.accordion";
 import {isEqual, isEmpty} from "lodash";
 
+//TODO: make reusable Message component
 const EmptyDataMessage = (): React.ReactElement => {
     return (
         <Box alignContent='center' justifyContent='center'>

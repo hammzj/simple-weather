@@ -4,6 +4,8 @@ export interface GetLocationsParams {
     language?: string;
 }
 
+export type LocationId = string | number
+
 export interface LocationData {
     id: number;
     name: string;
