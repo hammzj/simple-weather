@@ -23,6 +23,7 @@ Cypress.Commands.add('stubAndAliasWeatherData', ({
             cy.fixture(`/open_meteo_api/forecast_api/${coordinatesFixture}`)
                 .then(coordinatesFixture => {
                     cy.stub(OpenMeteoWeatherForecastAPI, 'fetchAllWeatherForLocation').returns(fetchWeatherResponseFixture);
+                    cy.intercept(`*/forecast*`, fetchWeatherResponseFixture).as('fetchAllWeatherForLocation');
                     cy.wrap(SimpleWeatherAPI.getWeather(coordinatesFixture)).as(alias);
                 });
         });

@@ -5,10 +5,13 @@ const indexPage = new IndexPageObject();
 
 describe(IndexPage.name, function () {
     it('renders correctly', function () {
-        cy.mount(<IndexPage/>);
+        cy.visit(Cypress.config().baseUrl);
 
         indexPage.LocationSearchFormObject(lsfo => {
             lsfo.container.should('exist');
         });
+        //TODO: check link to about page
+        //TODO: check settings exist
     });
+
 });

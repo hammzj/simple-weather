@@ -4,7 +4,7 @@ import {getLocationName} from "../../../src/services/open_meteo_api/utils";
 
 describe(CurrentWeatherCard.name, function () {
     beforeEach(function () {
-        cy.fixture('/open_meteo_api/geocoding_api/individual.location').as('locationData');
+        cy.fixture('/open_meteo_api/geocoding_api/individual.location.berlin').as('locationData');
         cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'})
     })
     specify('can display current weather details for a given location', function () {
