@@ -9,7 +9,7 @@ import WeatherViewContainer from '../components/weather.view.container';
 import LocationSearchForm from "../components/location.search.form";
 import SimpleWeatherAPI from "../services/api";
 import {OpenMeteoGeocodingAPI} from "../services/open_meteo_api";
-import {PrecipitationUnit, TemperatureUnit, WindSpeedUnit} from "../services/open_meteo_api/forecast_api/types";
+import {PrecipitationUnit, TemperatureUnit, WindSpeedUnit} from "../services/open_meteo_api/forecast_api";
 import {getLocationName} from "../services/open_meteo_api/utils";
 import {DateTime} from "luxon";
 

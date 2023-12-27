@@ -3,7 +3,7 @@ import {Link} from "react-router-dom";
 import {Box, Button} from '@mui/material';
 import PATHS from "../routes/paths";
 import {getLocationName} from "../services/open_meteo_api/utils";
-import {LocationData} from "../services/open_meteo_api/geocoding_api/types";
+import {LocationData} from "../services/open_meteo_api/geocoding_api";
 
 interface LocationDataButtonParams {
     locationData: LocationData

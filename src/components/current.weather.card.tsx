@@ -2,7 +2,7 @@ import React from 'react';
 import {Card, Stack, Typography} from '@mui/material';
 import PrecipitationChance from './precipitation.chance';
 import WeatherIcon from "./weather.icon";
-import {CurrentWeatherData} from "../services/api/types";
+import {CurrentWeatherData} from "../services/api";
 import {DateTime} from "luxon";
 
 type CurrentWeatherCardParams = {

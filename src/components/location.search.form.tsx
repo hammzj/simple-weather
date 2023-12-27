@@ -22,7 +22,7 @@ export default function LocationSearchForm(): React.ReactElement {
         <Box component="form" id='location-search-form' onSubmit={handleSubmit}>
             <Stack direction='row' spacing='1.5em'>
                 <TextField id="location-input"
-                           label="Search for a location"
+                           label="Search for a city/postal code"
                            variant="outlined"
                            size="small"
                            onChange={handleChange}

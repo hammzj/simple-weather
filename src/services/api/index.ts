@@ -1,16 +1,87 @@
 import {VariablesWithTime} from "@openmeteo/sdk/variables-with-time"
 import {OpenMeteoWeatherForecastAPI} from '../open_meteo_api'
-
 import {
     Coordinates,
     Timezone,
+    WeatherCode,
     TemperatureUnit,
     WindSpeedUnit,
     PrecipitationUnit,
-} from "../open_meteo_api/forecast_api/types";
-import * as T from "./types";
+} from "../open_meteo_api/forecast_api";
 import {DateTime} from "luxon";
 import {gte, isEqual, isNil} from "lodash";
+
+type IsDay = boolean | undefined;
+
+type ISOString = string;
+
+interface Units {
+    [key: string]: string;
+}
+
+interface Values {
+    [key: string]: string;
+}
+
+interface GenericWeatherData {
+    units: Units;
+    values: Values;
+}
+
+export interface CurrentWeatherData extends GenericWeatherData {
+    mapped: {
+        time: ISOString;
+        weather_code?: WeatherCode;
+        is_day?: IsDay;
+        temperature?: string;
+        temperature_range?: string;
+        precipitation?: string;
+    }
+}
+
+export interface HourlyWeatherData extends GenericWeatherData {
+    mapped: {
+        time: ISOString;
+        weather_code?: WeatherCode;
+        is_day?: IsDay;
+        temperature?: string,
+        precipitation?: string;
+        precipitation_probability?: string;
+        humidity?: string;
+        cloud_cover?: string;
+        visibility?: string;
+        wind?: string;
+        wind_gusts?: string;
+    }
+}
+
+export interface DailyWeatherData extends GenericWeatherData {
+    mapped: {
+        time: ISOString;
+        temperature_range?: string
+        precipitation?: string;
+        precipitation_probability?: string;
+        weather_code?: WeatherCode;
+        sunrise?: DateTime;
+        sunset?: DateTime;
+        wind?: string;
+        wind_gusts?: string;
+    }
+}
+
+export interface TotalWeatherData {
+    latitude: number;
+    longitude: number;
+    current_weather?: CurrentWeatherData;
+    hourly_weather?: HourlyWeatherData[];
+    daily_weather?: DailyWeatherData[];
+}
+
+export interface GetWeatherOpts {
+    temperature_unit: TemperatureUnit,
+    wind_speed_unit: WindSpeedUnit,
+    precipitation_unit: PrecipitationUnit,
+}
 
 const exists = (v) => !isNil(v);
 
@@ -47,11 +118,11 @@ export default class SimpleWeatherAPI {
         return 10;
     }
 
-    private static _createTotalWeatherData(fetchWeatherResponse: any): T.TotalWeatherData {
+    private static _createTotalWeatherData(fetchWeatherResponse: any): TotalWeatherData {
         //TODO: this all should be a transformer on the axios request for the Forecast API. Much more useful as a transformer
 
         //TODO: simplify all of these methods if possible -- DRY coding
-        const createCurrentWeatherData = (currentWeatherValues, currentWeatherUnits, dailyWeatherBlock?: VariablesWithTime, dailyWeatherUnits?: any): T.CurrentWeatherData => {
+        const createCurrentWeatherData = (currentWeatherValues, currentWeatherUnits, dailyWeatherBlock?: VariablesWithTime, dailyWeatherUnits?: any): CurrentWeatherData => {
             const {
                 time,
                 temperature_2m,
@@ -100,7 +171,7 @@ export default class SimpleWeatherAPI {
 
             return currentWeather;
         }
-        const createHourlyWeatherData = (block: VariablesWithTime, units: any, currentWeatherTime = undefined, maxHourlySets = SimpleWeatherAPI.MAX_HOURLY_SETS): Array<T.HourlyWeatherData> => {
+        const createHourlyWeatherData = (block: VariablesWithTime, units: any, currentWeatherTime = undefined, maxHourlySets = SimpleWeatherAPI.MAX_HOURLY_SETS): Array<HourlyWeatherData> => {
             let valueSet = createEnumerableFromKeys(block)
                 .map(values => {
                     const {
@@ -169,7 +240,7 @@ export default class SimpleWeatherAPI {
             }
             return valueSet.slice(0, maxHourlySets);
         }
-        const createDailyWeatherData = (block: VariablesWithTime, units: any, maxDailySets = SimpleWeatherAPI.MAX_DAILY_SETS): Array<T.DailyWeatherData> => {
+        const createDailyWeatherData = (block: VariablesWithTime, units: any, maxDailySets = SimpleWeatherAPI.MAX_DAILY_SETS): Array<DailyWeatherData> => {
             const valueSet = createEnumerableFromKeys(block);
             return valueSet.map(values => {
                 const {
@@ -244,11 +315,11 @@ export default class SimpleWeatherAPI {
 
     //TODO: allow for units of measurement and temperature units (m vs inch; C vs F)
     //TODO: pass in timezone from system
-    static async getWeather(coordinates: Coordinates, timezone: Timezone | 'auto' = 'auto', opts: T.GetWeatherOpts = {
+    static async getWeather(coordinates: Coordinates, timezone: Timezone | 'auto' = 'auto', opts: GetWeatherOpts = {
         temperature_unit: TemperatureUnit.fahrenheit,
         wind_speed_unit: WindSpeedUnit.mph,
         precipitation_unit: PrecipitationUnit.inch,
-    }): Promise<T.TotalWeatherData> {
+    }): Promise<TotalWeatherData> {
         const [latitude, longitude] = coordinates;
         const fetchWeatherResponse = await OpenMeteoWeatherForecastAPI.fetchAllWeatherForLocation({
             latitude: [latitude],
