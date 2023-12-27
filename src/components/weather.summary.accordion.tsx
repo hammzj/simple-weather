@@ -1,23 +1,47 @@
 import React from 'react';
-import {isEqual} from "lodash";
-import {DateTime, Zone} from 'luxon';
-import {Accordion, AccordionSummary, AccordionDetails, Stack, Typography} from '@mui/material';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import AdditionalWeatherDetails from "./additional.weather.details";
+import {
+    Accordion,
+    AccordionSummary,
+    AccordionDetails,
+    Box,
+    Stack,
+    Table,
+    TableBody,
+    TableCell,
+    TableContainer,
+    TableRow,
+    Typography
+} from '@mui/material';
+import {ExpandMore} from '@mui/icons-material';
 import PrecipitationChance from './precipitation.chance';
 import WeatherIcon from "./weather.icon";
+import {NOT_AVAILABLE_TEXT} from './constants';
+import {weatherCodeToText} from './utils';
+import {DailyWeatherData, HourlyWeatherData} from "../services/api";
+import {isEqual} from "lodash";
+import {DateTime, Zone} from 'luxon';
 
-type  WeatherSummaryButtonTimeType = 'hourly' | 'daily';
+type  WeatherSummaryTimeType = 'hourly' | 'daily';
 
 interface WeatherSummaryAccordionProps {
-    type: WeatherSummaryButtonTimeType,
+    type: WeatherSummaryTimeType,
     mappedWeatherData: any,
     timezone?: string | 'local' | Zone,
     onChange?: any,
     props?: any
 }
 
-const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, timezone?: Zone | string): string => {
+interface AdditionalWeatherDetailsProps {
+    type: WeatherSummaryTimeType
+    mappedWeatherData: HourlyWeatherData | DailyWeatherData | {}
+}
+
+interface AdditionalWeatherDetailsRowProps {
+    title: string,
+    value: string | number
+}
+
+const getTimeStringForSummary = (type: WeatherSummaryTimeType, dateTime: string, timezone?: Zone | string): string => {
     const isDaily = isEqual(type, 'daily');
     const localeString = isDaily ?
         DateTime.DATE_MED :
@@ -27,6 +51,94 @@ const getTimeString = (type: WeatherSummaryButtonTimeType, dateTime: string, tim
     return dt.toLocaleString(localeString);
 }
 
+const AdditionalWeatherDetailsRow = ({title, value}): React.ReactElement => {
+    const id = `${title.replace(':', '').replace(/\s/g, '-').toLowerCase()}`;
+    return (
+        <TableRow id={id}>
+            <TableCell align='left'>
+                <Typography>{title}</Typography>
+            </TableCell>
+            <TableCell align='left'>
+                <Typography>{value ?? NOT_AVAILABLE_TEXT}</Typography>
+            </TableCell>
+        </TableRow>
+    )
+}
+
+/*
+* This component is the container for the rows with additional details displayed when the accordion is expanded
+* Exporting for use in testing
+*/
+export const AdditionalWeatherDetails = ({type, mappedWeatherData = {}}): React.ReactElement => {
+    //handle state change when updated by newly selected row
+    const hourlyDetails = (mappedWeatherData) => {
+        const {
+            temperature,
+            precipitation_probability,
+            precipitation,
+            humidity,
+            weather_code,
+            cloud_cover,
+            wind,
+            wind_gusts,
+        } = mappedWeatherData;
+        return [
+            {title: "Temperature:", value: temperature},
+            {title: "Conditions:", value: weatherCodeToText(weather_code)},
+            {title: "Precipitation:", value: precipitation},
+            {title: "Precipitation probability:", value: precipitation_probability},
+            {title: "Wind:", value: wind},
+            {title: "Wind gusts:", value: wind_gusts},
+            {title: "Humidity:", value: humidity},
+            {title: "Cloud cover:", value: cloud_cover},
+        ]
+    }
+    const dailyDetails = (mappedWeatherData) => {
+        const {
+            temperature_range,
+            weather_code,
+            sunrise,
+            sunset,
+            precipitation_probability,
+            precipitation,
+            wind,
+            wind_gusts,
+        } = mappedWeatherData;
+
+        const convertToTime = (time: string) => {
+            return DateTime.fromISO(time).toLocaleString(DateTime.TIME_SIMPLE);
+        }
+
+        return [
+            {title: "Temperature Low/High:", value: temperature_range},
+            {title: "Conditions:", value: weatherCodeToText(weather_code)},
+            {title: "Precipitation:", value: precipitation},
+            {title: "Precipitation probability:", value: precipitation_probability},
+            {title: "Wind (with dominant direction):", value: wind},
+            {title: "Wind gusts:", value: wind_gusts},
+            {title: "Sunrise:", value: convertToTime(sunrise)},
+            {title: "Sunset:", value: convertToTime(sunset)},
+        ];
+    }
+
+    const details = isEqual(type, 'hourly') ?
+        hourlyDetails(mappedWeatherData) :
+        dailyDetails(mappedWeatherData);
+    return (
+        <Box id="additional-weather-details">
+            <TableContainer>
+                <Table>
+                    <TableBody>
+                        {details.map(({title, value}, i) => <AdditionalWeatherDetailsRow key={i} title={title}
+                                                                                         value={value}/>)}
+                    </TableBody>
+                </Table>
+            </TableContainer>
+        </Box>
+    )
+}
+
+
 //TODO: fix typing to correctly include "expanded" and "onChange"
 export default function WeatherSummaryAccordion({
                                                     type,
@@ -34,10 +146,10 @@ export default function WeatherSummaryAccordion({
                                                     timezone,
                                                     ...props
                                                 }: WeatherSummaryAccordionProps | any) {
-    const timeString = getTimeString(type, mappedWeatherData.time, timezone || 'local');
+    const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || 'local');
     return (
         <Accordion id={`${type}-weather-summary-accordion`} {...props}>
-            <AccordionSummary expandIcon={<ExpandMoreIcon/>}>
+            <AccordionSummary expandIcon={<ExpandMore/>}>
                 <Stack
                     direction="row"
                     justifyContent="flex-start"

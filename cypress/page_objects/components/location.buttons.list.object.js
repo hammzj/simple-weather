@@ -1,6 +1,6 @@
 import ElementCollection from "../element.collection";
 import LocationDataButtonObject from "./location.data.button.object";
-import {getLocationName} from "../../../src/services/open_mateo_api/utils";
+import {getLocationName} from "../../../src/services/open_meteo_api/utils";
 
 export default class LocationButtonsListObject extends ElementCollection {
     constructor() {

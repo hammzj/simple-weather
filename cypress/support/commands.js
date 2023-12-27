@@ -1,7 +1,7 @@
 // React 16, 17
 import {mount} from 'cypress/react18'
 import {MemoryRouter} from 'react-router-dom'
-import {OpenMeteoWeatherForecastAPI} from "../../src/services/open_mateo_api";
+import {OpenMeteoWeatherForecastAPI} from "../../src/services/open_meteo_api";
 import SimpleWeatherAPI from "../../src/services/api";
 
 
@@ -23,6 +23,7 @@ Cypress.Commands.add('stubAndAliasWeatherData', ({
             cy.fixture(`/open_meteo_api/forecast_api/${coordinatesFixture}`)
                 .then(coordinatesFixture => {
                     cy.stub(OpenMeteoWeatherForecastAPI, 'fetchAllWeatherForLocation').returns(fetchWeatherResponseFixture);
+                    cy.intercept(`*/forecast*`, fetchWeatherResponseFixture).as('fetchAllWeatherForLocation');
                     cy.wrap(SimpleWeatherAPI.getWeather(coordinatesFixture)).as(alias);
                 });
         });

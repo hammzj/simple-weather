@@ -1,13 +1,13 @@
 import LocationResultsPageObject from '../../page_objects/pages/location.results.page.object';
-import {getLocationName} from "../../../src/services/open_mateo_api/utils";
+import {getLocationName} from "../../../src/services/open_meteo_api/utils";
 
 const locationResultsPageObject = new LocationResultsPageObject();
 
 describe('LocationResultsPage', function () {
     beforeEach(function () {
         //Avoid Initial call at all times
-        cy.intercept(`*/search*`).as('searchForLocations');
-        cy.fixture('/open_meteo_api/geocoding_api/search.for.locations.200').as('locationDataResults');
+        cy.intercept(`*open-meteo*`).as('openMeteo');
+        cy.fixture('/open_meteo_api/geocoding_api/search.for.locations.200.berlin').as('locationDataResults');
     });
 
     context('Provided with correct data', function () {
@@ -77,7 +77,7 @@ describe('LocationResultsPage', function () {
 
             cy.visit(locationResultsPageObject.url());
 
-            cy.get(".MuiTypography-root").should('have.text', 'No locations could be found.');
+            cy.get(".MuiTypography-root").should('contain.text', 'No locations could be found.');
         });
 
         it('displays a message when no query parameters are provided', function () {
@@ -85,7 +85,7 @@ describe('LocationResultsPage', function () {
 
             cy.visit(locationResultsPageObject.url())
 
-            cy.get(".MuiTypography-root").should('have.text', 'No locations could be found.');
+            cy.get(".MuiTypography-root").should('contain.text', 'No locations could be found.');
         });
     });
 });

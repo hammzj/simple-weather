@@ -1,6 +1,5 @@
 import React from "react";
-import Tooltip from "@mui/material/Tooltip";
-import Typography from "@mui/material/Typography";
+import {Tooltip, Typography} from "@mui/material";
 import WaterDropIcon from "@mui/icons-material/WaterDrop";
 import {NOT_AVAILABLE_TEXT} from "./constants";
 

@@ -1,11 +1,9 @@
 import React from 'react';
-import Card from '@mui/material/Card';
-import Stack from "@mui/material/Stack";
-import Typography from '@mui/material/Typography';
+import {Card, Stack, Typography} from '@mui/material';
 import PrecipitationChance from './precipitation.chance';
 import WeatherIcon from "./weather.icon";
+import {CurrentWeatherData} from "../services/api";
 import {DateTime} from "luxon";
-import {CurrentWeatherData} from "../services/api/types";
 
 type CurrentWeatherCardParams = {
     locationName: string,
@@ -15,7 +13,7 @@ type CurrentWeatherCardParams = {
 export default function CurrentWeatherCard({
                                                locationName,
                                                currentWeatherData
-                                           }: CurrentWeatherCardParams) {
+                                           }: CurrentWeatherCardParams): React.ReactElement {
     const timeString = DateTime.fromISO(currentWeatherData.mapped.time).toLocaleString(DateTime.DATETIME_MED)
 
     return (

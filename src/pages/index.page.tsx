@@ -1,11 +1,11 @@
 import React from "react";
-import Container from "@mui/material/Container";
+import Page from '../components/page';
 import LocationSearchForm from "../components/location.search.form";
 
-export default function IndexPage(props) {
+export default function IndexPage(): React.ReactElement {
     return (
-        <Container>
+        <Page>
             <LocationSearchForm/>
-        </Container>
+        </Page>
     )
 };

@@ -1,13 +1,9 @@
 import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
-import Box from '@mui/material/Box';
-import Button from "@mui/material/Button";
-import TextField from '@mui/material/TextField';
-import Stack from '@mui/material/Stack';
+import {Box, Button, Stack, TextField} from '@mui/material';
 import PATHS from '../routes/paths';
 
-
-export default function LocationSearchForm() {
+export default function LocationSearchForm(): React.ReactElement {
     const navigate = useNavigate();
     const [locationName, setLocationName] = useState('');
 
@@ -26,7 +22,7 @@ export default function LocationSearchForm() {
         <Box component="form" id='location-search-form' onSubmit={handleSubmit}>
             <Stack direction='row' spacing='1.5em'>
                 <TextField id="location-input"
-                           label="Search for a location"
+                           label="Search for a city/postal code"
                            variant="outlined"
                            size="small"
                            onChange={handleChange}
