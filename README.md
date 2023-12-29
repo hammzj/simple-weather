@@ -2,11 +2,6 @@
 
 ## Attribution
 
-
 ### The open-meteo API
 Weather forecasting and geocoding API provided by OpenMeteo: https://open-meteo.com/. API data provided under the
 Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license. Please [see more about the license here](https://open-meteo.com/en/license).
-
-### Weather Icons
-Weather SVG icons by Bas Milius provided for open-source use under the MIT License.
-See [https://github.com/basmilius/weather-icons]
