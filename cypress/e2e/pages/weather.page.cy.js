@@ -46,8 +46,13 @@ describe(WeatherPage.name, function () {
             cy.get('@weatherData').then(weatherData => {
                 cy.get('@locationData').then(locationData => {
                     //Assert
-                    weatherPageObject.LocationSearchFormObject((lsfo) => {
-                        lsfo.container.should('exist');
+                    weatherPageObject.container.should('not.have.text', 'An error occurred when loading the data.')
+                    weatherPageObject.TopNavBarObject((tnbo) => {
+                        tnbo.container.should('exist');
+                        tnbo.LocationSearchFormObject(lsfo => lsfo.container.should('exist'));
+                    });
+                    weatherPageObject.BottomNavBarObject(bnvo => {
+                        bnvo.container.should('exist');
                     });
                     weatherPageObject.CurrentWeatherCardObject((cwco) => {
                         cwco.container.should('exist');
@@ -80,8 +85,11 @@ describe(WeatherPage.name, function () {
                     weatherPageObject.container.should('contain.text', getLocationName(oldLocationData));
 
                     //Action: search for new location
-                    weatherPageObject.LocationSearchFormObject((lsfo) => {
-                        lsfo._search(newLocationData.name);
+                    weatherPageObject.TopNavBarObject((navBar) => {
+                        navBar.LocationSearchFormObject(function (locationSearchFormObject) {
+                            locationSearchFormObject._search(newLocationData.name);
+                            cy.wait(1000);
+                        });
                     });
 
                     //Assert: Check the first button exists

@@ -1,12 +1,11 @@
 import React, {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
-import {Box, Divider} from "@mui/material";
+import {Container, Box, Divider} from "@mui/material";
 import Page from '../components/page';
 import Message from "../components/message";
 import LoadingMessage from "../components/loading.message";
 import CurrentWeatherCard from '../components/current.weather.card';
 import WeatherViewContainer from '../components/weather.view.container';
-import LocationSearchForm from "../components/location.search.form";
 import SimpleWeatherAPI from "../services/api";
 import {OpenMeteoGeocodingAPI} from "../services/open_meteo_api";
 import {PrecipitationUnit, TemperatureUnit, WindSpeedUnit} from "../services/open_meteo_api/forecast_api";
@@ -26,16 +25,20 @@ const ErrorMessage = () => {
 const WeatherPageContainer = ({locationName, weatherData = {}}: WeatherPageContainerProps): React.ReactElement => {
     const {current_weather} = weatherData;
     const hasNeededData = weatherData.current_weather && locationName
-    return (<Box>
-            <LocationSearchForm/>
-            <Divider/>
+    return (<Box
+            paddingLeft='3em'
+            paddingRight='3em'>
             {hasNeededData ?
                 (
-                    <>
+                    <Container>
                         <CurrentWeatherCard locationName={locationName} currentWeatherData={current_weather}/>
                         <Divider/>
-                        <WeatherViewContainer weatherData={weatherData}/>
-                    </>
+                        <Box
+                            marginTop='1.5em'
+                        >
+                            <WeatherViewContainer weatherData={weatherData}/>
+                        </Box>
+                    </Container>
                 ) :
                 <ErrorMessage/>
             }
@@ -78,14 +81,18 @@ export default function WeatherPage(): React.ReactElement {
                 }
             };
 
-            const locationData = await requestLocationData(locationId);
-            if (locationData) {
-                const {latitude, longitude} = locationData;
-                //Used for the current weather to display the name
-                setLocationName(getLocationName(locationData));
-                if (latitude && longitude) {
-                    requestWeatherData([latitude, longitude]);
+            try {
+                const locationData = await requestLocationData(locationId);
+                if (locationData) {
+                    const {latitude, longitude} = locationData;
+                    //Used for the current weather to display the name
+                    setLocationName(getLocationName(locationData));
+                    if (latitude && longitude) {
+                        await requestWeatherData([latitude, longitude]);
+                    }
                 }
+            } finally {
+                setIsLoading(false);
             }
         }
 
@@ -94,12 +101,9 @@ export default function WeatherPage(): React.ReactElement {
             setIsLoading(true);
             getGeocodingAndWeatherData(id);
         } catch (err) {
-            console.log(err)
-        } finally {
-            setIsLoading(false);
+            console.log(err);
         }
     }, [search]);
-
     return (
         <Page>
             {

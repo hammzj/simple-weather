@@ -8,6 +8,7 @@ import LoadingMessage from '../components/loading.message';
 import LocationSearchForm from '../components/location.search.form';
 import LocationDataButton from '../components/location.data.button';
 import OpenMeteoGeocodingAPI from '../services/open_meteo_api/geocoding_api';
+import TopNavBar from "../components/top.nav.bar";
 
 const NoLocationsMessage = (): React.ReactElement => {
     return <Message value='No locations could be found.'/>
@@ -70,13 +71,6 @@ export default function LocationResultsPage(): React.ReactElement {
 
     return (
         <Page>
-            <Box
-                alignItems="center"
-                paddingBottom={2}
-            >
-                <LocationSearchForm/>
-            </Box>
-            <Divider orientation='horizontal'/>
             {
                 isLoading ? <LoadingMessage/> :
                     isNil(locationDataResults) ?

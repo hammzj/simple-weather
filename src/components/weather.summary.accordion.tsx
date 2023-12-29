@@ -155,6 +155,7 @@ export default function WeatherSummaryAccordion({
                     justifyContent="flex-start"
                     alignItems="center"
                     spacing={3}
+                    marginLeft='0.5em'
                 >
                     <Typography id="time">{timeString}</Typography>
                     <Typography id='temperature'
