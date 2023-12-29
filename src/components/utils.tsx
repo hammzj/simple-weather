@@ -1,6 +1,6 @@
 import React from 'react';
 import {AcUnit, Cloud, FilterDrama, Thunderstorm, Shower, WbSunny, Waves} from '@mui/icons-material';
-import {NOT_AVAILABLE_TEXT} from "./constants";
+import {NOT_AVAILABLE_TEXT} from "../constants";
 import {WeatherCode} from "../services/open_meteo_api/forecast_api";
 import {capitalize, includes, isEqual, isNil} from "lodash";
 

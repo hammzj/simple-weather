@@ -1,6 +1,6 @@
 import PrecipitationChance from '../../../src/components/precipitation.chance';
 import PrecipitationChanceObject from '../../page_objects/components/precipitation.chance.object'
-import {NOT_AVAILABLE_TEXT} from "../../../src/components/constants";
+import {NOT_AVAILABLE_TEXT} from "../../../src/constants";
 
 
 describe(PrecipitationChance.name, function () {

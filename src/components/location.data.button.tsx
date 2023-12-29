@@ -19,7 +19,7 @@ export default function LocationDataButton({locationData}: LocationDataButtonPar
             <Link
                 to={{
                     pathname: PATHS.WEATHER,
-                    search: createWeatherPageSearchParams(locationData.id),
+                    search: createWeatherPageSearchParams(locationData.id)
                 }}>
                 <Button variant="outlined">
                     <span>{getLocationName(locationData)}</span>

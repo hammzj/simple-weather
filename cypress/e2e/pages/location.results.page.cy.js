@@ -21,8 +21,12 @@ describe('LocationResultsPage', function () {
         it('renders the search form', function () {
             cy.get('@locationResultsPageUrl').then(url => {
                 cy.visit(url);
-                locationResultsPageObject.LocationSearchFormObject(function (lsfo) {
-                    lsfo.container.should('exist');
+                locationResultsPageObject.TopNavBarObject((tnbo) => {
+                    tnbo.container.should('exist');
+                    tnbo.LocationSearchFormObject(lsfo => lsfo.container.should('exist'));
+                });
+                locationResultsPageObject.BottomNavBarObject(bnvo => {
+                    bnvo.container.should('exist');
                 });
             });
         });
@@ -55,9 +59,12 @@ describe('LocationResultsPage', function () {
 
                         //When searching in the form, return new results on page redirect
                         cy.intercept(`*/search*`, locationDataResultsAlternate).as('searchForLocations');
-                        locationResultsPageObject.LocationSearchFormObject(function (locationSearchFormObject) {
-                            locationSearchFormObject._search('raleigh');
-                            cy.wait(1000);
+
+                        locationResultsPageObject.TopNavBarObject((navBar) => {
+                            navBar.LocationSearchFormObject(function (locationSearchFormObject) {
+                                locationSearchFormObject._search('raleigh');
+                                cy.wait(1000);
+                            });
                         });
 
                         //Check buttons have new results

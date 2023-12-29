@@ -19,17 +19,26 @@ export default function LocationSearchForm(): React.ReactElement {
 
     //@ts-ignore: TS2339
     return (
-        <Box component="form" id='location-search-form' onSubmit={handleSubmit}>
-            <Stack direction='row' spacing='1.5em'>
+        <Box
+            component="form"
+            id='location-search-form'
+            onSubmit={handleSubmit}
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+            padding ='0.5em'
+        >
+            <Stack direction='row' spacing='1.5em' >
                 <TextField id="location-input"
-                           label="Search for a city/postal code"
+                           helperText="Search for a city/postal code"
                            variant="outlined"
                            size="small"
                            onChange={handleChange}
                 />
                 <Button
                     type="submit"
-                    variant="outlined">
+                    size='small'
+                    variant="contained">
                     <span>Submit</span>
                 </Button>
             </Stack>

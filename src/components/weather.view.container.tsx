@@ -33,7 +33,9 @@ const WeatherRowsTabPanel = (props): React.ReactElement => {
                 isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
                     const accordionId = `accordion-${i}`;
                     return (
-                        <Box paddingBottom={'1.5em'}>
+                        <Box
+                            paddingBottom='2em'
+                            key={accordionId}>
                             <WeatherSummaryAccordion
                                 expanded={isEqual(expanded, accordionId)}
                                 onChange={handleChange(accordionId)}
