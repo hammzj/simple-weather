@@ -2,7 +2,6 @@ import WeatherIcon from '../../../src/components/weather.icon';
 import WeatherIconObject from '../../page_objects/components/weather.icon.object';
 import {weatherCodeToText} from "../../../src/components/utils";
 import {WeatherCode} from "../../../src/services/open_meteo_api/forecast_api";
-import {NOT_AVAILABLE_TEXT} from "../../../src/components/constants"
 
 //Enums are weird
 const stringKeys = Object

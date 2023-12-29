@@ -15,7 +15,7 @@ import {
 import {ExpandMore} from '@mui/icons-material';
 import PrecipitationChance from './precipitation.chance';
 import WeatherIcon from "./weather.icon";
-import {NOT_AVAILABLE_TEXT} from './constants';
+import {NOT_AVAILABLE_TEXT} from '../constants';
 import {weatherCodeToText} from './utils';
 import {DailyWeatherData, HourlyWeatherData} from "../services/api";
 import {isEqual} from "lodash";

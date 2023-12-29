@@ -5,6 +5,7 @@ import IndexPage from "../pages/index.page";
 import WeatherPage from "../pages/weather.page";
 import LocationResultsPage from "../pages/location.results.page";
 import ErrorPage from "../pages/error.page";
+import AboutPage from "../pages/about.page";
 
 const router = createBrowserRouter([
     {
@@ -13,7 +14,7 @@ const router = createBrowserRouter([
     },
     {
         path: PATHS.ABOUT,
-        element: <div>TODO: add text here</div>
+        element: <AboutPage/>
     },
     {
         path: PATHS.RESULTS,

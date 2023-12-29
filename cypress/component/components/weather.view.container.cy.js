@@ -1,5 +1,5 @@
 import {DateTime} from "luxon";
-import {NOT_AVAILABLE_TEXT} from "../../../src/components/constants";
+import {NOT_AVAILABLE_TEXT} from "../../../src/constants";
 import WeatherViewContainer from '../../../src/components/weather.view.container';
 import WeatherViewContainerObject from '../../page_objects/components/weather.view.container.object';
 

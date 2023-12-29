@@ -4,14 +4,30 @@ import IndexPageObject from '../../page_objects/pages/index.page.object';
 const indexPage = new IndexPageObject();
 
 describe(IndexPage.name, function () {
-    it('renders correctly', function () {
+    beforeEach(function () {
         cy.visit(Cypress.config().baseUrl);
+    });
 
-        indexPage.LocationSearchFormObject(lsfo => {
-            lsfo.container.should('exist');
+    it('renders correctly', function () {
+        indexPage.LocationSearchFormObject(locationSearchFormObject => {
+            locationSearchFormObject.container.should('exist');
         });
-        //TODO: check link to about page
+        indexPage.BottomNavBarObject(bottomNavBarObject => {
+            bottomNavBarObject.container.should('exist');
+        });
         //TODO: check settings exist
     });
 
+    context('Bottom nav bar', function () {
+
+        //TODO: make this more robust
+        it('can go to the about page', function () {
+            indexPage.BottomNavBarObject(bottomNavBarObject => {
+                bottomNavBarObject.aboutLink.click();
+                cy.url().then(url => {
+                    expect(url).to.include('/about');
+                });
+            });
+        });
+    });
 });

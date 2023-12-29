@@ -5,6 +5,10 @@ export default class BottomNavBarObject extends ElementCollection {
         super(() => cy.get(`#bottom-nav-bar`));
     }
 
+    get homeLink() {
+        return this.container.contains('a', 'Home');
+    }
+
     get aboutLink() {
         return this.container.contains('a', 'About');
     }

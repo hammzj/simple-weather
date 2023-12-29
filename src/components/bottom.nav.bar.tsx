@@ -1,7 +1,8 @@
 import React from 'react';
 import {Container, Stack, Link as MuiLink, Typography} from '@mui/material';
 import {GitHub as GitHubIcon} from '@mui/icons-material';
-import {GITHUB_AUTHOR_LINK} from "./constants";
+import OpenMeteoAttributionLink from "./open-meteo-attribution-link";
+import {GITHUB_AUTHOR_LINK} from "../constants";
 import PATHS from "../routes/paths";
 
 export default function BottomNavBar(): React.ReactElement {
@@ -15,12 +16,18 @@ export default function BottomNavBar(): React.ReactElement {
             >
                 <MuiLink
                     underline='hover'
+                    href={PATHS.INDEX}>
+                    <Typography>Home</Typography>
+                </MuiLink>
+                <MuiLink
+                    underline='hover'
                     href={PATHS.ABOUT}>
                     <Typography>About</Typography>
                 </MuiLink>
                 <MuiLink href={GITHUB_AUTHOR_LINK}>
                     <GitHubIcon/>
                 </MuiLink>
+                <OpenMeteoAttributionLink/>
             </Stack>
         </Container>
     )

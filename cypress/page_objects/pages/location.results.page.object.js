@@ -9,10 +9,6 @@ export default class LocationResultsPageObject extends PageObject {
         super(`/results`);
     }
 
-    LocationSearchFormObject(fn) {
-        this.container.within(() => fn(new LocationSearchFormObject()));
-    }
-
     TopNavBarObject(fn) {
         this.container.within(() => fn(new TopNavBarObject()));
     }
