@@ -17,12 +17,19 @@ export default function CurrentWeatherCard({
     const timeString = DateTime.fromISO(currentWeatherData.mapped.time).toLocaleString(DateTime.DATETIME_MED)
 
     return (
-        <Card>
+        <Card
+            sx={{
+                boxShadow: '4px 4px 1px 1px black;',
+                border: 1,
+                borderRadius: 0,
+            }}
+        >
             <Stack
                 id="current-weather"
                 direction='column'
                 alignItems='center'
                 spacing={0.4}
+                margin='0.5em'
             >
                 <Typography fontSize='1.5rem' id='location'>{locationName}</Typography>
                 <Typography fontSize='2.5rem' id='temperature'>{currentWeatherData.mapped.temperature}</Typography>

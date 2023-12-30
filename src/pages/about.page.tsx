@@ -8,6 +8,8 @@ import {
     REACT_DEV_HOMEPAGE, TYPESCRIPT_HOMEPAGE,
 } from "../constants";
 
+//TODO: use react markdown instead. it's better
+const linkStyle = {color: 'black', textDecorationColor: 'black'};
 
 export default function AboutPage(): React.ReactElement {
     return (
@@ -34,13 +36,17 @@ export default function AboutPage(): React.ReactElement {
                     </Typography>
 
                     <Typography>
-                        The frontend uses <MuiLink href={NODEJS_HOMEPAGE}>Node-js</MuiLink>, <MuiLink
-                        href={TYPESCRIPT_HOMEPAGE}>TypeScript</MuiLink>, <MuiLink
-                        href={REACT_DEV_HOMEPAGE}>React</MuiLink>, <MuiLink href={MATERIAL_UI_HOMEPAGE}>Material
-                        UI</MuiLink>, and is tested with <MuiLink
-                        href={CYPRESS_IO_HOMEPAGE}>Cypress</MuiLink>. The backend
+                        The frontend uses <MuiLink sx={linkStyle} href={NODEJS_HOMEPAGE}>Node-js</MuiLink>, <MuiLink
+                        sx={linkStyle}
+                        href={TYPESCRIPT_HOMEPAGE}>TypeScript</MuiLink>, <MuiLink sx={linkStyle}
+                                                                                  href={REACT_DEV_HOMEPAGE}>React</MuiLink>, <MuiLink
+                        sx={linkStyle} href={MATERIAL_UI_HOMEPAGE}>Material
+                        UI</MuiLink>, and is tested with <MuiLink sx={linkStyle}
+                                                                  href={CYPRESS_IO_HOMEPAGE}>Cypress</MuiLink>. The
+                        backend
                         services
-                        utilize the <MuiLink href={OPEN_METEO_HOMEPAGE}>Open-Meteo API</MuiLink>, which pulls from
+                        utilize the <MuiLink sx={linkStyle} href={OPEN_METEO_HOMEPAGE}>Open-Meteo API</MuiLink>, which
+                        pulls from
                         various sources.
                         Take note that the API may only update the data in intervals ranging between ten minutes up to
                         an hour, so
@@ -50,7 +56,7 @@ export default function AboutPage(): React.ReactElement {
                     <Typography> I hope that this website provides a very fluid and comforting experience.</Typography>
 
                     <Typography>For any information about this website or to report issues, please respond to me through
-                        my <MuiLink href={GITHUB_AUTHOR_LINK}>GitHub profile.</MuiLink></Typography>
+                        my <MuiLink sx={linkStyle} href={GITHUB_AUTHOR_LINK}>GitHub profile.</MuiLink></Typography>
                 </Stack>
             </Stack>
         </Page>

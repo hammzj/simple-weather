@@ -58,6 +58,7 @@ export default function WeatherViewContainer({weatherData}): React.ReactElement 
 
     const {hourly_weather, daily_weather} = weatherData;
 
+    //TODO: style the tabs
     return (
         <Box id='weather-view'>
             <Box paddingBottom='1em'>
@@ -65,8 +66,10 @@ export default function WeatherViewContainer({weatherData}): React.ReactElement 
                     value={value}
                     onChange={handleChange}
                     centered
+
                 >
-                    <Tab label="Hourly"/>
+                    <Tab label="Hourly"
+                    />
                     <Tab label="Daily"/>
                 </Tabs>
             </Box>
