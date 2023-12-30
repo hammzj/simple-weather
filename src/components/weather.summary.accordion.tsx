@@ -38,7 +38,7 @@ interface AdditionalWeatherDetailsProps {
 
 interface AdditionalWeatherDetailsRowProps {
     title: string,
-    value: string | number
+    value?: string | number
 }
 
 const getTimeStringForSummary = (type: WeatherSummaryTimeType, dateTime: string, timezone?: Zone | string): string => {
@@ -51,14 +51,14 @@ const getTimeStringForSummary = (type: WeatherSummaryTimeType, dateTime: string,
     return dt.toLocaleString(localeString);
 }
 
-const AdditionalWeatherDetailsRow = ({title, value}): React.ReactElement => {
+const AdditionalWeatherDetailsRow = ({title, value}: AdditionalWeatherDetailsRowProps): React.ReactElement => {
     const id = `${title.replace(':', '').replace(/\s/g, '-').toLowerCase()}`;
     return (
         <TableRow id={id}>
-            <TableCell align='left'>
+            <TableCell sx={{align: 'left', borderBottom: 1}}>
                 <Typography>{title}</Typography>
             </TableCell>
-            <TableCell align='left'>
+            <TableCell sx={{align: 'left', borderBottom: 1}}>
                 <Typography>{value ?? NOT_AVAILABLE_TEXT}</Typography>
             </TableCell>
         </TableRow>
@@ -148,8 +148,17 @@ export default function WeatherSummaryAccordion({
                                                 }: WeatherSummaryAccordionProps | any) {
     const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || 'local');
     return (
-        <Accordion id={`${type}-weather-summary-accordion`} {...props}>
-            <AccordionSummary expandIcon={<ExpandMore/>}>
+        <Accordion
+            id={`${type}-weather-summary-accordion`}
+            sx={{boxShadow: 0}}
+            {...props}>
+            <AccordionSummary
+                sx={{
+                    border: 1,
+                    borderRadius: 0,
+                }}
+                expandIcon={<ExpandMore/>}
+            >
                 <Stack
                     direction="row"
                     justifyContent="flex-start"
@@ -164,11 +173,20 @@ export default function WeatherSummaryAccordion({
                     <PrecipitationChance precipitation={mappedWeatherData.precipitation_probability}/>
                 </Stack>
             </AccordionSummary>
-            <AccordionDetails>
-                <AdditionalWeatherDetails
-                    type={type}
-                    mappedWeatherData={mappedWeatherData}
-                />
+            <AccordionDetails
+                sx={{
+                    border: 0,
+                }}
+            >
+                <Box
+                    sx={{
+                        border: 1,
+                        borderRadius: 0,
+                        boxShadow: '4px 4px 1px 1px black;',
+                    }}
+                >
+                    <AdditionalWeatherDetails type={type} mappedWeatherData={mappedWeatherData}/>
+                </Box>
             </AccordionDetails>
         </Accordion>
     )

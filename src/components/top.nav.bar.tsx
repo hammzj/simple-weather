@@ -7,8 +7,14 @@ export default function TopNavBar(): React.ReactElement {
         <Box
             id='top-nav-bar'
             marginBottom='1em'
+            sx={{border: 1}}
         >
-            <AppBar position='static'>
+            <AppBar position='static'
+                    sx={{
+                        backgroundColor: 'white',
+                        boxShadow: 0,
+                    }}
+            >
                 <Stack justifyContent='center'>
                     <LocationSearchForm/>
                 </Stack>

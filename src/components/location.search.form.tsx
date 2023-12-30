@@ -26,9 +26,9 @@ export default function LocationSearchForm(): React.ReactElement {
             display="flex"
             justifyContent="center"
             alignItems="center"
-            padding ='0.5em'
+            padding='0.5em'
         >
-            <Stack direction='row' spacing='1.5em' >
+            <Stack direction='row' spacing='1.5em'>
                 <TextField id="location-input"
                            helperText="Search for a city/postal code"
                            variant="outlined"
@@ -38,7 +38,12 @@ export default function LocationSearchForm(): React.ReactElement {
                 <Button
                     type="submit"
                     size='small'
-                    variant="contained">
+                    sx={{
+
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: 1,
+                    }}>
                     <span>Submit</span>
                 </Button>
             </Stack>
