@@ -17,8 +17,10 @@ describe(WeatherIcon.name, function () {
             });
 
             it('displays a unique icon per each weather code', function () {
-                //TODO: make this more robust and check actual icons
+                //TODO: make this more robust and check the data-testid
                 const wio = new WeatherIconObject();
+
+                cy.log(weatherCodeToText(value))
                 wio.container.find('svg').should('exist');
             });
 

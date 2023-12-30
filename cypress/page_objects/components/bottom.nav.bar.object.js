@@ -13,7 +13,11 @@ export default class BottomNavBarObject extends ElementCollection {
         return this.container.contains('a', 'About');
     }
 
-   get gitHubAuthorLink() {
+    get apiAttributionLink() {
+        return this.container.contains('a', ' Weather data by Open-Meteo.com');
+    }
+
+    get gitHubAuthorLink() {
         return this.container.find('svg[data-testid="GitHubIcon"]').parents('a');
     }
 

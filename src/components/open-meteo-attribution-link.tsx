@@ -6,7 +6,7 @@ import {OPEN_METEO_HOMEPAGE} from "../constants";
 export default function OpenMeteoAttributionLink(): React.ReactElement {
     return (
         <MuiLink href={OPEN_METEO_HOMEPAGE}>
-            <Typography> Weather data by Open-Meteo.com</Typography>
+            <Typography noWrap={true}> Weather data by Open-Meteo.com</Typography>
         </MuiLink>
     )
 }
