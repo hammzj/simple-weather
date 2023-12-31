@@ -2,6 +2,8 @@
 
 This repository contains a simple application that displays weather forecasts.
 
+Created by Zachary J. Hamm
+
 ## Attribution
 
 ### The open-meteo API
