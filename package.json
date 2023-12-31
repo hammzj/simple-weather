@@ -2,8 +2,8 @@
   "name": "simple-weather",
   "version": "1.0.0",
   "author": "Zachary Hamm <zjhamm304@gmail.com>",
-  "homepage": "https://hammzj.github.io/simple-weather"
-  "private": true,
+  "homepage": "https://hammzj.github.io/simple-weather",
+  "private": false,
   "scripts": {
     "cypress:open": "cypress open",
     "cypress:run:component": "cypress run --component",
