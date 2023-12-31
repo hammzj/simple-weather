@@ -1,5 +1,7 @@
 # simple-weather
 
+This repository contains a simple application that displays weather forecasts.
+
 ## Attribution
 
 ### The open-meteo API
