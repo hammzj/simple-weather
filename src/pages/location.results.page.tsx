@@ -14,7 +14,7 @@ const NoLocationsMessage = (): React.ReactElement => {
 
 const SelectLocationMessage = (): React.ReactElement => {
     return <Message
-        typographyProps={{variant: 'h4'}}
+        typographyProps={{variant: 'h5'}}
         value='Select a location to view the weather forecast:'/>
 }
 

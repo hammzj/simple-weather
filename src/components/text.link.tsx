@@ -5,7 +5,17 @@ import React from "react";
 export default function TextLink({href, children}) {
     return (<Link to={href}>
         <Typography
-            sx={{color: 'black', textDecorationColor: 'black'}}
+            sx={{
+                color: 'primary.contrastText',
+                "&:before": {
+                    color: "#000000",
+                    textDecoration: "underline #000000"
+                },
+                "&:after": {
+                    color: "#000000",
+                    textDecoration: "underline #000000"
+                }
+            }}
         >{children}</Typography>
     </Link>)
 }

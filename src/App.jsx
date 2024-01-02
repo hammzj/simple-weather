@@ -1,17 +1,17 @@
 import React from "react";
-import {Box} from '@mui/material';
+import {Box, ThemeProvider, CssBaseline} from "@mui/material";
 import {RouterProvider} from "react-router-dom";
+import {theme} from "./theme";
 import router from "./routes/router";
-import './fonts';
-import "./App.css";
 
 export default function App() {
     return (
-        <>
-            <Box>
+        <Box sx={{textAlign: 'center'}}>
+            <ThemeProvider theme={theme}>
+                <CssBaseline/>
                 <RouterProvider router={router}/>
-            </Box>
-        </>
+            </ThemeProvider>
+        </Box>
     );
 }
 
