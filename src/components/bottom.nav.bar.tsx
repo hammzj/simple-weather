@@ -1,9 +1,18 @@
 import React from 'react';
-import {Container, Stack, Link as MuiLink, Typography} from '@mui/material';
+import {Link} from 'react-router-dom'
+import {Container, Stack,} from '@mui/material';
 import {GitHub as GitHubIcon} from '@mui/icons-material';
+import TextLink from "./text.link";
 import OpenMeteoAttributionLink from "./open-meteo-attribution-link";
 import {GITHUB_AUTHOR_LINK} from "../constants";
 import PATHS from "../routes/paths";
+
+const GitHubIconLink = () => {
+    return (<Link
+        to={GITHUB_AUTHOR_LINK}>
+        <GitHubIcon sx={{color: 'black', textDecorationColor: 'black'}}/>
+    </Link>);
+}
 
 export default function BottomNavBar(): React.ReactElement {
     return (
@@ -19,23 +28,9 @@ export default function BottomNavBar(): React.ReactElement {
                    spacing={5}
                    padding='1.2em'
             >
-                <MuiLink
-                    sx={{color: 'black', textDecorationColor: 'black'}}
-                    underline='hover'
-                    href={PATHS.INDEX}>
-                    <Typography>Home</Typography>
-                </MuiLink>
-                <MuiLink
-                    sx={{color: 'black', textDecorationColor: 'black'}}
-                    underline='hover'
-                    href={PATHS.ABOUT}>
-                    <Typography>About</Typography>
-                </MuiLink>
-                <MuiLink
-                    sx={{color: 'black', textDecorationColor: 'black'}}
-                    href={GITHUB_AUTHOR_LINK}>
-                    <GitHubIcon/>
-                </MuiLink>
+                <TextLink href={PATHS.INDEX}>Home</TextLink>
+                <TextLink href={PATHS.ABOUT}>About</TextLink>
+                <GitHubIconLink/>
                 <OpenMeteoAttributionLink/>
             </Stack>
         </Container>
