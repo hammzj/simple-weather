@@ -33,6 +33,9 @@ const router = routerCreator([
     },
 ]);
 
-if (process.env.USE_GITHUB_PAGES) router.push({path: PATHS.HOME, element: <IndexPage/>})
+//Issue #10:
+//Going to enable this permanently for now until I figure it out:
+//if (process.env.USE_GITHUB_PAGES) router.push({path: PATHS.HOME, element: <IndexPage/>})
+router.push({path: PATHS.HOME, element: <IndexPage/>});
 
 export default router;
