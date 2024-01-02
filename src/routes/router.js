@@ -29,13 +29,14 @@ const router = routerCreator([
     },
     {
         path: PATHS.WILDCARD,
-        element: <ErrorPage/>,
+        //issue #10: temporarily setting to index
+        //element: <ErrorPage/>,
+        element: <IndexPage/>,
     },
 ]);
 
 //Issue #10:
 //Going to enable this permanently for now until I figure it out:
 //if (process.env.USE_GITHUB_PAGES) router.push({path: PATHS.HOME, element: <IndexPage/>})
-router.push({path: PATHS.HOME, element: <IndexPage/>});
 
 export default router;
