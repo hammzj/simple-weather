@@ -1,5 +1,8 @@
 # simple-weather
 
+![Build and Deploy](https://github.com/hammzj/simple-weather/actions/workflows/build-and-deploy.yml/badge.svg)
+![Tests](https://github.com/hammzj/simple-weather/actions/workflows/test.yml/badge.svg)
+
 This repository contains a simple application that displays weather forecasts.
 
 Created by Zachary J. Hamm
