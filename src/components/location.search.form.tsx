@@ -39,7 +39,6 @@ export default function LocationSearchForm(): React.ReactElement {
                     type="submit"
                     size='small'
                     sx={{
-
                         backgroundColor: 'white',
                         color: 'black',
                         border: 1,
