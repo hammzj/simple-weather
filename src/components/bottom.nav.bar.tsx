@@ -1,6 +1,6 @@
 import React from 'react';
 import {Link} from 'react-router-dom'
-import {Container, Stack,} from '@mui/material';
+import {Container, Grid,} from '@mui/material';
 import {GitHub as GitHubIcon} from '@mui/icons-material';
 import TextLink from "./text.link";
 import OpenMeteoAttributionLink from "./open-meteo-attribution-link";
@@ -23,16 +23,17 @@ export default function BottomNavBar(): React.ReactElement {
                        marginBottom: '2em',
                    }}
         >
-            <Stack direction='row'
-                   justifyContent='center'
-                   spacing={5}
-                   padding='1.2em'
+            <Grid container
+                  justifyContent='center'
+                  alignContent='center'
+                  padding={2}
+                  spacing={3}
             >
-                <TextLink href={PATHS.INDEX}>Home</TextLink>
-                <TextLink href={PATHS.ABOUT}>About</TextLink>
-                <GitHubIconLink/>
-                <OpenMeteoAttributionLink/>
-            </Stack>
+                <Grid item><TextLink href={PATHS.INDEX}>Home</TextLink></Grid>
+                <Grid item><TextLink href={PATHS.ABOUT}>About</TextLink></Grid>
+                <Grid item><GitHubIconLink/></Grid>
+                <Grid item><OpenMeteoAttributionLink/></Grid>
+            </Grid>
         </Container>
     )
 }
