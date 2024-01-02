@@ -1,6 +1,6 @@
 import React, {useEffect, useState} from "react";
 import {useLocation} from "react-router-dom";
-import {Container, Box, Divider} from "@mui/material";
+import {Box, Divider, Stack} from "@mui/material";
 import Page from '../components/page';
 import Message from "../components/message";
 import LoadingMessage from "../components/loading.message";
@@ -21,28 +21,24 @@ const ErrorMessage = () => {
     return <Message value='An error occurred when loading the data.'/>
 }
 
-//TODO: use loading message instead of error messages when processing data
 const WeatherPageContainer = ({locationName, weatherData = {}}: WeatherPageContainerProps): React.ReactElement => {
     const {current_weather} = weatherData;
-    const hasNeededData = weatherData.current_weather && locationName
-    return (<Box
-            paddingLeft='3em'
-            paddingRight='3em'>
+    const hasNeededData = weatherData.current_weather && locationName;
+
+    return (<Stack direction='column' padding={1}>
             {hasNeededData ?
                 (
-                    <Container>
+                    <Box>
                         <CurrentWeatherCard locationName={locationName} currentWeatherData={current_weather}/>
                         <Divider/>
-                        <Box
-                            marginTop='1.5em'
-                        >
+                        <Box marginTop='1.5em'>
                             <WeatherViewContainer weatherData={weatherData}/>
                         </Box>
-                    </Container>
+                    </Box>
                 ) :
                 <ErrorMessage/>
             }
-        </Box>
+        </Stack>
     )
 }
 

@@ -19,6 +19,7 @@ export default function CurrentWeatherCard({
     return (
         <Card
             sx={{
+                width: 1,
                 boxShadow: '4px 4px 1px 1px black;',
                 border: 1,
                 borderRadius: 0,
@@ -31,18 +32,27 @@ export default function CurrentWeatherCard({
                 spacing={0.4}
                 margin='0.5em'
             >
-                <Typography fontSize='1.5rem' id='location'>{locationName}</Typography>
-                <Typography fontSize='2.5rem' id='temperature'>{currentWeatherData.mapped.temperature}</Typography>
+                <Typography
+                    id='location'
+                    align='center'
+                    fontSize='1.5rem'>
+                    {locationName}
+                </Typography>
+                <Typography
+                    id='temperature'
+                    align='center'
+                    fontSize='2.5rem'>
+                    {currentWeatherData.mapped.temperature}
+                </Typography>
                 {
                     currentWeatherData.mapped.temperature_range &&
                     <Typography id='temperature-range'>{currentWeatherData.mapped.temperature_range}</Typography>
                 }
                 <Stack direction='row'
-                       justifyContent='space-evenly'
+                       justifyContent='space-around'
                        alignItems='center'
                        paddingTop={1}
-                       spacing={3.5}>
-
+                       spacing={4}>
                     {
                         currentWeatherData.mapped.weather_code &&
                         <WeatherIcon weatherCode={currentWeatherData.mapped.weather_code}/>

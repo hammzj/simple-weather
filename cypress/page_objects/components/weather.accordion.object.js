@@ -3,7 +3,7 @@ import WeatherIconObject from "./weather.icon.object";
 import PrecipitationChanceObject from "./precipitation.chance.object";
 import AdditionalWeatherDetailsObject from "./additional.weather.details.object";
 
-export default class WeatherSummaryAccordionObject extends ElementCollection {
+export default class WeatherAccordionObject extends ElementCollection {
     constructor(type) {
         super();
         this._type = type;

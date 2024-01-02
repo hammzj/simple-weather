@@ -21,15 +21,15 @@ describe(WeatherViewContainer.name, function () {
 
         wvco.hourlyButton.click();
 
-        wvco.HourlyWeatherSummaryAccordionObject((obj) => obj.container.should('have.lengthOf', 25));
-        wvco.DailyWeatherSummaryAccordionObject((obj) => obj.container.should('not.exist'));
+        wvco.HourlyWeatherAccordionObject((obj) => obj.container.should('have.lengthOf', 25));
+        wvco.DailyWeatherAccordionObject((obj) => obj.container.should('not.exist'));
         cy.get(`@weatherData`).then(weatherData => {
             const {hourly_weather} = weatherData;
             for (const [i, {mapped}] of hourly_weather.entries()) {
                 const time = DateTime.fromISO(mapped.time).toLocaleString(DateTime.DATETIME_MED);
                 const precipitationProbability = mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
 
-                wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+                wvco.HourlyWeatherAccordionObject((obj) => {
                     obj.scopedIndex = i;
                     obj.time.should('have.text', time);
                     obj.temperature.should('have.text', mapped.temperature);
@@ -46,15 +46,15 @@ describe(WeatherViewContainer.name, function () {
 
         wvco.dailyButton.click();
 
-        wvco.DailyWeatherSummaryAccordionObject((obj) => obj.container.should('have.lengthOf', 7));
-        wvco.HourlyWeatherSummaryAccordionObject((obj) => obj.container.should('not.exist'));
+        wvco.DailyWeatherAccordionObject((obj) => obj.container.should('have.lengthOf', 7));
+        wvco.HourlyWeatherAccordionObject((obj) => obj.container.should('not.exist'));
         cy.get(`@weatherData`).then(weatherData => {
             const {daily_weather} = weatherData;
             for (const [i, {mapped}] of daily_weather.entries()) {
                 const time = DateTime.fromISO(mapped.time).toLocaleString(DateTime.DATE_MED);
                 const precipitationProbability = mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
 
-                wvco.DailyWeatherSummaryAccordionObject((obj) => {
+                wvco.DailyWeatherAccordionObject((obj) => {
                     obj.scopedIndex = i;
                     obj.time.should('have.text', time);
                     obj.temperature.should('have.text', mapped.temperature_range);
@@ -71,7 +71,7 @@ describe(WeatherViewContainer.name, function () {
 
         wvco.hourlyButton.click();
 
-        wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+        wvco.HourlyWeatherAccordionObject((obj) => {
             //Arrange: make sure that the first accordion is expanded
             //Set the scope to the first-found accordion
             const firstAccordion = obj.__clone();

@@ -70,3 +70,7 @@ export const weatherCodeToText = (weatherCode: number | null | undefined): strin
         return capitalize(WeatherCode[weatherCode]).replace(/_/g, ' ');
     }
 }
+
+//is mobile viewport
+// todo: -- will use react-device-detect instead
+export const isMobile = () => window.innerWidth <= 768;

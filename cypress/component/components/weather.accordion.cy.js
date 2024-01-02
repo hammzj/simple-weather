@@ -1,6 +1,6 @@
 import {DateTime} from "luxon";
-import WeatherSummaryAccordion, {AdditionalWeatherDetails} from '../../../src/components/weather.summary.accordion';
-import WeatherSummaryAccordionObject from '../../page_objects/components/weather.summary.accordion.object';
+import WeatherAccordion, {AdditionalWeatherDetails} from '../../../src/components/weather.accordion';
+import WeatherAccordionObject from '../../page_objects/components/weather.accordion.object';
 import AdditionalWeatherDetailsObject from "../../page_objects/components/additional.weather.details.object";
 
 const formatDateTimeHourly = (isoString) => DateTime.fromISO(isoString).toLocaleString(DateTime.DATETIME_MED);
@@ -8,7 +8,7 @@ const formatDateTimeDaily = (isoString) => DateTime.fromISO(isoString).toLocaleS
 const formatDateTimeAsTime = (isoString) => DateTime.fromISO(isoString).toLocaleString(DateTime.TIME_SIMPLE);
 
 describe('Components', function () {
-    describe(WeatherSummaryAccordion.name, function () {
+    describe(WeatherAccordion.name, function () {
         beforeEach(function () {
             cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'});
         });
@@ -17,12 +17,12 @@ describe('Components', function () {
             it('displays a summary of the hourly data', function () {
                 cy.get(`@weatherData`).then(weatherData => {
                     const firstHour = weatherData.hourly_weather[0];
-                    cy.mount(<WeatherSummaryAccordion
+                    cy.mount(<WeatherAccordion
                         type='hourly'
                         mappedWeatherData={firstHour.mapped}
                     />);
 
-                    const accordion = new WeatherSummaryAccordionObject('hourly');
+                    const accordion = new WeatherAccordionObject('hourly');
                     accordion.time.should('have.text', formatDateTimeHourly(firstHour.mapped.time));
                     accordion.temperature.should('have.text', '51 °F');
                     accordion.WeatherIconObject(wio => wio._assertTooltipText('Overcast'));
@@ -34,12 +34,12 @@ describe('Components', function () {
                 cy.get(`@weatherData`).then(weatherData => {
                     const firstHour = weatherData.hourly_weather[0];
 
-                    cy.mount(<WeatherSummaryAccordion
+                    cy.mount(<WeatherAccordion
                         type='hourly'
                         mappedWeatherData={firstHour.mapped}
                     />)
 
-                    const accordion = new WeatherSummaryAccordionObject('hourly');
+                    const accordion = new WeatherAccordionObject('hourly');
                     accordion.summary.click();
 
                     accordion.AdditionalWeatherDetailsObject(awdo => {
@@ -56,12 +56,12 @@ describe('Components', function () {
                 cy.get(`@weatherData`).then(weatherData => {
                     const firstDay = weatherData.daily_weather[0];
 
-                    cy.mount(<WeatherSummaryAccordion
+                    cy.mount(<WeatherAccordion
                         type='daily'
                         mappedWeatherData={firstDay.mapped}
                     />);
 
-                    const accordion = new WeatherSummaryAccordionObject('daily');
+                    const accordion = new WeatherAccordionObject('daily');
                     accordion.time.should('have.text', formatDateTimeDaily(firstDay.mapped.time));
                     accordion.temperature.should('have.text', '48 °F / 55 °F');
                     accordion.WeatherIconObject(wio => wio._assertTooltipText('Slight rain showers'));
@@ -73,12 +73,12 @@ describe('Components', function () {
                 cy.get(`@weatherData`).then(weatherData => {
                     const firstDay = weatherData.daily_weather[0];
 
-                    cy.mount(<WeatherSummaryAccordion
+                    cy.mount(<WeatherAccordion
                         type='daily'
                         mappedWeatherData={firstDay.mapped}
                     />);
 
-                    const accordion = new WeatherSummaryAccordionObject('daily');
+                    const accordion = new WeatherAccordionObject('daily');
                     accordion.summary.click();
 
                     accordion.AdditionalWeatherDetailsObject(awdo => {

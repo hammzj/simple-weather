@@ -1,6 +1,6 @@
 import React from "react";
 import {Box, Tabs, Tab, Typography} from "@mui/material";
-import WeatherSummaryAccordion from "./weather.summary.accordion";
+import WeatherAccordion from "./weather.accordion";
 import {isEqual, isEmpty} from "lodash";
 
 //TODO: make reusable Message component
@@ -36,7 +36,7 @@ const WeatherRowsTabPanel = (props): React.ReactElement => {
                         <Box
                             paddingBottom='2em'
                             key={accordionId}>
-                            <WeatherSummaryAccordion
+                            <WeatherAccordion
                                 expanded={isEqual(expanded, accordionId)}
                                 onChange={handleChange(accordionId)}
                                 type={type}
@@ -66,10 +66,8 @@ export default function WeatherViewContainer({weatherData}): React.ReactElement 
                     value={value}
                     onChange={handleChange}
                     centered
-
                 >
-                    <Tab label="Hourly"
-                    />
+                    <Tab label="Hourly"/>
                     <Tab label="Daily"/>
                 </Tabs>
             </Box>

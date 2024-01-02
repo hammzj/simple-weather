@@ -32,20 +32,20 @@ export default class ElementCollection {
      for (const [i, {mapped}] of hourly_weather.entries()) {
                 const precipitationProbability = mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
 
-                //Produces ~25 instances of a WeatherSummaryAccordion within itself
-                wvco.HourlyWeatherSummaryAccordion((hwsa) => {
-                    hwsa.scopedIndex = i;
+                //Produces ~25 instances of a WeatherAccordion within itself
+                wvco.HourlyWeatherAccordion((hwa) => {
+                    hwa.scopedIndex = i;
 
                     //Tests this element correctly since they're set within the scope of the child ElementCollection's container
-                    hwsa.temperature.should('have.text', mapped.temperature);
+                    hwa.temperature.should('have.text', mapped.temperature);
 
                     //This would fail unless we set the scopedIndex, since it utilizes a `.within()` function
-                    hwsa.WeatherIconObject(function (wio) {
+                    hsa.WeatherIconObject(function (wio) {
                         wio.svg.should('exist');
                     });
 
                     //This would also fail
-                    hwsa.PrecipitationChanceObject((pio) => {
+                    hwa.PrecipitationChanceObject((pio) => {
                         pio._assertValue(precipitationProbability);
                     });
                 });
@@ -95,7 +95,7 @@ export default class ElementCollection {
      * for creating element chains. "Cloning" the original allows us to avoid circular dependencies.
      * @return clonedSelf {ElementCollection}
      * @example <summary>Testing two different ElementCollection instances</summary>
-     *      wvco.HourlyWeatherSummaryAccordionObject((obj) => {
+     *      wvco.HourlyWeatherAccordionObject((obj) => {
             const firstAccordion = clone(obj);
             firstAccordion._scopedIndex = 0;
 
