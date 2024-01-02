@@ -1,6 +1,6 @@
 import React from "react";
 import {Box, Tabs, Tab, Typography} from "@mui/material";
-import WeatherSummaryAccordion from "./weather.summary.accordion";
+import WeatherAccordion from "./weather.accordion";
 import {isEqual, isEmpty} from "lodash";
 
 //TODO: make reusable Message component
@@ -36,7 +36,7 @@ const WeatherRowsTabPanel = (props): React.ReactElement => {
                         <Box
                             paddingBottom='2em'
                             key={accordionId}>
-                            <WeatherSummaryAccordion
+                            <WeatherAccordion
                                 expanded={isEqual(expanded, accordionId)}
                                 onChange={handleChange(accordionId)}
                                 type={type}
@@ -58,7 +58,6 @@ export default function WeatherViewContainer({weatherData}): React.ReactElement 
 
     const {hourly_weather, daily_weather} = weatherData;
 
-    //TODO: style the tabs
     return (
         <Box id='weather-view'>
             <Box paddingBottom='1em'>
@@ -66,11 +65,22 @@ export default function WeatherViewContainer({weatherData}): React.ReactElement 
                     value={value}
                     onChange={handleChange}
                     centered
-
+                    TabIndicatorProps={{style: {backgroundColor: "black"}}}
                 >
                     <Tab label="Hourly"
+                         sx={{
+                             "&.Mui-selected": {
+                                 color: "inherit"
+                             }
+                         }}
                     />
-                    <Tab label="Daily"/>
+                    <Tab label="Daily"
+                         sx={{
+                             "&.Mui-selected": {
+                                 color: "inherit"
+                             }
+                         }}
+                    />
                 </Tabs>
             </Box>
             <WeatherRowsTabPanel value={value} index={0} type="hourly" timeBasedWeatherData={hourly_weather}/>

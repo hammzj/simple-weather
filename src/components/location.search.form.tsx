@@ -31,17 +31,27 @@ export default function LocationSearchForm(): React.ReactElement {
             <Stack direction='row' spacing='1.5em'>
                 <TextField id="location-input"
                            helperText="Search for a city/postal code"
-                           variant="outlined"
                            size="small"
+                           sx={{
+                               backgroundColor: 'primary.main',
+                               color: 'primary.contrastText',
+                               '& label.Mui-focused': {
+                                   color: 'primary.contrastText'
+                               },
+                               '& .MuiOutlinedInput-root': {
+                                   '&.Mui-focused fieldset': {
+                                       borderColor: 'primary.contrastText'
+                                   }
+                               }
+                           }}
                            onChange={handleChange}
                 />
                 <Button
                     type="submit"
                     size='small'
                     sx={{
-
-                        backgroundColor: 'white',
-                        color: 'black',
+                        backgroundColor: 'primary.main',
+                        color: 'primary.contrastText',
                         border: 1,
                     }}>
                     <span>Submit</span>

@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Link as MuiLink, Stack, Typography} from "@mui/material";
+import {Link as MuiLink, Stack, Typography} from "@mui/material";
 import Page from '../components/page';
 import {
     CYPRESS_IO_HOMEPAGE, GITHUB_AUTHOR_LINK,

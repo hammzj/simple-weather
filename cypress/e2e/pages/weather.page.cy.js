@@ -63,10 +63,10 @@ describe(WeatherPage.name, function () {
                         wvco.container.should('exist');
 
                         wvco.hourlyButton.click();
-                        wvco.HourlyWeatherSummaryAccordionObject((obj) => obj.container.should('have.lengthOf', 25));
+                        wvco.HourlyWeatherAccordionObject((obj) => obj.container.should('have.lengthOf', 25));
 
                         wvco.dailyButton.click();
-                        wvco.DailyWeatherSummaryAccordionObject((obj) => obj.container.should('have.lengthOf', 7));
+                        wvco.DailyWeatherAccordionObject((obj) => obj.container.should('have.lengthOf', 7));
                     });
                 });
             });

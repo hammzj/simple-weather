@@ -1,5 +1,5 @@
 import ElementCollection from "../element.collection";
-import WeatherSummaryAccordionObject from "./weather.summary.accordion.object";
+import WeatherAccordionObject from "./weather.accordion.object";
 
 export default class WeatherViewContainerObject extends ElementCollection {
     constructor() {
@@ -22,11 +22,11 @@ export default class WeatherViewContainerObject extends ElementCollection {
         return this.container.find(`#tabpanel-daily`);
     }
 
-    HourlyWeatherSummaryAccordionObject(fn) {
-        return this.weatherTabPanelHourly.within(() => fn(new WeatherSummaryAccordionObject('hourly')))
+    HourlyWeatherAccordionObject(fn) {
+        return this.weatherTabPanelHourly.within(() => fn(new WeatherAccordionObject('hourly')))
     }
 
-    DailyWeatherSummaryAccordionObject(fn) {
-        return this.weatherTabPanelDaily.within(() => fn(new WeatherSummaryAccordionObject('daily')))
+    DailyWeatherAccordionObject(fn) {
+        return this.weatherTabPanelDaily.within(() => fn(new WeatherAccordionObject('daily')))
     }
 }

@@ -1,5 +1,8 @@
 # simple-weather
 
+![Build and Deploy](https://github.com/hammzj/simple-weather/actions/workflows/build-and-deploy.yml/badge.svg)
+![Tests](https://github.com/hammzj/simple-weather/actions/workflows/test.yml/badge.svg)
+
 This repository contains a simple application that displays weather forecasts.
 
 Search for a city or postal code, select the button that matches the city you want, and forecasts are displayed for the current weather, the next 24 hours, and the next 10 days.

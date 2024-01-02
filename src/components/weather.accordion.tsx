@@ -16,14 +16,16 @@ import {ExpandMore} from '@mui/icons-material';
 import PrecipitationChance from './precipitation.chance';
 import WeatherIcon from "./weather.icon";
 import {NOT_AVAILABLE_TEXT} from '../constants';
-import {weatherCodeToText} from './utils';
+import {isMobile, weatherCodeToText} from './utils';
 import {DailyWeatherData, HourlyWeatherData} from "../services/api";
 import {isEqual} from "lodash";
 import {DateTime, Zone} from 'luxon';
 
 type  WeatherSummaryTimeType = 'hourly' | 'daily';
 
-interface WeatherSummaryAccordionProps {
+type MappedWeatherData = HourlyWeatherData | DailyWeatherData;
+
+interface WeatherAccordionProps {
     type: WeatherSummaryTimeType,
     mappedWeatherData: any,
     timezone?: string | 'local' | Zone,
@@ -33,12 +35,18 @@ interface WeatherSummaryAccordionProps {
 
 interface AdditionalWeatherDetailsProps {
     type: WeatherSummaryTimeType
-    mappedWeatherData: HourlyWeatherData | DailyWeatherData | {}
+    mappedWeatherData: MappedWeatherData | {}
 }
 
 interface AdditionalWeatherDetailsRowProps {
     title: string,
     value?: string | number
+}
+
+interface WeatherAccordionSummaryProps {
+    type: WeatherSummaryTimeType;
+    mappedWeatherData: MappedWeatherData;
+    timezone?: Zone | string;
 }
 
 const getTimeStringForSummary = (type: WeatherSummaryTimeType, dateTime: string, timezone?: Zone | string): string => {
@@ -49,6 +57,65 @@ const getTimeStringForSummary = (type: WeatherSummaryTimeType, dateTime: string,
     let dt = DateTime.fromISO(dateTime);
     if (timezone) dt = dt.setZone(timezone);
     return dt.toLocaleString(localeString);
+}
+
+//Changes layout based on mobile viewport
+const WeatherAccordionSummary = ({
+                                     type,
+                                     mappedWeatherData,
+                                     timezone
+                                 }): React.ReactElement => {
+    const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || 'local');
+    const temperature = mappedWeatherData.temperature || mappedWeatherData.temperature_range;
+    return (
+        <AccordionSummary
+            sx={{
+                border: 1,
+                borderRadius: 0,
+            }}
+            expandIcon={<ExpandMore/>}
+        >
+            {isMobile() ? (
+                <Stack
+                    direction='column'
+                    marginLeft='0.5em'>
+                    <Typography id="time"
+                                sx={{fontSize: '0.9rem'}}
+                    >{timeString}</Typography>
+                    <Stack
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
+                        spacing={1.5}
+                    >
+                        <Typography id='temperature'
+                                    sx={{fontSize: '0.9rem'}}
+                        >{temperature}</Typography>
+                        <WeatherIcon weatherCode={mappedWeatherData.weather_code}/>
+                        <PrecipitationChance precipitation={mappedWeatherData.precipitation_probability}/>
+                    </Stack>
+                </Stack>
+            ) : (
+                <Stack
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
+                    spacing={1.5}
+                    marginLeft='0.5em'
+                >
+                    <Typography id="time"
+                                sx={{fontSize: '0.9rem'}}
+                    >{timeString}</Typography>
+                    <Typography id='temperature'
+                                sx={{fontSize: '0.9rem'}}
+                    >{temperature}</Typography>
+                    <WeatherIcon weatherCode={mappedWeatherData.weather_code}/>
+                    <PrecipitationChance precipitation={mappedWeatherData.precipitation_probability}/>
+                </Stack>
+            )}
+        </AccordionSummary>
+    );
+
 }
 
 const AdditionalWeatherDetailsRow = ({title, value}: AdditionalWeatherDetailsRowProps): React.ReactElement => {
@@ -69,7 +136,10 @@ const AdditionalWeatherDetailsRow = ({title, value}: AdditionalWeatherDetailsRow
 * This component is the container for the rows with additional details displayed when the accordion is expanded
 * Exporting for use in testing
 */
-export const AdditionalWeatherDetails = ({type, mappedWeatherData = {}}): React.ReactElement => {
+export const AdditionalWeatherDetails = ({
+                                             type,
+                                             mappedWeatherData = {}
+                                         }: AdditionalWeatherDetailsProps): React.ReactElement => {
     //handle state change when updated by newly selected row
     const hourlyDetails = (mappedWeatherData) => {
         const {
@@ -140,42 +210,23 @@ export const AdditionalWeatherDetails = ({type, mappedWeatherData = {}}): React.
 
 
 //TODO: fix typing to correctly include "expanded" and "onChange"
-export default function WeatherSummaryAccordion({
-                                                    type,
-                                                    mappedWeatherData,
-                                                    timezone,
-                                                    ...props
-                                                }: WeatherSummaryAccordionProps | any) {
-    const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || 'local');
+export default function WeatherAccordion({
+                                             type,
+                                             mappedWeatherData,
+                                             timezone,
+                                             ...props
+                                         }: WeatherAccordionProps | any) {
     return (
         <Accordion
             id={`${type}-weather-summary-accordion`}
-            sx={{boxShadow: 0}}
+            sx={{boxShadow: 0, paddingInline: isMobile() ? 0 : 5}}
             {...props}>
-            <AccordionSummary
-                sx={{
-                    border: 1,
-                    borderRadius: 0,
-                }}
-                expandIcon={<ExpandMore/>}
-            >
-                <Stack
-                    direction="row"
-                    justifyContent="flex-start"
-                    alignItems="center"
-                    spacing={3}
-                    marginLeft='0.5em'
-                >
-                    <Typography id="time">{timeString}</Typography>
-                    <Typography id='temperature'
-                                sx={{fontSize: '0.9rem'}}>{mappedWeatherData.temperature || mappedWeatherData.temperature_range}</Typography>
-                    <WeatherIcon weatherCode={mappedWeatherData.weather_code}/>
-                    <PrecipitationChance precipitation={mappedWeatherData.precipitation_probability}/>
-                </Stack>
-            </AccordionSummary>
+            <WeatherAccordionSummary type={type} mappedWeatherData={mappedWeatherData} timezone={timezone}/>
             <AccordionDetails
                 sx={{
                     border: 0,
+                    paddingTop: 1,
+                    paddingInline: isMobile() ? 0 : 2,
                 }}
             >
                 <Box
@@ -183,8 +234,7 @@ export default function WeatherSummaryAccordion({
                         border: 1,
                         borderRadius: 0,
                         boxShadow: '4px 4px 1px 1px black;',
-                    }}
-                >
+                    }}>
                     <AdditionalWeatherDetails type={type} mappedWeatherData={mappedWeatherData}/>
                 </Box>
             </AccordionDetails>

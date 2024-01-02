@@ -1,14 +1,12 @@
 import React, {useState, useEffect} from "react";
-import {useLocation, useParams} from "react-router-dom";
+import {useLocation} from "react-router-dom";
 import {isEmpty, isNil} from "lodash";
-import {Box, Divider, Stack, Typography} from "@mui/material";
+import {Stack} from "@mui/material";
 import Page from "../components/page";
 import Message from '../components/message';
 import LoadingMessage from '../components/loading.message';
-import LocationSearchForm from '../components/location.search.form';
 import LocationDataButton from '../components/location.data.button';
 import OpenMeteoGeocodingAPI from '../services/open_meteo_api/geocoding_api';
-import TopNavBar from "../components/top.nav.bar";
 
 const NoLocationsMessage = (): React.ReactElement => {
     return <Message value='No locations could be found.'/>
@@ -16,7 +14,7 @@ const NoLocationsMessage = (): React.ReactElement => {
 
 const SelectLocationMessage = (): React.ReactElement => {
     return <Message
-        typographyProps={{variant: 'h4'}}
+        typographyProps={{variant: 'h5'}}
         value='Select a location to view the weather forecast:'/>
 }
 
@@ -26,7 +24,7 @@ const LocationButtonsForm = ({locationDataResults}): React.ReactElement => {
         <form id='location-data-form'>
             <Stack
                 direction='column'
-                spacing={3}
+                spacing={4}
                 alignItems="center"
                 paddingTop={2}
             >

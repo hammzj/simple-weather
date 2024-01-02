@@ -13,7 +13,7 @@ export default function IndexPage(): React.ReactElement {
                 alignItems="center"
                 padding='1em'
             >
-                <Typography variant='h1' paddingBottom='0.5em'>Simple Weather</Typography>
+                <Typography align='center' variant='h1' paddingBottom='0.5em'>Simple Weather</Typography>
                 <Box>
                     <LocationSearchForm/>
                 </Box>

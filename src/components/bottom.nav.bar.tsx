@@ -1,9 +1,18 @@
 import React from 'react';
-import {Container, Stack, Link as MuiLink, Typography} from '@mui/material';
+import {Link} from 'react-router-dom'
+import {Container, Grid,} from '@mui/material';
 import {GitHub as GitHubIcon} from '@mui/icons-material';
+import TextLink from "./text.link";
 import OpenMeteoAttributionLink from "./open-meteo-attribution-link";
 import {GITHUB_AUTHOR_LINK} from "../constants";
 import PATHS from "../routes/paths";
+
+const GitHubIconLink = () => {
+    return (<Link
+        to={GITHUB_AUTHOR_LINK}>
+        <GitHubIcon sx={{color: 'black', textDecorationColor: 'black'}}/>
+    </Link>);
+}
 
 export default function BottomNavBar(): React.ReactElement {
     return (
@@ -11,33 +20,21 @@ export default function BottomNavBar(): React.ReactElement {
                    sx={{
                        border: 1,
                        borderRadius: 0,
+                       marginTop: '1em',
                        marginBottom: '2em',
                    }}
         >
-            <Stack direction='row'
-                   justifyContent='center'
-                   spacing={5}
-                   padding='1.2em'
+            <Grid container
+                  justifyContent='center'
+                  alignContent='center'
+                  padding={2}
+                  spacing={3}
             >
-                <MuiLink
-                    sx={{color: 'black', textDecorationColor: 'black'}}
-                    underline='hover'
-                    href={PATHS.INDEX}>
-                    <Typography>Home</Typography>
-                </MuiLink>
-                <MuiLink
-                    sx={{color: 'black', textDecorationColor: 'black'}}
-                    underline='hover'
-                    href={PATHS.ABOUT}>
-                    <Typography>About</Typography>
-                </MuiLink>
-                <MuiLink
-                    sx={{color: 'black', textDecorationColor: 'black'}}
-                    href={GITHUB_AUTHOR_LINK}>
-                    <GitHubIcon/>
-                </MuiLink>
-                <OpenMeteoAttributionLink/>
-            </Stack>
+                <Grid item><TextLink href={PATHS.INDEX}>Home</TextLink></Grid>
+                <Grid item><TextLink href={PATHS.ABOUT}>About</TextLink></Grid>
+                <Grid item><GitHubIconLink/></Grid>
+                <Grid item><OpenMeteoAttributionLink/></Grid>
+            </Grid>
         </Container>
     )
 }

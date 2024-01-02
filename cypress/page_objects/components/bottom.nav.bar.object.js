@@ -14,7 +14,7 @@ export default class BottomNavBarObject extends ElementCollection {
     }
 
     get apiAttributionLink() {
-        return this.container.contains('a', ' Weather data by Open-Meteo.com');
+        return this.container.contains('a', 'Weather data by Open-Meteo.com');
     }
 
     get gitHubAuthorLink() {

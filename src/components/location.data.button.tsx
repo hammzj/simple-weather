@@ -21,11 +21,14 @@ export default function LocationDataButton({locationData}: LocationDataButtonPar
                     pathname: PATHS.WEATHER,
                     search: createWeatherPageSearchParams(locationData.id)
                 }}>
-                <Button sx={{
-                    backgroundColor: 'white',
-                    color: 'black',
-                    border: 1,
-                }}>
+                <Button
+                    sx={{
+                        backgroundColor: 'white',
+                        color: 'black',
+                        border: 1,
+                        borderRadius: 0,
+                        boxShadow: '2px 2px 1px 1px black;',
+                    }}>
                     <span>{getLocationName(locationData)}</span>
                 </Button>
             </Link>
