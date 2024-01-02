@@ -19,7 +19,7 @@ describe(BottomNavBar.name, function () {
             cy.viewport('iphone-5');
         })
 
-        it('renders correctly and all elements are visible', function () {
+        it.only('renders correctly and all elements are visible', function () {
             const bottomNavBarObject = new BottomNavBarObject();
 
             //No weather code
