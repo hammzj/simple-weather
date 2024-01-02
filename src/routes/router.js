@@ -8,9 +8,9 @@ import ErrorPage from "../pages/error.page";
 import AboutPage from "../pages/about.page";
 
 //When deployed on GitHub pages, we need to use createHashRouter
-const routerType = (process.env.USE_GITHUB_PAGES) ? createHashRouter : createBrowserRouter;
+const routerCreator = (process.env.USE_GITHUB_PAGES) ? createHashRouter : createBrowserRouter;
 
-const router = routerType([
+const router = routerCreator([
     {
         path: PATHS.INDEX,
         element: <IndexPage/>,
@@ -32,5 +32,7 @@ const router = routerType([
         element: <ErrorPage/>,
     },
 ]);
+
+if (process.env.USE_GITHUB_PAGES) router.push({path: PATHS.HOME, element: <IndexPage/>})
 
 export default router;
