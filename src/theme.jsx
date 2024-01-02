@@ -1,21 +1,19 @@
 import {createTheme, responsiveFontSizes} from "@mui/material";
 import {common, red, blue, orange, green, grey} from '@mui/material/colors';
 
-const palette = {
-    mode: 'light',
-    primary: {
-        main: common.white,
-        contrastText: common.black,
+const lightTheme = responsiveFontSizes(createTheme({
+    palette: {
+        mode: 'light',
+        primary: {
+            main: common.white,
+            contrastText: common.black,
+        },
+        secondary: grey,
+        error: red,
+        warning: orange,
+        info: blue,
+        success: green,
     },
-    secondary: grey,
-    error: red,
-    warning: orange,
-    info: blue,
-    success: green,
-}
-
-const baseTheme = (palette = palette) => responsiveFontSizes(createTheme({
-    palette,
     typography: {
         fontFamily: [
             "Roboto Mono",
@@ -45,7 +43,7 @@ const baseTheme = (palette = palette) => responsiveFontSizes(createTheme({
     }
 }));
 
-export const theme = baseTheme();
+export const theme = lightTheme;
 
 //TODO: figure this out later
 /*
