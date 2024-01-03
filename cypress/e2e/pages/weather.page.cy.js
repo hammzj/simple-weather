@@ -93,7 +93,8 @@ describe(WeatherPage.name, function () {
                     });
 
                     //Assert: Check the first button exists
-                    cy.location('pathname').should('include', locationResultsPageObject._path);
+                    //cy.location('pathname').should('include', locationResultsPageObject._path);
+                    cy.hash().should('include', locationResultsPageObject._path);
                     locationResultsPageObject.LocationButtonsListObject(list => {
                         list._assertButtonText(getLocationName(newLocationData));
                     });

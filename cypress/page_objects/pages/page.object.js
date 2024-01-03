@@ -12,6 +12,7 @@ export default class PageObject extends ElementCollection {
     }
 
     #urlObject() {
-        return new URL(this._path, this._baseUrl ?? Cypress.config().baseUrl);
+        const path = `${Cypress.env().USE_HASH_ROUTER ? '#' : ''}${this._path}`;
+        return new URL(path, this._baseUrl ?? Cypress.config().baseUrl);
     }
 }
