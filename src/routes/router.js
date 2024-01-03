@@ -1,14 +1,19 @@
 import React from "react";
-import {createBrowserRouter, createHashRouter} from "react-router-dom";
+import {createHashRouter} from "react-router-dom";
 import PATHS from "./paths";
-import IndexPage from "../pages/index.page";
-import WeatherPage from "../pages/weather.page";
-import LocationResultsPage from "../pages/location.results.page";
-import ErrorPage from "../pages/error.page";
 import AboutPage from "../pages/about.page";
+import ErrorPage from "../pages/error.page";
+import IndexPage from "../pages/index.page";
+import LocationResultsPage from "../pages/location.results.page";
+import WeatherPage from "../pages/weather.page";
 
-//When deployed on GitHub pages, we need to use createHashRouter
-const routerCreator = (process.env.USE_GITHUB_PAGES) ? createHashRouter : createBrowserRouter;
+/*
+Using createHashRouter for GitHub Pages deployment.
+This will be adjusted if it's ever deployed to an actual domain.
+@see https://stackoverflow.com/questions/71984401/react-router-not-working-with-github-pages
+@see https://reactrouter.com/en/main/routers/create-hash-router
+ */
+const routerCreator = createHashRouter;
 
 const router = routerCreator([
     {
@@ -29,14 +34,8 @@ const router = routerCreator([
     },
     {
         path: PATHS.WILDCARD,
-        //issue #10: temporarily setting to index
-        //element: <ErrorPage/>,
-        element: <IndexPage/>,
-    },
+        element: <ErrorPage/>
+    }
 ]);
-
-//Issue #10:
-//Going to enable this permanently for now until I figure it out:
-//if (process.env.USE_GITHUB_PAGES) router.push({path: PATHS.HOME, element: <IndexPage/>})
 
 export default router;
