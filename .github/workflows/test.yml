@@ -5,7 +5,7 @@ on:
     branches: [ "main" ]
 
 env:
-  USE_GITHUB_PAGES: true
+  USE_HASH_ROUTER: true
 
 jobs:
   cypress-run:
