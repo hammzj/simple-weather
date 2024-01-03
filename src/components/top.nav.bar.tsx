@@ -6,8 +6,10 @@ export default function TopNavBar(): React.ReactElement {
     return (
         <Box
             id='top-nav-bar'
-            marginBottom='1em'
-            sx={{border: 1}}
+            sx={{
+                marginBottom: 1,
+                border: 1
+            }}
         >
             <AppBar position='static'
                     sx={{
