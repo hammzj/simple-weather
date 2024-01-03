@@ -10,7 +10,13 @@ export default function Page({
                                  ...props
                              }): React.ReactElement {
     return (
-        <Container{...props}>
+        <Container
+            sx={{
+                marginTop: 3,
+                marginBottom: 3,
+                ...props.sx
+            }}
+            {...props}>
             {renderTopNavBar && <TopNavBar/>}
             <Box
                 id='page-content'

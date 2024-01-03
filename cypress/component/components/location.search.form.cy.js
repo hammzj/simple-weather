@@ -13,4 +13,29 @@ describe(LocationSearchForm.name, function () {
         lsfo.inputField.should('exist').and('have.attr', 'type', 'text');
         lsfo.submitButton.should('exist').and('have.attr', 'type', 'submit');
     });
+
+    it('is not able to be submitted when text field is not empty', function () {
+        cy.mount(<LocationSearchForm/>);
+
+        const lsfo = new LocationSearchFormObject();
+
+        lsfo.inputField.then($inputField => {
+            expect($inputField.text().length).to.eq(0);
+        });
+        lsfo.submitButton.should('be.disabled');
+
+        lsfo.inputField.type('Berlin');
+        lsfo.inputField.clear();
+        lsfo.submitButton.should('be.disabled');
+    });
+
+    it('is able to be submitted when text field is not empty', function () {
+        cy.mount(<LocationSearchForm/>);
+
+        const lsfo = new LocationSearchFormObject();
+        lsfo.submitButton.should('be.disabled');
+
+        lsfo.inputField.type('Berlin');
+        lsfo.submitButton.should('not.be.disabled');
+    });
 });

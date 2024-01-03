@@ -20,8 +20,7 @@ export default function BottomNavBar(): React.ReactElement {
                    sx={{
                        border: 1,
                        borderRadius: 0,
-                       marginTop: '1em',
-                       marginBottom: '2em',
+                       marginTop: 1,
                    }}
         >
             <Grid container

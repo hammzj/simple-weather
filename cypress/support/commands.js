@@ -1,13 +1,22 @@
 // React 16, 17
 import {mount} from 'cypress/react18'
 import {MemoryRouter} from 'react-router-dom'
+import {CssBaseline, ThemeProvider} from "@mui/material";
 import {OpenMeteoWeatherForecastAPI} from "../../src/services/open_meteo_api";
 import SimpleWeatherAPI from "../../src/services/api";
-
+import {theme as baseTheme} from "../../src/theme";
 
 Cypress.Commands.add('mount', (component, options = {}) => {
-    const {routerProps = {initialEntries: ['/']}, ...mountOptions} = options
-    const wrapped = <MemoryRouter {...routerProps}>{component}</MemoryRouter>
+    const {routerProps = {initialEntries: ['/']}, theme, ...mountOptions} = options;
+    //Default to base theme if not given
+    const wrapped = (
+        <MemoryRouter {...routerProps}>
+            <ThemeProvider theme={theme ?? baseTheme}>
+                <CssBaseline/>
+                {component}
+            </ThemeProvider>
+        </MemoryRouter>
+    );
 
     // Wrap any parent components needed
     // ie: return mount(<MyProvider>{component}</MyProvider>, options)
