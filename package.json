@@ -2,7 +2,7 @@
   "name": "simple-weather",
   "version": "1.0.0",
   "author": "Zachary Hamm <zjhamm304@gmail.com>",
-  "homepage": "https://hammzj.github.io/#/simple-weather",
+  "homepage": "https://hammzj.github.io/simple-weather",
   "private": false,
   "scripts": {
     "cypress:open": "cypress open",
