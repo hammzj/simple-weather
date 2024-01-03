@@ -2,10 +2,12 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Box, Button, Stack, TextField} from '@mui/material';
 import PATHS from '../routes/paths';
+import {size, isEqual} from "lodash";
 
 export default function LocationSearchForm(): React.ReactElement {
     const navigate = useNavigate();
     const [locationName, setLocationName] = useState('');
+    const [isFormEmpty, setIsFormEmpty] = useState<boolean>(true);
 
     async function handleSubmit(event: React.ChangeEvent<HTMLDivElement>) {
         event.preventDefault();
@@ -14,6 +16,7 @@ export default function LocationSearchForm(): React.ReactElement {
     }
 
     function handleChange(event) {
+        setIsFormEmpty(isEqual(size(event.target.value), 0));
         setLocationName(event.target.value);
     }
 
@@ -49,6 +52,7 @@ export default function LocationSearchForm(): React.ReactElement {
                 <Button
                     type="submit"
                     size='small'
+                    disabled={isFormEmpty}
                     sx={{
                         backgroundColor: 'primary.main',
                         color: 'primary.contrastText',
