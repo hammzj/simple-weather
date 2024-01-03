@@ -100,7 +100,7 @@ const WeatherAccordionSummary = ({
                     direction="row"
                     justifyContent="flex-start"
                     alignItems="center"
-                    spacing={1.5}
+                    spacing={isMobile() ? 1.5 : 2}
                     marginLeft='0.5em'
                 >
                     <Typography id="time"
