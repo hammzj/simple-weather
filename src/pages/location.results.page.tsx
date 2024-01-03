@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from "react";
 import {useLocation} from "react-router-dom";
 import {isEmpty, isNil} from "lodash";
-import {Stack} from "@mui/material";
+import {Box, Stack} from "@mui/material";
 import Page from "../components/page";
 import Message from '../components/message';
 import LoadingMessage from '../components/loading.message';
@@ -26,7 +26,6 @@ const LocationButtonsForm = ({locationDataResults}): React.ReactElement => {
                 direction='column'
                 spacing={4}
                 alignItems="center"
-                paddingTop={2}
             >
                 {hasResults ? (
                     <>
@@ -69,12 +68,17 @@ export default function LocationResultsPage(): React.ReactElement {
 
     return (
         <Page>
+            <Box
+                paddingTop={2}
+                paddingBottom={2}
+            >
             {
                 isLoading ? <LoadingMessage/> :
                     isNil(locationDataResults) ?
                         <NoLocationsMessage/> :
                         <LocationButtonsForm locationDataResults={locationDataResults}/>
             }
+            </Box>
         </Page>
     )
 }
