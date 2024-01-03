@@ -1,6 +1,6 @@
 const PATHS = {
+    APP_BASENAME: '/simple-weather',
     INDEX: '/',
-    HOME: '/simple-weather', //TODO: can this be removed?
     ABOUT: `/about`,
     RESULTS: '/results',
     WEATHER: '/weather',
