@@ -2,7 +2,7 @@
   "name": "simple-weather",
   "version": "1.0.0",
   "author": "Zachary Hamm <zjhamm304@gmail.com>",
-  "homepage": "https://hammzj.github.io/#/simple-weather",
+  "homepage": "https://hammzj.github.io/simple-weather",
   "private": false,
   "scripts": {
     "cypress:open": "cypress open",
@@ -59,6 +59,7 @@
     "web-vitals": "^2.1.4"
   },
   "devDependencies": {
+    "@babel/plugin-proposal-private-property-in-object": "^7.21.11",
     "@babel/plugin-transform-private-property-in-object": "^7.23.3",
     "chai": "^4.3.10",
     "chai-colors": "^1.0.1",
