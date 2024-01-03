@@ -1,8 +1,6 @@
 name: Cypress testing
 
 on:
-  push:
-    branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
 
@@ -34,3 +32,4 @@ jobs:
           build: yarn dev:build
           start: yarn dev:start
           wait-on: "http://localhost:3000"
+
