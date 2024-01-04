@@ -1,6 +1,6 @@
 import React from 'react';
 import {AcUnit, Cloud, FilterDrama, Thunderstorm, Shower, WbSunny, Waves} from '@mui/icons-material';
-import {NOT_AVAILABLE_TEXT} from "../constants";
+import {NOT_AVAILABLE_TEXT, SETTINGS_KEY_NAMES} from "../constants";
 import {WeatherCode} from "../services/open_meteo_api/forecast_api";
 import {capitalize, includes, isEqual, isNil} from "lodash";
 
@@ -74,3 +74,8 @@ export const weatherCodeToText = (weatherCode: number | null | undefined): strin
 //is mobile viewport
 // todo: -- will use react-device-detect instead
 export const isMobile = () => window.innerWidth <= 768;
+
+export const isDarkModeSettingsEnabled = () => {
+    return isEqual(localStorage.getItem(SETTINGS_KEY_NAMES.DARK_MODE), 'true');
+}
+

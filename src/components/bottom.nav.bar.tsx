@@ -31,6 +31,7 @@ export default function BottomNavBar(): React.ReactElement {
             >
                 <Grid item><TextLink href={PATHS.INDEX}>Home</TextLink></Grid>
                 <Grid item><TextLink href={PATHS.ABOUT}>About</TextLink></Grid>
+                <Grid item><TextLink href={PATHS.SETTINGS}>Settings</TextLink></Grid>
                 <Grid item><GitHubIconLink/></Grid>
                 <Grid item><OpenMeteoAttributionLink/></Grid>
             </Grid>

@@ -1,10 +1,11 @@
 const PATHS = {
-    APP_BASENAME: '/simple-weather',
-    INDEX: '/',
     ABOUT: `/about`,
-    RESULTS: '/results',
-    WEATHER: '/weather',
+    APP_BASENAME: '/simple-weather',
     ERROR: '/error',
+    INDEX: '/',
+    RESULTS: '/results',
+    SETTINGS: '/settings',
+    WEATHER: '/weather',
     WILDCARD: '*'
 }
 
