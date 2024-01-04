@@ -4,27 +4,16 @@ import {NOT_AVAILABLE_TEXT, SETTINGS_KEY_NAMES} from "../constants";
 import {WeatherCode} from "../services/open_meteo_api/forecast_api";
 import {capitalize, includes, isEqual, isNil} from "lodash";
 
-//TODO: still determining if we should use these icons...
-// import ClearDayIcon from "./icons/weather_icons/clear-day.icon";
-// import CloudyIcon from "./icons/weather_icons/cloudy.icon";
-// import OvercastDayIcon from "./icons/weather_icons/overcast-day.icon";
-// import FogDayIcon from "./icons/weather_icons/fog-day.icon";
-
 export const weatherCodeToSvg = (weatherCode: number | WeatherCode): JSX.Element => {
-//TODO: find a way to utilize day/night
     weatherCode = Number(weatherCode);
     switch (true) {
         case(isEqual(WeatherCode.CLEAR_SKY, weatherCode)):
-            //return <ClearDayIcon/>;
             return <WbSunny/>
         case(includes([WeatherCode.MAINLY_CLEAR, WeatherCode.PARTLY_CLOUDY], weatherCode)):
-            //return <CloudyIcon/>;
             return <FilterDrama/>
         case(isEqual(WeatherCode.OVERCAST, weatherCode)):
-            //return <OvercastDayIcon/>;
             return <Cloud/>
         case(includes([WeatherCode.FOG, WeatherCode.DEPOSITING_RIME_FOG], weatherCode)):
-            //return <FogDayIcon/>;
             return <Waves/>
         case(includes([
             WeatherCode.THUNDERSTORM,
