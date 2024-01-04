@@ -5,6 +5,7 @@ import AboutPage from "../pages/about.page";
 import ErrorPage from "../pages/error.page";
 import IndexPage from "../pages/index.page";
 import LocationResultsPage from "../pages/location.results.page";
+import SettingsPage from "../pages/settings.page";
 import WeatherPage from "../pages/weather.page";
 
 /*
@@ -27,6 +28,10 @@ const router = routerCreator([
     {
         path: PATHS.RESULTS,
         element: <LocationResultsPage/>,
+    },
+    {
+        path: PATHS.SETTINGS,
+        element: <SettingsPage/>,
     },
     {
         path: PATHS.WEATHER,

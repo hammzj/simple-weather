@@ -4,6 +4,7 @@ import {Box, Button} from '@mui/material';
 import PATHS from "../routes/paths";
 import {getLocationName} from "../services/open_meteo_api/utils";
 import {LocationData} from "../services/open_meteo_api/geocoding_api";
+import {shadows} from "./utils";
 
 interface LocationDataButtonParams {
     locationData: LocationData
@@ -23,11 +24,13 @@ export default function LocationDataButton({locationData}: LocationDataButtonPar
                 }}>
                 <Button
                     sx={{
-                        backgroundColor: 'white',
-                        color: 'black',
+                        color: 'primary.contrastText',
                         border: 1,
                         borderRadius: 0,
-                        boxShadow: '2px 2px 1px 1px black;',
+                        boxShadow: shadows('2px', '2px', '1px', '1px'),
+                        '&:hover': {
+                            backgroundColor: 'primary.light',
+                        }
                     }}>
                     <span>{getLocationName(locationData)}</span>
                 </Button>

@@ -65,7 +65,7 @@ export default function WeatherViewContainer({weatherData}): React.ReactElement 
                     value={value}
                     onChange={handleChange}
                     centered
-                    TabIndicatorProps={{style: {backgroundColor: "black"}}}
+                    indicatorColor='secondary'
                 >
                     <Tab label="Hourly"
                          sx={{

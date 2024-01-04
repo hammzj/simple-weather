@@ -1,11 +1,14 @@
 import {createTheme, responsiveFontSizes} from "@mui/material";
 import {common, red, blue, orange, green, grey} from '@mui/material/colors';
+import {isDarkModeSettingsEnabled} from "./components/utils";
 
-const lightTheme = responsiveFontSizes(createTheme({
+const baseTheme = {
     palette: {
         mode: 'light',
         primary: {
             main: common.white,
+            light: '#f5f5f5',
+            dark: '#dedede',
             contrastText: common.black,
         },
         secondary: grey,
@@ -41,23 +44,30 @@ const lightTheme = responsiveFontSizes(createTheme({
             },
         }
     }
-}));
+}
 
-export const theme = lightTheme;
+const lightTheme = responsiveFontSizes(createTheme(baseTheme));
 
-//TODO: figure this out later
-/*
-export const darkTheme = baseTheme({
-    mode: 'dark',
-    primary: {
-        main: common.white,
-        contrastText: common.black,
-    },
-    secondary: grey,
-    error: red,
-    warning: orange,
-    info: blue,
-    success: green,
-});
-*/
+const darkTheme = responsiveFontSizes(createTheme(Object.assign(baseTheme, {
+    palette: {
+        mode: 'dark',
+        primary: {
+            main: '#292929',
+            light: '#a9a9a9',
+            dark: '#4b4b4b',
+            contrastText: common.white,
+        },
+        secondary: grey,
+        error: red,
+        warning: orange,
+        info: blue,
+        success: green,
+    }
+})));
 
+const getTheme = () => isDarkModeSettingsEnabled() ? darkTheme : lightTheme;
+export {
+    lightTheme,
+    darkTheme,
+    getTheme,
+}

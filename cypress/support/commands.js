@@ -4,7 +4,7 @@ import {MemoryRouter} from 'react-router-dom'
 import {CssBaseline, ThemeProvider} from "@mui/material";
 import {OpenMeteoWeatherForecastAPI} from "../../src/services/open_meteo_api";
 import SimpleWeatherAPI from "../../src/services/api";
-import {theme as baseTheme} from "../../src/theme";
+import {lightTheme as baseTheme} from "../../src/theme";
 
 Cypress.Commands.add('mount', (component, options = {}) => {
     const {routerProps = {initialEntries: ['/']}, theme, ...mountOptions} = options;

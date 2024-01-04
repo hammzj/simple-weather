@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Box, Button, Stack, TextField} from '@mui/material';
 import PATHS from '../routes/paths';
-import {size, isEqual} from "lodash";
+import {size, isEqual, trim} from "lodash";
 
 export default function LocationSearchForm(): React.ReactElement {
     const navigate = useNavigate();
@@ -16,8 +16,9 @@ export default function LocationSearchForm(): React.ReactElement {
     }
 
     function handleChange(event) {
-        setIsFormEmpty(isEqual(size(event.target.value), 0));
-        setLocationName(event.target.value);
+        const {value} = event.target;
+        setIsFormEmpty(isEqual(size(trim(value)), 0));
+        setLocationName(trim(value));
     }
 
     //@ts-ignore: TS2339
@@ -30,13 +31,13 @@ export default function LocationSearchForm(): React.ReactElement {
             justifyContent="center"
             alignItems="center"
             padding='0.5em'
+
         >
-            <Stack direction='row' spacing='1.5em'>
+            <Stack direction='row' spacing='1.5em' sx={{backgroundColor: 'primary.main',}}>
                 <TextField id="location-input"
                            helperText="Search for a city/postal code"
                            size="small"
                            sx={{
-                               backgroundColor: 'primary.main',
                                color: 'primary.contrastText',
                                '& label.Mui-focused': {
                                    color: 'primary.contrastText'

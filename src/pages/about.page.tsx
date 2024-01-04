@@ -14,7 +14,8 @@ import {
 
 
 const PageLink = ({href, text}) => {
-    return (<MuiLink sx={{color: 'primary.contrastText', textDecorationColor: 'black'}} href={href}>{text}</MuiLink>);
+    //Using underline because it's easier to control with Mui
+    return (<MuiLink sx={{color: 'primary.contrastText'}} href={href}><u>{text}</u></MuiLink>);
 }
 
 export default function AboutPage(): React.ReactElement {
