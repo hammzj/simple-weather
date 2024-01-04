@@ -11,26 +11,30 @@ describe(SettingsPage.name, function () {
     it('renders correctly', function () {
         settingsPageObject.TopNavBarObject(navBar => navBar.container.should('exist'))
         settingsPageObject.BottomNavBarObject(navBar => navBar.container.should('exist'))
-        settingsPageObject.SettingsMenuObject.then(smo => {
+        settingsPageObject.SettingsMenuObject(smo => {
             smo.container.should('exist');
         });
     });
 
     context('Enabling dark mode', function () {
         it('changes the theme', function () {
-            settingsPageObject.SettingsMenuObject.then(smo => {
+            settingsPageObject.SettingsMenuObject(smo => {
                 smo.darkModeToggle.click();
             });
-            cy.get('body').should('have.color', '#121212')
+            cy.get('body')
+                .should('have.css', 'background-color')
+                .and('be.colored', '#121212')
 
-            settingsPageObject.SettingsMenuObject.then(smo => {
+            settingsPageObject.SettingsMenuObject(smo => {
                 smo.darkModeToggle.click();
             });
-            cy.get('body').should('have.color', '#fff');
+            cy.get('body')
+                .should('have.css', 'background-color')
+                .and('be.colored', '#ffffff')
         });
 
         it('persists on other pages', function () {
-            settingsPageObject.SettingsMenuObject.then(smo => {
+            settingsPageObject.SettingsMenuObject(smo => {
                 smo.darkModeToggle.click();
             });
             settingsPageObject.BottomNavBarObject(navBar => {
@@ -39,7 +43,9 @@ describe(SettingsPage.name, function () {
                     expect(url).to.include('/about');
                 });
             });
-            cy.get('body').should('have.color', '#121212');
+            cy.get('body')
+                .should('have.css', 'background-color')
+                .and('be.colored', '#121212')
         });
     });
 });
