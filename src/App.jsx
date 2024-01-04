@@ -3,7 +3,7 @@ import {RouterProvider} from "react-router-dom";
 import {Box, ThemeProvider, CssBaseline} from "@mui/material";
 import ErrorBoundary from "./components/error.boundary";
 import ErrorPage from "./pages/error.page";
-import {lightTheme, darkTheme, getTheme} from "./theme";
+import {getTheme} from "./theme";
 import router from "./routes/router";
 
 
