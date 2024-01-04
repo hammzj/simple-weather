@@ -79,3 +79,7 @@ export const isDarkModeSettingsEnabled = () => {
     return isEqual(localStorage.getItem(SETTINGS_KEY_NAMES.DARK_MODE), 'true');
 }
 
+export const shadows = (len1, len2, len3, blur) => {
+    const color = isDarkModeSettingsEnabled() ? 'white' : 'black';
+    return `${len1} ${len2} ${len3} ${blur} ${color};`;
+}

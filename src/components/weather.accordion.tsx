@@ -16,7 +16,7 @@ import {ExpandMore} from '@mui/icons-material';
 import PrecipitationChance from './precipitation.chance';
 import WeatherIcon from "./weather.icon";
 import {NOT_AVAILABLE_TEXT} from '../constants';
-import {isMobile, weatherCodeToText} from './utils';
+import {isMobile, shadows, weatherCodeToText} from './utils';
 import {DailyWeatherData, HourlyWeatherData} from "../services/api";
 import {isEqual} from "lodash";
 import {DateTime, Zone} from 'luxon';
@@ -195,7 +195,8 @@ export const AdditionalWeatherDetails = ({
         hourlyDetails(mappedWeatherData) :
         dailyDetails(mappedWeatherData);
     return (
-        <Box id="additional-weather-details">
+        <Box id="additional-weather-details"
+        >
             <TableContainer>
                 <Table>
                     <TableBody>
@@ -219,7 +220,12 @@ export default function WeatherAccordion({
     return (
         <Accordion
             id={`${type}-weather-summary-accordion`}
-            sx={{boxShadow: 0, paddingInline: isMobile() ? 0 : 5}}
+            square={true}
+            sx={{
+                paddingInline: isMobile() ? 0 : 5,
+                boxShadow: 0,
+                backgroundImage: 'none',
+            }}
             {...props}>
             <WeatherAccordionSummary type={type} mappedWeatherData={mappedWeatherData} timezone={timezone}/>
             <AccordionDetails
@@ -233,7 +239,7 @@ export default function WeatherAccordion({
                     sx={{
                         border: 1,
                         borderRadius: 0,
-                        boxShadow: '4px 4px 1px 1px black;',
+                        boxShadow: shadows('4px', '4px', '1px', '1px'),
                     }}>
                     <AdditionalWeatherDetails type={type} mappedWeatherData={mappedWeatherData}/>
                 </Box>

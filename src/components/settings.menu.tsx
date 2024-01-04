@@ -13,6 +13,7 @@ const EnableDarkModeSwitch = () => {
             label="Enable dark mode"
             control={
                 <Switch onChange={handleChange}
+                        color='secondary'
                         defaultChecked={isDarkModeSettingsEnabled()}
                         name='darkMode'/>}
         />)

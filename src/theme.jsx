@@ -7,6 +7,8 @@ const baseTheme = {
         mode: 'light',
         primary: {
             main: common.white,
+            light: '#f5f5f5',
+            dark: '#dedede',
             contrastText: common.black,
         },
         secondary: grey,
@@ -50,7 +52,9 @@ const darkTheme = responsiveFontSizes(createTheme(Object.assign(baseTheme, {
     palette: {
         mode: 'dark',
         primary: {
-            main: common.black,
+            main: '#292929',
+            light: '#a9a9a9',
+            dark: '#4b4b4b',
             contrastText: common.white,
         },
         secondary: grey,

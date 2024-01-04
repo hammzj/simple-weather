@@ -10,7 +10,7 @@ import PATHS from "../routes/paths";
 const GitHubIconLink = () => {
     return (<Link
         to={GITHUB_AUTHOR_LINK}>
-        <GitHubIcon sx={{color: 'black', textDecorationColor: 'black'}}/>
+        <GitHubIcon sx={{color: 'primary.contrastText', textDecorationColor: 'primary.contrastText'}}/>
     </Link>);
 }
 
