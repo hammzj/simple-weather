@@ -1,8 +1,10 @@
-import {createTheme, responsiveFontSizes} from "@mui/material";
+import {createTheme, responsiveFontSizes, Theme, ThemeOptions} from "@mui/material/styles";
 import {common, red, blue, orange, green, grey} from '@mui/material/colors';
 import {isDarkModeSettingsEnabled} from "./components/utils";
 
-const baseTheme = {
+export type PaletteMode = 'light' | 'dark';
+
+const baseTheme: ThemeOptions = {
     palette: {
         mode: 'light',
         primary: {
@@ -27,10 +29,11 @@ const baseTheme = {
         ].join(','),
     },
     components: {
+        //TS Problem child
         MuiOutlinedInput: {
             styleOverrides: {
                 root: {
-                    borderColor: 1,
+                    //borderColor: 'primary',
                     borderRadius: 0,
                 },
             }
@@ -46,9 +49,9 @@ const baseTheme = {
     }
 }
 
-const lightTheme = responsiveFontSizes(createTheme(baseTheme));
+export const lightTheme: Theme = responsiveFontSizes(createTheme(baseTheme));
 
-const darkTheme = responsiveFontSizes(createTheme(Object.assign(baseTheme, {
+export const darkTheme: Theme = responsiveFontSizes(createTheme(Object.assign(baseTheme, {
     palette: {
         mode: 'dark',
         primary: {
@@ -65,9 +68,5 @@ const darkTheme = responsiveFontSizes(createTheme(Object.assign(baseTheme, {
     }
 })));
 
-const getTheme = () => isDarkModeSettingsEnabled() ? darkTheme : lightTheme;
-export {
-    lightTheme,
-    darkTheme,
-    getTheme,
-}
+export const getTheme = (): Theme => isDarkModeSettingsEnabled() ? darkTheme : lightTheme;
+
