@@ -1,23 +1,11 @@
 import WeatherPage from '../../../src/pages/weather.page';
-import IndexPageObject from '../../page_objects/pages/index.page.object';
 import LocationResultsPageObject from '../../page_objects/pages/location.results.page.object';
 import WeatherPageObject from '../../page_objects/pages/weather.page.object';
+import {getThroughAppToWeatherPage} from '../utils';
 import {getLocationName} from "../../../src/services/open_meteo_api/utils";
 
-const indexPageObject = new IndexPageObject();
 const locationResultsPageObject = new LocationResultsPageObject();
 const weatherPageObject = new WeatherPageObject();
-
-const getThroughAppToWeatherPage = () => {
-    cy.get('@locationData').then(locationData => {
-        cy.visit(Cypress.config().baseUrl);
-        indexPageObject.LocationSearchFormObject(locationSearchFormObject => {
-            locationSearchFormObject._search(locationData.name);
-            cy.get(`[id="location-data-button"]`).eq(0).click();
-            //locationResultsPageObject._selectLocation(locationData); //Not working
-        });
-    });
-}
 
 describe(WeatherPage.name, function () {
     beforeEach(function () {
@@ -28,8 +16,8 @@ describe(WeatherPage.name, function () {
         cy.fixture('/open_meteo_api/geocoding_api/search.for.locations.200.berlin').as('locationDataResults');
         cy.get(`@locationDataResults`).then(locationDataResults => {
             cy.intercept(`*/search*`, locationDataResults).as(`searchForLocations`);
-            const locationData = locationDataResults.results[0];
-            cy.wrap(locationData).as(`locationData`);
+            const individualLocation = locationDataResults.results[0];
+            cy.wrap(individualLocation).as(`individualLocation`);
         });
     });
 
@@ -39,12 +27,14 @@ describe(WeatherPage.name, function () {
             cy.fixture('/open_meteo_api/forecast_api/fetch.all.weather.for.location.200.json').as('fetchAllWeatherForLocationData');
             cy.stubAndAliasWeatherData({fetchWeatherResponseFixture: 'fetch.all.weather.for.location.200.json'});
 
-            getThroughAppToWeatherPage();
+            cy.get('@individualLocation').then(individualLocation => {
+                getThroughAppToWeatherPage(individualLocation.name, 0);
+            });
         });
 
         it('renders correctly when all necessary data is provided', function () {
             cy.get('@weatherData').then(weatherData => {
-                cy.get('@locationData').then(locationData => {
+                cy.get('@individualLocation').then(individualLocation => {
                     //Assert
                     weatherPageObject.container.should('not.have.text', 'An error occurred when loading the data.')
                     weatherPageObject.TopNavBarObject((tnbo) => {
@@ -56,7 +46,7 @@ describe(WeatherPage.name, function () {
                     });
                     weatherPageObject.CurrentWeatherCardObject((cwco) => {
                         cwco.container.should('exist');
-                        cwco.location.should('have.text', getLocationName(locationData));
+                        cwco.location.should('have.text', getLocationName(individualLocation));
                         cwco.temperature.should('have.text', weatherData.current_weather.mapped.temperature);
                     });
                     weatherPageObject.WeatherViewContainerObject((wvco) => {
@@ -110,7 +100,9 @@ describe(WeatherPage.name, function () {
 
             //Action: return nothing for weather data
             //Action: Go to WeatherPage through search results
-            getThroughAppToWeatherPage();
+            cy.get('@individualLocation').then(individualLocation => {
+                getThroughAppToWeatherPage(individualLocation.name, 0);
+            });
 
             //Assert
             weatherPageObject.CurrentWeatherCardObject(cwco => cwco.container.should('not.exist'));

@@ -11,7 +11,7 @@ describe(WeatherViewContainer.name, function () {
         });
     });
 
-    it.only('defaults to "Hourly" data', function () {
+    it('defaults to "Hourly" data', function () {
         const wvco = new WeatherViewContainerObject();
         wvco.hourlyButton.should('have.attr', 'aria-selected', "true");
     });

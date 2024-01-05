@@ -19,12 +19,11 @@ describe(BottomNavBar.name, function () {
             cy.viewport('iphone-5');
         })
 
-        it.only('renders correctly and all elements are visible', function () {
+        it('renders correctly and all elements are visible', function () {
             const bottomNavBarObject = new BottomNavBarObject();
 
             //No weather code
             cy.mount(<BottomNavBar/>);
-            //bottomNavBarObject.container.should('have.class', '.Mui-row')
             bottomNavBarObject.homeLink.should('exist').and('be.visible');
             bottomNavBarObject.aboutLink.should('exist').and('be.visible');
             bottomNavBarObject.gitHubAuthorLink.should('exist').and('be.visible');

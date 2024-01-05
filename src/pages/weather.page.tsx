@@ -61,15 +61,16 @@ export default function WeatherPage(): React.ReactElement {
             }
             const requestWeatherData = async ([latitude, longitude]) => {
                 try {
+                    const opts = {
+                        temperature_unit: TemperatureUnit[localStorage.getItem('temperatureUnit') ?? 'fahrenheit'],
+                        wind_speed_unit: WindSpeedUnit[localStorage.getItem('windSpeedUnit') ?? 'mph'],
+                        precipitation_unit: PrecipitationUnit[localStorage.getItem('precipitationUnit') ?? 'inch'],
+                    }
                     const systemTimezone = DateTime.local().zoneName || 'auto';
                     const data = await SimpleWeatherAPI.getWeather(
                         [latitude, longitude],
                         systemTimezone,
-                        {
-                            temperature_unit: TemperatureUnit.fahrenheit,
-                            wind_speed_unit: WindSpeedUnit.mph,
-                            precipitation_unit: PrecipitationUnit.inch,
-                        });
+                        opts);
                     //@ts-ignore
                     setWeatherData(data);
                 } catch (err) {
