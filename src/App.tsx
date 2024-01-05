@@ -1,11 +1,12 @@
-import React, {useEffect, useState} from "react";
+import React, {useEffect, useMemo} from "react";
 import {RouterProvider} from "react-router-dom";
 import {Box, ThemeProvider, CssBaseline} from "@mui/material";
 import {Theme} from "@mui/material/styles";
 import ErrorBoundary from "./components/error.boundary";
 import ErrorPage from "./pages/error.page";
-import {getTheme} from "./theme";
+import {getTheme, PaletteMode} from "./theme";
 import {SETTINGS_KEY_NAMES} from './constants';
+import {ColorModeContext} from './contexts';
 import router from "./routes/router";
 import {TemperatureUnit, WindSpeedUnit, PrecipitationUnit} from './services/open_meteo_api/forecast_api';
 import {isNil, toString} from "lodash";
@@ -15,8 +16,8 @@ import {isNil, toString} from "lodash";
 const createDefaultSettings = () => {
     const defaultSettings = [
         {
-            key: SETTINGS_KEY_NAMES.DARK_MODE,
-            fallback: false,
+            key: SETTINGS_KEY_NAMES.COLOR_MODE,
+            fallback: 'light',
         },
         {
             key: SETTINGS_KEY_NAMES.TEMPERATURE_UNIT,
@@ -40,22 +41,35 @@ const createDefaultSettings = () => {
 }
 
 export default function App(): React.ReactElement {
-    const [theme, setTheme] = useState<Theme>(getTheme());
+    const [mode, setMode] = React.useState<string>('light');
+
+    //Use local storage to set the color mode
+    const colorMode = React.useMemo(
+        () => ({
+            setColorMode: () => {
+                setMode(localStorage.getItem(SETTINGS_KEY_NAMES.COLOR_MODE) ?? 'light')
+            },
+        }),
+        [],
+    );
+    // Update the theme only if the mode changes
+    const theme = useMemo(() => getTheme(mode), [mode]);
 
     useEffect(() => {
         createDefaultSettings();
-        setTheme(getTheme());
     }, []);
 
     return (
-        <Box sx={{textAlign: 'center'}}>
+        <ColorModeContext.Provider value={colorMode}>
             <ThemeProvider theme={theme}>
                 <CssBaseline/>
-                <ErrorBoundary fallback={<ErrorPage/>}>
-                    <RouterProvider router={router}/>
-                </ErrorBoundary>
+                <Box sx={{textAlign: 'center'}}>
+                    <ErrorBoundary fallback={<ErrorPage/>}>
+                        <RouterProvider router={router}/>
+                    </ErrorBoundary>
+                </Box>
             </ThemeProvider>
-        </Box>
+        </ColorModeContext.Provider>
     );
 }
 

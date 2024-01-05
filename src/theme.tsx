@@ -1,6 +1,7 @@
 import {createTheme, responsiveFontSizes, Theme, ThemeOptions} from "@mui/material/styles";
 import {common, red, blue, orange, green, grey} from '@mui/material/colors';
 import {isDarkModeSettingsEnabled} from "./components/utils";
+import {isEqual} from "lodash";
 
 export type PaletteMode = 'light' | 'dark';
 
@@ -68,5 +69,5 @@ export const darkTheme: Theme = responsiveFontSizes(createTheme(Object.assign(ba
     }
 })));
 
-export const getTheme = (): Theme => isDarkModeSettingsEnabled() ? darkTheme : lightTheme;
+export const getTheme = (mode): Theme => isEqual(mode, 'dark')  ? darkTheme : lightTheme;
 

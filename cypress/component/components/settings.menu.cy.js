@@ -29,41 +29,36 @@ describe(SettingsMenu.name, function () {
             .should('have.text', 'Precipitation unit');
     });
 
-    //TODO: Cypress component testing cannot work if the page is reloaded.
-    //This will be tested in the e2e spec.
-    //However, this will be testable once I redo the dark mode to use memoization: Issue #17.
-    context.skip('Enable dark mode', function () {
+    context('Enable dark mode', function () {
         it(`can enable dark mode`, function () {
             //Act
             settingsMenuObject._selectSettings({darkModeToggle: true});
 
             //Assert
             settingsMenuObject._assertDarkModeIsSelected(true);
-            cy.assertLocalStorageItem(baseUrl, 'darkMode', 'true');
+            cy.assertLocalStorageItem(baseUrl, 'colorMode', 'dark');
         });
 
-        it(`can enable dark mode`, function () {
+        it(`can disable dark mode to re-enable light mode`, function () {
             //Arrange
             settingsMenuObject._selectSettings({darkModeToggle: true});
-            settingsMenuObject._assertDarkModeIsSelected(false);
+            settingsMenuObject._assertDarkModeIsSelected(true);
 
             //Act
             settingsMenuObject._selectSettings({darkModeToggle: false});
 
             //Assert
             settingsMenuObject._assertDarkModeIsSelected(false);
-            cy.assertLocalStorageItem(baseUrl, 'darkMode', 'false');
+            cy.assertLocalStorageItem(baseUrl, 'colorMode', 'light');
         });
 
 
         it('defaults to the last saved selection', function () {
             //Arrange
             settingsMenuObject._assertDarkModeIsSelected(false);
-            settingsMenuObject._selectSettings({darkModeToggle: true});
 
             //Act
-            //Re-mount the component
-            cy.mount(<SettingsMenu/>);
+            settingsMenuObject._selectSettings({darkModeToggle: true});
 
             //Assert
             settingsMenuObject._assertDarkModeIsSelected(true);
@@ -81,21 +76,21 @@ describe(SettingsMenu.name, function () {
                 settingsMenuObject._assertRadioButtonIsSelected({temperatureUnitOption: unit}, true);
                 cy.assertLocalStorageItem(baseUrl, 'temperatureUnit', unit);
             });
-
-            it('defaults to the last saved selection', function () {
-                //Arrange
-                settingsMenuObject._assertRadioButtonIsSelected({temperatureUnitOption: TemperatureUnit.celsius}, false);
-                settingsMenuObject._selectSettings({temperatureUnitOption: TemperatureUnit.celsius});
-
-                //Act
-                //Re-mount the component
-                cy.mount(<SettingsMenu/>);
-
-                //Assert
-                settingsMenuObject._assertRadioButtonIsSelected({temperatureUnitOption: TemperatureUnit.celsius}, true);
-                settingsMenuObject._assertRadioButtonIsSelected({temperatureUnitOption: TemperatureUnit.fahrenheit}, false);
-            });
         }
+
+        it('defaults to the last saved selection', function () {
+            //Arrange
+            settingsMenuObject._assertRadioButtonIsSelected({temperatureUnitOption: TemperatureUnit.celsius}, false);
+            settingsMenuObject._selectSettings({temperatureUnitOption: TemperatureUnit.celsius});
+
+            //Act
+            //Re-mount the component
+            cy.mount(<SettingsMenu/>);
+
+            //Assert
+            settingsMenuObject._assertRadioButtonIsSelected({temperatureUnitOption: TemperatureUnit.celsius}, true);
+            settingsMenuObject._assertRadioButtonIsSelected({temperatureUnitOption: TemperatureUnit.fahrenheit}, false);
+        });
     });
 
     context('Wind speed unit', function () {
@@ -108,20 +103,20 @@ describe(SettingsMenu.name, function () {
                 settingsMenuObject._assertRadioButtonIsSelected({windSpeedUnitOption: unit}, true);
                 cy.assertLocalStorageItem(baseUrl, 'windSpeedUnit', unit);
             });
-
-            it('defaults to the last saved selection', function () {
-                //Arrange
-                settingsMenuObject._assertRadioButtonIsSelected({windSpeedUnitOption: WindSpeedUnit.kmh}, false);
-                settingsMenuObject._selectSettings({windSpeedUnitOption: WindSpeedUnit.kmh});
-
-                //Act
-                //Re-mount the component
-                cy.mount(<SettingsMenu/>);
-
-                //Assert
-                settingsMenuObject._assertRadioButtonIsSelected({windSpeedUnitOption: WindSpeedUnit.kmh}, true);
-            });
         }
+
+        it('defaults to the last saved selection', function () {
+            //Arrange
+            settingsMenuObject._assertRadioButtonIsSelected({windSpeedUnitOption: WindSpeedUnit.kmh}, false);
+            settingsMenuObject._selectSettings({windSpeedUnitOption: WindSpeedUnit.kmh});
+
+            //Act
+            //Re-mount the component
+            cy.mount(<SettingsMenu/>);
+
+            //Assert
+            settingsMenuObject._assertRadioButtonIsSelected({windSpeedUnitOption: WindSpeedUnit.kmh}, true);
+        });
     });
 
     context('Precipitation unit', function () {
@@ -134,19 +129,19 @@ describe(SettingsMenu.name, function () {
                 settingsMenuObject._assertRadioButtonIsSelected({precipitationUnitOption: unit}, true);
                 cy.assertLocalStorageItem(baseUrl, 'precipitationUnit', unit);
             });
-
-            it('defaults to the last saved selection', function () {
-                //Arrange
-                settingsMenuObject._assertRadioButtonIsSelected({precipitationUnitOption: PrecipitationUnit.mm}, false);
-                settingsMenuObject._selectSettings({precipitationUnitOption: PrecipitationUnit.mm});
-
-                //Act
-                //Re-mount the component
-                cy.mount(<SettingsMenu/>);
-
-                //Assert
-                settingsMenuObject._assertRadioButtonIsSelected({precipitationUnitOption: PrecipitationUnit.mm}, true);
-            });
         }
+
+        it('defaults to the last saved selection', function () {
+            //Arrange
+            settingsMenuObject._assertRadioButtonIsSelected({precipitationUnitOption: PrecipitationUnit.mm}, false);
+            settingsMenuObject._selectSettings({precipitationUnitOption: PrecipitationUnit.mm});
+
+            //Act
+            //Re-mount the component
+            cy.mount(<SettingsMenu/>);
+
+            //Assert
+            settingsMenuObject._assertRadioButtonIsSelected({precipitationUnitOption: PrecipitationUnit.mm}, true);
+        });
     });
 });

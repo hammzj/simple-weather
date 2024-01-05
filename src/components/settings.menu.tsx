@@ -1,14 +1,17 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {FormControl, FormControlLabel, FormLabel, Radio, RadioGroup, Stack, Switch,} from '@mui/material';
 import {isDarkModeSettingsEnabled} from "./utils";
 import {SETTINGS_KEY_NAMES} from "../constants";
 import {TemperatureUnit, WindSpeedUnit, PrecipitationUnit} from '../services/open_meteo_api/forecast_api';
+import {ColorModeContext} from "../contexts";
 
 const EnableDarkModeSwitch = (): React.ReactElement => {
+    const colorMode = useContext(ColorModeContext);
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.debug('updated local storage:', event.target.name, event.target.value);
-        localStorage.setItem(SETTINGS_KEY_NAMES.DARK_MODE, event.target.checked.toString());
-        window.location.reload();
+        const value = event.target.checked ? 'dark' : 'light';
+        console.debug('updated local storage:', event.target.name, value);
+        localStorage.setItem(SETTINGS_KEY_NAMES.COLOR_MODE, value);
+        colorMode.setColorMode();
     };
 
     return (
@@ -18,7 +21,7 @@ const EnableDarkModeSwitch = (): React.ReactElement => {
                 <Switch onChange={handleChange}
                         color='secondary'
                         defaultChecked={isDarkModeSettingsEnabled()}
-                        name={SETTINGS_KEY_NAMES.DARK_MODE}/>}
+                        name={SETTINGS_KEY_NAMES.COLOR_MODE}/>}
         />)
 }
 

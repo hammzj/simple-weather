@@ -65,7 +65,7 @@ export const weatherCodeToText = (weatherCode: number | null | undefined): strin
 export const isMobile = () => window.innerWidth <= 768;
 
 export const isDarkModeSettingsEnabled = () => {
-    return isEqual(localStorage.getItem(SETTINGS_KEY_NAMES.DARK_MODE), 'true');
+    return isEqual(localStorage.getItem(SETTINGS_KEY_NAMES.COLOR_MODE), 'dark');
 }
 
 export const shadows = (len1, len2, len3, blur) => {

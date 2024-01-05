@@ -40,7 +40,7 @@ describe(SettingsPage.name, function () {
                 .should('have.css', 'background-color')
                 .and('be.colored', '#121212');
             cy.log('baseUrl', baseUrl)
-            cy.assertLocalStorageItem(baseUrl, 'darkMode', 'true');
+            cy.assertLocalStorageItem(baseUrl, 'colorMode', 'dark');
 
             //Act 2
             settingsPageObject.SettingsMenuObject(smo => {
@@ -50,7 +50,7 @@ describe(SettingsPage.name, function () {
             cy.get('body')
                 .should('have.css', 'background-color')
                 .and('be.colored', '#ffffff');
-            cy.assertLocalStorageItem(baseUrl, 'darkMode', 'false');
+            cy.assertLocalStorageItem(baseUrl, 'colorMode', 'light');
         });
 
         it('persists on other pages', function () {

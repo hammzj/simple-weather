@@ -12,7 +12,7 @@ export const GITHUB_AUTHOR_LINK = "https://github.com/hammzj";
 
 //Settings
 export const SETTINGS_KEY_NAMES = {
-    DARK_MODE: 'darkMode',
+    COLOR_MODE: 'colorMode',
     TEMPERATURE_UNIT: 'temperatureUnit',
     WIND_SPEED_UNIT: 'windSpeedUnit',
     PRECIPITATION_UNIT: 'precipitationUnit',
