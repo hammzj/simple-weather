@@ -42,3 +42,13 @@ Cypress.Commands.add("setValue", {prevSubject: true}, function (subject, text, o
     cy.wrap(subject).clear();
     cy.wrap(subject).type(text, opts);
 });
+
+Cypress.Commands.add("toggleCheckbox", {prevSubject: true}, function (subject, check) {
+    check ? cy.wrap(subject).check({force: true}) : cy.wrap(subject).uncheck({force: true});
+});
+
+Cypress.Commands.add("assertLocalStorageItem", {prevSubject: false}, function (url, key, value, expectation = true) {
+    cy.getAllLocalStorage().then(result => {
+        cy.wrap(result[Cypress.config().baseUrl][key]).should(expectation ? 'eq' : 'not.eq', value);
+    });
+});

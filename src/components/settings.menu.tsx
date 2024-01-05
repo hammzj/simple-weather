@@ -6,6 +6,7 @@ import {TemperatureUnit, WindSpeedUnit, PrecipitationUnit} from '../services/ope
 
 const EnableDarkModeSwitch = (): React.ReactElement => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.debug('updated local storage:', event.target.name, event.target.value);
         localStorage.setItem(SETTINGS_KEY_NAMES.DARK_MODE, event.target.checked.toString());
         window.location.reload();
     };
@@ -21,13 +22,23 @@ const EnableDarkModeSwitch = (): React.ReactElement => {
         />)
 }
 
+/*
+ * Generic component that creates radio choices from a selection of values.
+ * In this case, the values are pulled from the TypeScript enums that represent
+ * the options allowed for hitting the Forecast API's `getWeather` call
+ */
 const SettingsRadioGroup = ({
                                 settingsKeyName,
                                 defaultValue,
                                 formLabel,
-                                units,
-                                handleChange
+                                units
                             }): React.ReactElement => {
+    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+        console.debug('updated local storage:', event.target.name, event.target.value);
+        localStorage.setItem(event.target.name, event.target.value);
+    };
+
+
     return (
         <FormControl
             color='secondary'>
@@ -39,13 +50,9 @@ const SettingsRadioGroup = ({
                 defaultValue={defaultValue}
                 row
             >
-                {Object
-                    .keys(units).map((unit, i) => {
-                        return <FormControlLabel key={unit} value={unit} control={<Radio color='secondary'/>}
-                                                 label={unit}/>
-                    })
-                }
-
+                {Object.keys(units).map(unit => {
+                    return <FormControlLabel key={unit} value={unit} control={<Radio color='secondary'/>} label={unit}/>
+                })}
             </RadioGroup>
         </FormControl>
     )
@@ -53,11 +60,6 @@ const SettingsRadioGroup = ({
 
 
 export default function SettingsMenu(): React.ReactElement {
-    const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-        console.debug('updated local storage:', event.target.name, event.target.value)
-        localStorage.setItem(event.target.name, event.target.value);
-    };
-
     return (<Stack
         id='settings-menu'
         direction='column'
@@ -68,17 +70,17 @@ export default function SettingsMenu(): React.ReactElement {
         <SettingsRadioGroup
             formLabel='Temperature unit'
             settingsKeyName={SETTINGS_KEY_NAMES.TEMPERATURE_UNIT}
-            defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.TEMPERATURE_UNIT) ?? TemperatureUnit.fahrenheit}
-            units={TemperatureUnit} handleChange={handleChange}/>
+            defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.TEMPERATURE_UNIT)}
+            units={TemperatureUnit}/>
         <SettingsRadioGroup
             formLabel='Precipitation unit'
             settingsKeyName={SETTINGS_KEY_NAMES.PRECIPITATION_UNIT}
-            defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.PRECIPITATION_UNIT) ?? PrecipitationUnit.inch}
-            units={PrecipitationUnit} handleChange={handleChange}/>
+            defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.PRECIPITATION_UNIT)}
+            units={PrecipitationUnit}/>
         <SettingsRadioGroup
             formLabel='Wind speed unit'
             settingsKeyName={SETTINGS_KEY_NAMES.WIND_SPEED_UNIT}
-            defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.WIND_SPEED_UNIT) ?? WindSpeedUnit.mph}
-            units={WindSpeedUnit} handleChange={handleChange}/>
+            defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.WIND_SPEED_UNIT)}
+            units={WindSpeedUnit}/>
     </Stack>)
 }
