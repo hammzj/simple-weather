@@ -49,6 +49,6 @@ Cypress.Commands.add("toggleCheckbox", {prevSubject: true}, function (subject, c
 
 Cypress.Commands.add("assertLocalStorageItem", {prevSubject: false}, function (url, key, value, expectation = true) {
     cy.getAllLocalStorage().then(result => {
-        cy.wrap(result[Cypress.config().baseUrl][key]).should(expectation ? 'eq' : 'not.eq', value);
+        cy.wrap(result[url][key]).should(expectation ? 'eq' : 'not.eq', value);
     });
 });

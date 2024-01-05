@@ -29,7 +29,7 @@ describe(IndexPage.name, function () {
             });
         });
 
-        it.only('can search for a location correctly', function () {
+        it('can search for a location correctly', function () {
             indexPage.LocationSearchFormObject(locationSearchFormObject => {
                 locationSearchFormObject._search('Berlin');
             });
