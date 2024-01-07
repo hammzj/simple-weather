@@ -2,6 +2,7 @@ import React from "react";
 import {Divider, Link as MuiLink, Stack, Typography} from "@mui/material";
 import Page from '../components/page';
 import {
+    CC_LICENSE_LINK,
     CYPRESS_IO_HOMEPAGE,
     GITHUB_AUTHOR_LINK,
     MATERIAL_UI_HOMEPAGE,
@@ -58,10 +59,10 @@ export default function AboutPage(): React.ReactElement {
                         text='Material UI' href={MATERIAL_UI_HOMEPAGE}/>, and is tested with <PageLink text='Cypress'
                                                                                                        href={CYPRESS_IO_HOMEPAGE}/>.
                         The backend services
-                        utilize the <PageLink text='Open-Meteo API' href={OPEN_METEO_HOMEPAGE}/>, which
-                        pulls from various sources across the world.
-                        Take note that the API may only update the data in intervals ranging between ten minutes up to
-                        an hour, so please check that website to see the refresh rates of their forecasting sources.
+                        utilize the <PageLink text='Open-Meteo API' href={OPEN_METEO_HOMEPAGE}/>, licensed under the <PageLink text="Attribution 4.0 International (CC BY 4.0)" href={CC_LICENSE_LINK}/> which
+                        pulls from various weather models across the world.
+                        Take note that the API may only update the data in intervals ranging between fifteen minutes up to
+                        an hour, so please check their homepage to see refresh rates of their forecasting sources.
                     </Typography>
 
                     <Typography> I hope that this website provides a very fluid and relaxed experience.</Typography>
