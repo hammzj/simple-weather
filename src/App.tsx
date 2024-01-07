@@ -1,7 +1,6 @@
-import React, {useEffect, useMemo} from "react";
+import React, {useEffect, useMemo, useState} from "react";
 import {RouterProvider} from "react-router-dom";
 import {Box, ThemeProvider, CssBaseline} from "@mui/material";
-import {Theme} from "@mui/material/styles";
 import ErrorBoundary from "./components/error.boundary";
 import ErrorPage from "./pages/error.page";
 import {getTheme, PaletteMode} from "./theme";
@@ -13,11 +12,13 @@ import {isNil, toString} from "lodash";
 
 //I bet there's a better way to handle this, but it'll work for now.
 //Maybe using a JSON object is better, but we'd still need to individually set the keys.
+const defaultColorMode = 'light';
+
 const createDefaultSettings = () => {
     const defaultSettings = [
         {
             key: SETTINGS_KEY_NAMES.COLOR_MODE,
-            fallback: 'light',
+            fallback: defaultColorMode,
         },
         {
             key: SETTINGS_KEY_NAMES.TEMPERATURE_UNIT,
@@ -41,16 +42,16 @@ const createDefaultSettings = () => {
 }
 
 export default function App(): React.ReactElement {
-    const [mode, setMode] = React.useState<string>('light');
-
     //Use local storage to set the color mode
-    const colorMode = React.useMemo(
+    //There's an optimized way to handle all of this this but it works for now.
+    const [mode, setMode] = useState<PaletteMode | string>(localStorage.getItem(SETTINGS_KEY_NAMES.COLOR_MODE) ?? defaultColorMode);
+    const colorMode = useMemo(
         () => ({
             setColorMode: () => {
-                setMode(localStorage.getItem(SETTINGS_KEY_NAMES.COLOR_MODE) ?? 'light')
+                setMode(localStorage.getItem(SETTINGS_KEY_NAMES.COLOR_MODE) ?? defaultColorMode);
             },
         }),
-        [],
+        [mode],
     );
     // Update the theme only if the mode changes
     const theme = useMemo(() => getTheme(mode), [mode]);
