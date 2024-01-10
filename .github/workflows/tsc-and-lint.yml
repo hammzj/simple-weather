@@ -2,7 +2,7 @@ on: [ push ]
 
 jobs:
   tsc:
-    name: Run tsc
+    name: Check TypeScript
     runs-on: ubuntu-latest
     strategy:
       matrix:
@@ -17,7 +17,7 @@ jobs:
         run: |
           yarn install
           yarn run dev:tsc
-          yarn run dev:lint
+          
   lint:
     runs-on: ubuntu-latest
     name: Run eslint
