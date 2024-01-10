@@ -23,6 +23,12 @@ Cypress.Commands.add('mount', (component, options = {}) => {
     return mount(wrapped, mountOptions);
 });
 
+/**
+ * coordinatesFixture {string}
+ * fetchWeatherResponseFixture {string}
+ * alias {string="weatherData"} outputs the aliased "SimpleWeatherAPI.getWeather" call as "@{alias}"
+ * Stubs the Open-Meteo weather forecast API and relies on the SimpleWeatherAPI to transform the response into usable data
+ */
 Cypress.Commands.add('stubAndAliasWeatherData', ({
                                                      coordinatesFixture = 'coordinates.json',
                                                      fetchWeatherResponseFixture

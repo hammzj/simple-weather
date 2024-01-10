@@ -10,4 +10,4 @@ export default function SettingsPage(): React.ReactElement {
             <SettingsMenu/>
         </Page>
     )
-};
+}
