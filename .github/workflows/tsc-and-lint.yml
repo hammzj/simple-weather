@@ -17,7 +17,7 @@ jobs:
         run: |
           yarn install
           yarn run dev:tsc
-          
+
   lint:
     runs-on: ubuntu-latest
     name: Run eslint
