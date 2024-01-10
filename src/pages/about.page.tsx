@@ -5,6 +5,7 @@ import {
     CC_LICENSE_LINK,
     CYPRESS_IO_HOMEPAGE,
     GITHUB_AUTHOR_LINK,
+    GITHUB_REPOSITORY_LINK,
     MATERIAL_UI_HOMEPAGE,
     NODEJS_HOMEPAGE,
     OPEN_METEO_HOMEPAGE,
@@ -59,9 +60,11 @@ export default function AboutPage(): React.ReactElement {
                         text='Material UI' href={MATERIAL_UI_HOMEPAGE}/>, and is tested with <PageLink text='Cypress'
                                                                                                        href={CYPRESS_IO_HOMEPAGE}/>.
                         The backend services
-                        utilize the <PageLink text='Open-Meteo API' href={OPEN_METEO_HOMEPAGE}/>, licensed under the <PageLink text="Attribution 4.0 International (CC BY 4.0)" href={CC_LICENSE_LINK}/> which
+                        utilize the <PageLink text='Open-Meteo API' href={OPEN_METEO_HOMEPAGE}/>, licensed under
+                        the <PageLink text="Attribution 4.0 International (CC BY 4.0)" href={CC_LICENSE_LINK}/> which
                         pulls from various weather models across the world.
-                        Take note that the API may only update the data in intervals ranging between fifteen minutes up to
+                        Take note that the API may only update the data in intervals ranging between fifteen minutes up
+                        to
                         an hour, so please check their homepage to see refresh rates of their forecasting sources.
                     </Typography>
 
@@ -69,8 +72,10 @@ export default function AboutPage(): React.ReactElement {
 
                     <Divider/>
 
-                    <Typography>For any information about this website or to report issues, please respond to me through
-                        my <PageLink text='GitHub profile, @hammzj' href={GITHUB_AUTHOR_LINK}/>.</Typography>
+                    <Typography>For any information about this website or to report issues, please respond through
+                        <PageLink text='the issue tracker on the repository' href={GITHUB_REPOSITORY_LINK}/>
+                        or to me at my <PageLink text='GitHub profile, @hammzj'
+                                                 href={GITHUB_AUTHOR_LINK}/>.</Typography>
                 </Stack>
             </Stack>
         </Page>

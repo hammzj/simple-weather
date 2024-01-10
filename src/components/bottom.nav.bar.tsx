@@ -4,14 +4,15 @@ import {Container, Grid,} from '@mui/material';
 import {GitHub as GitHubIcon} from '@mui/icons-material';
 import TextLink from "./text.link";
 import OpenMeteoAttributionLink from "./open-meteo-attribution-link";
-import {GITHUB_AUTHOR_LINK} from "../constants";
+import {GITHUB_REPOSITORY_LINK} from "../constants";
 import PATHS from "../routes/paths";
 
 const GitHubIconLink = () => {
-    return (<Link
-        to={GITHUB_AUTHOR_LINK}>
-        <GitHubIcon sx={{color: 'primary.contrastText', textDecorationColor: 'primary.contrastText'}}/>
-    </Link>);
+    return (
+        <Link
+            to={GITHUB_REPOSITORY_LINK}>
+            <GitHubIcon sx={{color: 'primary.contrastText', textDecorationColor: 'primary.contrastText'}}/>
+        </Link>);
 }
 
 export default function BottomNavBar(): React.ReactElement {

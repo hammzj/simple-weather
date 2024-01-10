@@ -9,7 +9,8 @@ export const TYPESCRIPT_HOMEPAGE = 'https://www.typescriptlang.org/';
 export const OPEN_METEO_HOMEPAGE = 'https://open-meteo.com/';
 export const REACT_DEV_HOMEPAGE = 'https://react.dev/';
 export const PLAIN_TEXT_SPORTS_HOMEPAGE = 'https://plaintextsports.com/';
-export const GITHUB_AUTHOR_LINK = "https://github.com/hammzj";
+export const GITHUB_AUTHOR_LINK = "https://github.com/hammzj/";
+export const GITHUB_REPOSITORY_LINK = "https://github.com/hammzj/simple-weather/";
 
 //Settings
 export const SETTINGS_KEY_NAMES = {
