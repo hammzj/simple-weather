@@ -75,4 +75,4 @@ export default function AboutPage(): React.ReactElement {
             </Stack>
         </Page>
     )
-};
+}
