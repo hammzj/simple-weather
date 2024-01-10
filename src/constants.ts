@@ -1,6 +1,7 @@
 export const NOT_AVAILABLE_TEXT = "N/A";
 
 //Links
+export const CC_LICENSE_LINK = "https://creativecommons.org/licenses/by/4.0/";
 export const CYPRESS_IO_HOMEPAGE = 'https://cypress.io/';
 export const MATERIAL_UI_HOMEPAGE = 'https://mui.com/material-ui/';
 export const NODEJS_HOMEPAGE = 'https://nodejs.org/';
@@ -12,7 +13,7 @@ export const GITHUB_AUTHOR_LINK = "https://github.com/hammzj";
 
 //Settings
 export const SETTINGS_KEY_NAMES = {
-    DARK_MODE: 'darkMode',
+    COLOR_MODE: 'colorMode',
     TEMPERATURE_UNIT: 'temperatureUnit',
     WIND_SPEED_UNIT: 'windSpeedUnit',
     PRECIPITATION_UNIT: 'precipitationUnit',
