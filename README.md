@@ -9,7 +9,7 @@ This repository contains a simple application that displays weather forecasts.
 
 Search for a city or postal code, select the button that matches the city you want, and forecasts are displayed for the current weather, the next 24 hours, and the next 10 days.
 
-[Simple Weather](https://hammzj.github.io/simple-weather/).
+[Website homepage](https://hammzj.github.io/simple-weather/)
 
 Created by Zachary J. Hamm.
 
