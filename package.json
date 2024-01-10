@@ -10,7 +10,7 @@
     "cypress:run:e2e": "cypress run --e2e",
     "dev:tsc": "tsc",
     "dev:lint": "eslint . --ext .ts,.tsx",
-    "dev:prettier": "prettier --write",
+    "dev:prettier": "prettier --write \"**/*.{js,jsx,ts,tsx,md}\"",
     "dev:start": "react-scripts start",
     "dev:build": "react-scripts build",
     "dev:test": "react-scripts test",
