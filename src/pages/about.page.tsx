@@ -72,9 +72,9 @@ export default function AboutPage(): React.ReactElement {
 
                     <Divider/>
 
-                    <Typography>For any information about this website or to report issues, please respond through
+                    <Typography>For any information about this website or to report issues, please respond through 
                         <PageLink text='the issue tracker on the repository' href={GITHUB_REPOSITORY_LINK}/>
-                        or to me at my <PageLink text='GitHub profile, @hammzj'
+                         or to me at my <PageLink text='GitHub profile, @hammzj'
                                                  href={GITHUB_AUTHOR_LINK}/>.</Typography>
                 </Stack>
             </Stack>
