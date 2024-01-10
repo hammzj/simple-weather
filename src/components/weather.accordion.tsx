@@ -35,7 +35,7 @@ interface WeatherAccordionProps {
 
 interface AdditionalWeatherDetailsProps {
     type: WeatherSummaryTimeType
-    mappedWeatherData: MappedWeatherData | {}
+    mappedWeatherData: MappedWeatherData | any
 }
 
 interface AdditionalWeatherDetailsRowProps {
@@ -64,7 +64,7 @@ const WeatherAccordionSummary = ({
                                      type,
                                      mappedWeatherData,
                                      timezone
-                                 }): React.ReactElement => {
+                                 }: WeatherAccordionSummaryProps): React.ReactElement => {
     const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || 'local');
     const temperature = mappedWeatherData.temperature || mappedWeatherData.temperature_range;
     return (
