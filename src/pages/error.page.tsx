@@ -26,4 +26,4 @@ export default function ErrorPage(): React.ReactElement {
             </Box>
         </Page>
     )
-};
+}

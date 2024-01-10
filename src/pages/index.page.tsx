@@ -20,4 +20,4 @@ export default function IndexPage(): React.ReactElement {
             </Grid>
         </Page>
     )
-};
+}
