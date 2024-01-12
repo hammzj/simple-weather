@@ -20,15 +20,18 @@ jobs:
           yarn run dev:tsc
 
   lint:
-    runs-on: ubuntu-latest
     name: Run eslint
-  steps:
-    - uses: actions/checkout@v1
-    - name: Use Node.js ${{ matrix.node-version }}
-      uses: actions/setup-node@v3
-      with:
-        node-version: ${{ matrix.node-version }}
-    - name: Build
-      run: |
-        yarn install
-        yarn run dev:lint
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        node-version: [ 18.x ]
+    steps:
+      - uses: actions/checkout@v1
+      - name: Use Node.js ${{ matrix.node-version }}
+        uses: actions/setup-node@v3
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Build
+        run: |
+          yarn install
+          yarn run dev:lint
