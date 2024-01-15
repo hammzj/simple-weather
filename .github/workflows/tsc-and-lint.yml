@@ -18,6 +18,9 @@ jobs:
         run: |
           yarn install
           yarn run dev:tsc
+        env:
+          # also other environment variable
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
   lint:
     name: Run eslint
@@ -35,3 +38,6 @@ jobs:
         run: |
           yarn install
           yarn run dev:lint
+        env:
+          # also other environment variable
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}

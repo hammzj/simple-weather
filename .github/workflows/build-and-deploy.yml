@@ -39,6 +39,9 @@ jobs:
         run: |
           yarn install
           yarn run dev:build
+        env:
+          # also other environment variable
+          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
       - name: Setup Pages
         uses: actions/configure-pages@v2
       - name: Upload artifact
