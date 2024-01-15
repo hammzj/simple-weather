@@ -9,7 +9,6 @@ on:
 env:
   CI: false
   USE_HASH_ROUTER: true
-  NODE_ENV: 'production'
 
 jobs:
   build:
@@ -41,7 +40,7 @@ jobs:
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
       - name: Build
         run: |
-          yarn install --production
+          yarn install
           yarn run dev:build
       - name: Setup Pages
         uses: actions/configure-pages@v2
