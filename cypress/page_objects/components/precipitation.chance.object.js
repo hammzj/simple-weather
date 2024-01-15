@@ -1,6 +1,7 @@
-import ElementCollection from "../element.collection";
+import CypressPageObject from "@hammzj/cypress-page-object";
+const { ComponentObject } = CypressPageObject;
 
-export default class PrecipitationChanceObject extends ElementCollection {
+export default class PrecipitationChanceObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`div#precipitation`));
     }
@@ -10,6 +11,6 @@ export default class PrecipitationChanceObject extends ElementCollection {
     }
 
     _assertValue(value) {
-        this.container.should('have.text', value);
+        this.container.should("have.text", value);
     }
 }

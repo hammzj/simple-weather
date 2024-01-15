@@ -1,7 +1,8 @@
-import ElementCollection from "../element.collection";
+import CypressPageObject from "@hammzj/cypress-page-object";
+const { ComponentObject } = CypressPageObject;
 
-export default class LocationDataButtonObject extends ElementCollection {
-    #BASE_CONTAINER_ID = '#location-data-button';
+export default class LocationDataButtonObject extends ComponentObject {
+    #BASE_CONTAINER_ID = "#location-data-button";
 
     constructor(buttonText = undefined) {
         super(() => cy.get('div[id="location-data-button"]'));
@@ -10,10 +11,8 @@ export default class LocationDataButtonObject extends ElementCollection {
         if (buttonText) {
             this._buttonText = buttonText;
             this.updateBaseContainerFunction = (origFn) => {
-                return origFn()
-                    .contains('span', this._buttonText)
-                    .parents(this.#BASE_CONTAINER_ID);
-            }
+                return origFn().contains("span", this._buttonText).parents(this.#BASE_CONTAINER_ID);
+            };
         }
     }
 
@@ -25,4 +24,3 @@ export default class LocationDataButtonObject extends ElementCollection {
         return this.container.contains(`span`, this._buttonText);
     }
 }
-

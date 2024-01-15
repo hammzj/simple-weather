@@ -2,18 +2,24 @@ on:
   pull_request:
 
 jobs:
-  tsc:
+  tsc-and-lint:
     name: Check TypeScript
     runs-on: ubuntu-latest
     strategy:
       matrix:
         node-version: [ 18.x ]
+
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      # @see https://github.com/orgs/community/discussions/45097#discussioncomment-5017757
+      - name: Create .npmrc file
+        run: |
+          echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
       - name: Build
         run: |
           yarn install
@@ -31,6 +37,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - name: Create .npmrc file
+        run: |
+          echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
       - name: Build
         run: |
           yarn install

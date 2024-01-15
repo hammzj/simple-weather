@@ -1,6 +1,5 @@
-import LocationSearchFormObject from "../components/location.search.form.object";
-import LocationButtonsListObject from "../components/location.buttons.list.object";
 import PageObject from "./page.object";
+import LocationButtonsListObject from "../components/location.buttons.list.object";
 import TopNavBarObject from "../components/top.nav.bar.object";
 import BottomNavBarObject from "../components/bottom.nav.bar.object";
 
@@ -10,24 +9,23 @@ export default class LocationResultsPageObject extends PageObject {
     }
 
     TopNavBarObject(fn) {
-        this.container.within(() => fn(new TopNavBarObject()));
+        this._nestedObject(this.container, new TopNavBarObject(), fn);
     }
 
     BottomNavBarObject(fn) {
-        this.container.within(() => fn(new BottomNavBarObject()));
+        this._nestedObject(this.container, new BottomNavBarObject(), fn);
     }
 
     LocationButtonsListObject(fn) {
-        this.container.within(() => fn(new LocationButtonsListObject()));
+        this._nestedObject(this.container, new LocationButtonsListObject(), fn);
     }
 
     //TODO: make this work
     _selectLocation(locationName) {
-        this.LocationButtonsListObject(locationButtonsListObject => {
-            locationButtonsListObject.LocationDataButtonObject(button => {
+        this.LocationButtonsListObject((locationButtonsListObject) => {
+            locationButtonsListObject.LocationDataButtonObject(locationName, (button) => {
                 button.container.click();
-            }, locationName);
+            });
         });
     }
 }
-

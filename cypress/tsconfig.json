@@ -3,6 +3,7 @@
     "../node_modules/cypress",
     "**/*.cy.js"
   ],
+  
   "compilerOptions": {
     "noEmit": false,
     "sourceMap": false,

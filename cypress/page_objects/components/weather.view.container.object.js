@@ -1,17 +1,19 @@
-import ElementCollection from "../element.collection";
+import CypressPageObject from "@hammzj/cypress-page-object";
 import WeatherAccordionObject from "./weather.accordion.object";
 
-export default class WeatherViewContainerObject extends ElementCollection {
+const { ComponentObject } = CypressPageObject;
+
+export default class WeatherViewContainerObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`#weather-view`));
     }
 
     get hourlyButton() {
-        return this.container.contains(`[role="tab"]`, 'Hourly');
+        return this.container.contains(`[role="tab"]`, "Hourly");
     }
 
     get dailyButton() {
-        return this.container.contains(`[role="tab"]`, 'Daily');
+        return this.container.contains(`[role="tab"]`, "Daily");
     }
 
     get weatherTabPanelHourly() {
@@ -23,10 +25,10 @@ export default class WeatherViewContainerObject extends ElementCollection {
     }
 
     HourlyWeatherAccordionObject(fn) {
-        return this.weatherTabPanelHourly.within(() => fn(new WeatherAccordionObject('hourly')))
+        this._nestedObject(this.weatherTabPanelHourly, new WeatherAccordionObject("hourly"), fn);
     }
 
     DailyWeatherAccordionObject(fn) {
-        return this.weatherTabPanelDaily.within(() => fn(new WeatherAccordionObject('daily')))
+        this._nestedObject(this.weatherTabPanelDaily, new WeatherAccordionObject("daily"), fn);
     }
 }

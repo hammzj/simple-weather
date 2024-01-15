@@ -1339,6 +1339,15 @@
     tunnel-agent "^0.6.0"
     uuid "^8.3.2"
 
+"@cypress/webpack-preprocessor@^6.0.1":
+  version "6.0.1"
+  resolved "https://registry.yarnpkg.com/@cypress/webpack-preprocessor/-/webpack-preprocessor-6.0.1.tgz#5369527c063b2f4718a125ddbd163c5775086e06"
+  integrity sha512-WVNeFVSnFKxE3WZNRIriduTgqJRpevaiJIPlfqYTTzfXRD7X1Pv4woDE+G4caPV9bJqVKmVFiwzrXMRNeJxpxA==
+  dependencies:
+    bluebird "3.7.1"
+    debug "^4.3.4"
+    lodash "^4.17.20"
+
 "@cypress/xvfb@^1.2.4":
   version "1.2.4"
   resolved "https://registry.yarnpkg.com/@cypress/xvfb/-/xvfb-1.2.4.tgz#2daf42e8275b39f4aa53c14214e557bd14e7748a"
@@ -1537,6 +1546,13 @@
   version "5.0.16"
   resolved "https://registry.yarnpkg.com/@fontsource/roboto-mono/-/roboto-mono-5.0.16.tgz#d8a411744b6bf4211dbdb061e2bdd90c05448a3e"
   integrity sha512-unZYfjXts55DQyODz0I9DzbSrS5DRKPNq9crJpNJe/Vy818bLnijprcJv3fvqwdDqTT0dRm2Fhk09QEIdtAc+Q==
+
+"@hammzj/cypress-page-object@^1.0.1":
+  version "1.0.1"
+  resolved "https://npm.pkg.github.com/download/@hammzj/cypress-page-object/1.0.1/d03d88c2fc2dfdc66a00305d1a0a567dfd7af767#d03d88c2fc2dfdc66a00305d1a0a567dfd7af767"
+  integrity sha512-QmAbg+pJeH4D6eje+56+FOBswibKgkb3H6H9mz3SFoMXVa9QeQaE83yulgy/+EydSDN+idxuliWXBdOnYsVu6Q==
+  dependencies:
+    lodash "^4.17.21"
 
 "@humanwhocodes/config-array@^0.11.13":
   version "0.11.13"
@@ -3612,6 +3628,11 @@ blob-util@^2.0.2:
   version "2.0.2"
   resolved "https://registry.yarnpkg.com/blob-util/-/blob-util-2.0.2.tgz#3b4e3c281111bb7f11128518006cdc60b403a1eb"
   integrity sha512-T7JQa+zsXXEa6/8ZhHcQEW1UFfVM49Ts65uBkFL6fz2QmrElqmbajIDJvuA0tEhRe5eIjpV9ZF+0RfZR9voJFQ==
+
+bluebird@3.7.1:
+  version "3.7.1"
+  resolved "https://registry.yarnpkg.com/bluebird/-/bluebird-3.7.1.tgz#df70e302b471d7473489acf26a93d63b53f874de"
+  integrity sha512-DdmyoGCleJnkbp3nkbxTLJ18rjDsE4yCggEwKNXkeV123sPNfOCYeDoeuOY+F2FrSjO1YXcTU+dsy96KMy+gcg==
 
 bluebird@^3.7.2:
   version "3.7.2"

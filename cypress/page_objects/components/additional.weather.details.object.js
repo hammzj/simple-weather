@@ -1,6 +1,8 @@
-import ElementCollection from "../element.collection";
+import CypressPageObject from "@hammzj/cypress-page-object";
 
-export default class AdditionalWeatherDetailsObject extends ElementCollection {
+const { ComponentObject } = CypressPageObject;
+
+export default class AdditionalWeatherDetailsObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`#additional-weather-details`));
     }
@@ -10,22 +12,26 @@ export default class AdditionalWeatherDetailsObject extends ElementCollection {
     }
 
     _assertRowTitlesInOrder(expectedTitles) {
-        cy.wrap([]).as('additionalWeatherDetailsRowTitles');
-        this.container.find(`tr`).each($tr => {
-            cy.wrap($tr).find(`td`).eq(0).then($td => {
-                cy.get(`@additionalWeatherDetailsRowTitles`).then(actual => actual.push($td.text()));
-            });
+        cy.wrap([]).as("additionalWeatherDetailsRowTitles");
+        this.container.find(`tr`).each(($tr) => {
+            cy.wrap($tr)
+                .find(`td`)
+                .eq(0)
+                .then(($td) => {
+                    cy.get(`@additionalWeatherDetailsRowTitles`).then((actual) =>
+                        actual.push($td.text())
+                    );
+                });
         });
-        cy.get(`@additionalWeatherDetailsRowTitles`).then(actual => {
+        cy.get(`@additionalWeatherDetailsRowTitles`).then((actual) => {
             expectedTitles.forEach((expected, i) => {
                 expect(actual[i]).to.eq(expected);
             });
         });
-
     }
 
     _assertTitleAndValue(title, value) {
-        this.tr(title).find(`td`).eq(0).should('have.text', title);
-        this.tr(title).find(`td`).eq(1).should('have.text', value);
+        this.tr(title).find(`td`).eq(0).should("have.text", title);
+        this.tr(title).find(`td`).eq(1).should("have.text", value);
     }
 }
