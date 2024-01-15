@@ -20,7 +20,7 @@ jobs:
           yarn run dev:tsc
         env:
           # also other environment variable
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   lint:
     name: Run eslint
@@ -40,4 +40,4 @@ jobs:
           yarn run dev:lint
         env:
           # also other environment variable
-          NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
