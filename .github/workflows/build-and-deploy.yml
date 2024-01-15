@@ -34,13 +34,16 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-
+      - name: Create .npmrc file
+        run: |
+          echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" >> .npmrc
       - name: Build
         run: |
           yarn install
           yarn run dev:build
         env:
-          # also other environment variable
+          NPM_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Setup Pages
         uses: actions/configure-pages@v2

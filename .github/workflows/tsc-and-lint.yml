@@ -15,15 +15,17 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      # @see https://github.com/orgs/community/discussions/45097#discussioncomment-5017757
       - name: Create .npmrc file
         run: |
           echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" >> .npmrc
       - name: Build
         run: |
           yarn install
           yarn run dev:tsc
-
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   lint:
     name: Run eslint
@@ -37,7 +39,10 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          always-auth: true
+      - name: Create .npmrc file
+        run: |
+          echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NODE_AUTH_TOKEN }}" >> .npmrc
       - name: Build
         run: |
           yarn install
