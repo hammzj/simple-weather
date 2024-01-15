@@ -11,13 +11,13 @@ jobs:
     strategy:
       matrix:
         node-version: [ 18.x ]
+
     steps:
       - uses: actions/checkout@v1
       - name: Use Node.js ${{ matrix.node-version }}
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
-          always-auth: true
 #      - name: Create .npmrc file
 #        run: |
 #          echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
