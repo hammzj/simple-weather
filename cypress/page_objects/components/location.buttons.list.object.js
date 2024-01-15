@@ -1,8 +1,9 @@
-import ElementCollection from "../element.collection";
+import CypressPageObject from "@hammzj/cypress-page-object";
 import LocationDataButtonObject from "./location.data.button.object";
-import {getLocationName} from "../../../src/services/open_meteo_api/utils";
 
-export default class LocationButtonsListObject extends ElementCollection {
+const { ComponentObject } = CypressPageObject;
+
+export default class LocationButtonsListObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`form#location-data-form`));
     }
@@ -14,17 +15,15 @@ export default class LocationButtonsListObject extends ElementCollection {
      *     //...
      * }, buttonText);
      */
-    LocationDataButtonObject(fn, buttonText) {
-        this.container.within(() => fn(new LocationDataButtonObject(buttonText)))
+    LocationDataButtonObject(buttonText, fn) {
+        this._nestedObject(this.container, new LocationDataButtonObject(buttonText), fn);
     }
 
     _assertButtonText(...buttonTextContents) {
-        buttonTextContents.forEach(buttonText => {
-            this.LocationDataButtonObject(button => {
-                button.name.should('have.text', buttonText);
-            }, buttonText);
+        buttonTextContents.forEach((buttonText) => {
+            this.LocationDataButtonObject(buttonText, (button) => {
+                button.name.should("have.text", buttonText);
+            });
         });
     }
-
 }
-

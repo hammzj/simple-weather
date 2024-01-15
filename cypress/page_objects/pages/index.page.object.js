@@ -8,12 +8,10 @@ export default class IndexPageObject extends PageObject {
     }
 
     LocationSearchFormObject(fn) {
-        this.container.within(() => fn(new LocationSearchFormObject()));
+        this._nestedObject(this.container, new LocationSearchFormObject(), fn);
     }
 
     BottomNavBarObject(fn) {
-        this.container.within(() => fn(new BottomNavBarObject()));
+        this._nestedObject(this.container, new BottomNavBarObject(), fn);
     }
-
 }
-

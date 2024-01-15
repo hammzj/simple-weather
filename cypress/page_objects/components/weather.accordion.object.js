@@ -1,9 +1,11 @@
-import ElementCollection from "../element.collection";
+import CypressPageObject from "@hammzj/cypress-page-object";
 import WeatherIconObject from "./weather.icon.object";
 import PrecipitationChanceObject from "./precipitation.chance.object";
 import AdditionalWeatherDetailsObject from "./additional.weather.details.object";
 
-export default class WeatherAccordionObject extends ElementCollection {
+const { ComponentObject } = CypressPageObject;
+
+export default class WeatherAccordionObject extends ComponentObject {
     constructor(type) {
         super();
         this._type = type;
@@ -13,7 +15,7 @@ export default class WeatherAccordionObject extends ElementCollection {
             } else {
                 return cy.get(`[id^="-weather-summary-accordion"]`);
             }
-        }
+        };
     }
 
     get summary() {
@@ -29,11 +31,11 @@ export default class WeatherAccordionObject extends ElementCollection {
     }
 
     WeatherIconObject(fn) {
-        this.summary.within(() => fn(new WeatherIconObject()));
+        this._nestedObject(this.summary, new WeatherIconObject(), fn);
     }
 
     PrecipitationChanceObject(fn) {
-        this.summary.within(() => fn(new PrecipitationChanceObject()));
+        this._nestedObject(this.summary, new PrecipitationChanceObject(), fn);
     }
 
     get details() {
@@ -41,6 +43,6 @@ export default class WeatherAccordionObject extends ElementCollection {
     }
 
     AdditionalWeatherDetailsObject(fn) {
-        this.details.within(() => fn(new AdditionalWeatherDetailsObject()));
+        this._nestedObject(this.details, new AdditionalWeatherDetailsObject(), fn);
     }
 }

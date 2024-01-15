@@ -1,8 +1,10 @@
-import ElementCollection from "../element.collection";
+import CypressPageObject from "@hammzj/cypress-page-object";
 import WeatherIconObject from "./weather.icon.object";
 import PrecipitationChanceObject from "./precipitation.chance.object";
 
-export default class CurrentWeatherCardObject extends ElementCollection {
+const { ComponentObject } = CypressPageObject;
+
+export default class CurrentWeatherCardObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`#current-weather`));
     }
@@ -20,17 +22,14 @@ export default class CurrentWeatherCardObject extends ElementCollection {
     }
 
     WeatherIconObject(fn) {
-        this.container.within(() => fn(new WeatherIconObject()));
+        this._nestedObject(this.container, new WeatherIconObject(), fn);
     }
 
     PrecipitationChanceObject(fn) {
-        this.container.within(() => fn(new PrecipitationChanceObject()));
+        this._nestedObject(this.container, new PrecipitationChanceObject(), fn);
     }
 
     get time() {
         return this.container.find(`#last-updated-time`);
     }
-
-
 }
-

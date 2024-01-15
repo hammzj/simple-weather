@@ -11,24 +11,22 @@ export default class WeatherPageObject extends PageObject {
     }
 
     TopNavBarObject(fn) {
-        this.container.within(() => fn(new TopNavBarObject()));
+        this._nestedObject(this.container, new TopNavBarObject(), fn);
     }
 
     BottomNavBarObject(fn) {
-        this.container.within(() => fn(new BottomNavBarObject()));
+        this._nestedObject(this.container, new BottomNavBarObject(), fn);
     }
 
     LocationSearchFormObject(fn) {
-        this.container.within(() => fn(new LocationSearchFormObject()));
+        this._nestedObject(this.container, new LocationSearchFormObject(), fn);
     }
 
     CurrentWeatherCardObject(fn) {
-        this.container.within(() => fn(new CurrentWeatherCardObject()));
+        this._nestedObject(this.container, new CurrentWeatherCardObject(), fn);
     }
 
     WeatherViewContainerObject(fn) {
-        this.container.within(() => fn(new WeatherViewContainerObject()));
+        this._nestedObject(this.container, new WeatherViewContainerObject(), fn);
     }
-
 }
-

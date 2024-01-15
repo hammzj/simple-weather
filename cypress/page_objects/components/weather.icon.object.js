@@ -1,6 +1,7 @@
-import ElementCollection from "../element.collection";
+import CypressPageObject from "@hammzj/cypress-page-object";
 
-export default class WeatherIconObject extends ElementCollection {
+const { ComponentObject } = CypressPageObject;
+export default class WeatherIconObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`div#weather-icon-div`));
     }
@@ -10,11 +11,10 @@ export default class WeatherIconObject extends ElementCollection {
     }
 
     _assertTooltipText(text) {
-        this.container.should('have.attr', 'aria-label', text);
+        this.container.should("have.attr", "aria-label", text);
     }
 
     _assertIcon(iconName) {
-        this.svg.should('have.attr', 'data-testid', iconName);
+        this.svg.should("have.attr", "data-testid", iconName);
     }
 }
-

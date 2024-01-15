@@ -5,20 +5,18 @@ import SettingsMenuObject from "../components/settings.menu.object";
 
 export default class SettingsPageObject extends PageObject {
     constructor() {
-        super('/settings');
+        super("/settings");
     }
 
     TopNavBarObject(fn) {
-        this.container.within(() => fn(new TopNavBarObject()));
+        this._nestedObject(this.container, new TopNavBarObject(), fn);
     }
 
     SettingsMenuObject(fn) {
-        this.container.within(() => fn(new SettingsMenuObject()));
+        this._nestedObject(this.container, new SettingsMenuObject(), fn);
     }
 
     BottomNavBarObject(fn) {
-        this.container.within(() => fn(new BottomNavBarObject()));
+        this._nestedObject(this.container, new BottomNavBarObject(), fn);
     }
-
 }
-
