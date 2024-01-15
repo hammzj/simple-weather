@@ -9,6 +9,7 @@ on:
 env:
   CI: false
   USE_HASH_ROUTER: true
+  NODE_ENV: 'production'
 
 jobs:
   build:
