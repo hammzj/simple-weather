@@ -14,12 +14,14 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: ${{ matrix.node-version }}
+      - run: |
+          echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
       - name: Build
         run: |
           yarn install
           yarn run dev:tsc
         env:
-          # also other environment variable
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
 
   lint:
@@ -39,5 +41,4 @@ jobs:
           yarn install
           yarn run dev:lint
         env:
-          # also other environment variable
           NODE_AUTH_TOKEN: ${{ secrets.NPM_AUTH_TOKEN }}
