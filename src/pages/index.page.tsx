@@ -1,13 +1,14 @@
 import React from "react";
 import { Box, Grid, Typography } from "@mui/material";
-import { gt } from "lodash";
+import { isEmpty, isNaN } from "lodash";
 import Page from "../components/page";
 import LocationSearchForm from "../components/location.search.form";
 import SavedLocationsQuickData from "../components/saved.locations.quick.data";
-import { getSavedLocationIds } from "../components/utils";
+import { getSavedLocationId } from "../components/utils";
 
 export default function IndexPage(): React.ReactElement {
-    const savedLocationIds = getSavedLocationIds();
+    const savedLocationId = getSavedLocationId();
+    const hasLocationId = !isEmpty(savedLocationId) && !isNaN(savedLocationId);
     return (
         <Page renderTopNavBar={false}>
             <Grid
@@ -21,9 +22,7 @@ export default function IndexPage(): React.ReactElement {
                 </Typography>
                 <Box>
                     <LocationSearchForm />
-                    {gt(savedLocationIds.length, 0) && (
-                        <SavedLocationsQuickData locationIds={savedLocationIds} />
-                    )}
+                    {hasLocationId && <SavedLocationsQuickData locationId={savedLocationId} />}
                 </Box>
             </Grid>
         </Page>

@@ -15,7 +15,7 @@ import {
 } from "../services/open_meteo_api/forecast_api";
 import { getLocationName } from "../services/open_meteo_api/utils";
 import { DateTime } from "luxon";
-import SavedLocationCheckbox from "../components/savedLocationCheckbox";
+import SavedLocationCheckbox from "../components/saved.location.checkbox";
 
 interface WeatherPageContainerProps {
     locationName: string;
