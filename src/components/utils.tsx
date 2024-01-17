@@ -3,18 +3,27 @@ import {
     AcUnit,
     Cloud,
     FilterDrama,
-    Thunderstorm,
     Shower,
-    WbSunny,
+    Thunderstorm,
     Waves,
+    WbSunny,
 } from "@mui/icons-material";
 import {
     LOCAL_STORAGE_KEY_FOR_SAVED_LOCATION,
     NOT_AVAILABLE_TEXT,
     SETTINGS_KEY_NAMES,
 } from "../constants";
-import { WeatherCode } from "../services/open_meteo_api/forecast_api";
+import {
+    PrecipitationUnit,
+    TemperatureUnit,
+    WeatherCode,
+    WindSpeedUnit,
+} from "../services/open_meteo_api/forecast_api";
 import { capitalize, includes, isEqual, isNil } from "lodash";
+import { OpenMeteoGeocodingAPI } from "../services/open_meteo_api";
+import { DateTime } from "luxon";
+import SimpleWeatherAPI, { TotalWeatherData } from "../services/api";
+import { LocationData } from "../services/open_meteo_api/geocoding_api";
 
 export const weatherCodeToSvg = (weatherCode: number | WeatherCode): JSX.Element => {
     weatherCode = Number(weatherCode);
@@ -98,8 +107,46 @@ export const createWeatherPageSearchParams = (id) => {
     return new URLSearchParams({ id }).toString();
 };
 
-export const getSavedLocationIds = (): string[] => {
-    return (localStorage.getItem(LOCAL_STORAGE_KEY_FOR_SAVED_LOCATION) || "")
-        .split(",")
-        .filter(Boolean);
+export const getSavedLocationId = (): string | null =>
+    localStorage.getItem(LOCAL_STORAGE_KEY_FOR_SAVED_LOCATION);
+
+export const getGeocodingAndWeatherData = async (
+    locationId: string | number
+): Promise<{ id: number; geocodingData?: LocationData; weatherData?: TotalWeatherData }> => {
+    const allData = { id: locationId };
+    const requestGeocodingData = async (id) => {
+        try {
+            const { data } = await OpenMeteoGeocodingAPI.getLocation(id);
+            return data;
+        } catch (err) {
+            console.log(err);
+        }
+    };
+    const requestWeatherData = async ([latitude, longitude]) => {
+        try {
+            const opts = {
+                temperature_unit:
+                    TemperatureUnit[localStorage.getItem("temperatureUnit") ?? "fahrenheit"],
+                wind_speed_unit: WindSpeedUnit[localStorage.getItem("windSpeedUnit") ?? "mph"],
+                precipitation_unit:
+                    PrecipitationUnit[localStorage.getItem("precipitationUnit") ?? "inch"],
+            };
+            const systemTimezone = DateTime.local().zoneName || "auto";
+            return await SimpleWeatherAPI.getWeather([latitude, longitude], systemTimezone, opts);
+        } catch (err) {
+            console.error(err);
+        }
+    };
+
+    console.log("locationId", locationId);
+    const geocodingData = await requestGeocodingData(locationId);
+    console.log(geocodingData);
+    allData.geocodingData = geocodingData;
+    if (geocodingData) {
+        const { latitude, longitude } = geocodingData;
+        if (latitude && longitude) {
+            allData.weatherData = await requestWeatherData([latitude, longitude]);
+        }
+    }
+    return allData;
 };
