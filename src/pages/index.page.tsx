@@ -8,7 +8,6 @@ import { getSavedLocationIds } from "../components/utils";
 
 export default function IndexPage(): React.ReactElement {
     const savedLocationIds = getSavedLocationIds();
-    console.log(savedLocationIds);
     return (
         <Page renderTopNavBar={false}>
             <Grid

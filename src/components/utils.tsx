@@ -97,6 +97,7 @@ export const shadows = (len1, len2, len3, blur) => {
 export const createWeatherPageSearchParams = (id) => {
     return new URLSearchParams({ id }).toString();
 };
+
 export const getSavedLocationIds = (): string[] => {
     return (localStorage.getItem(LOCAL_STORAGE_KEY_FOR_SAVED_LOCATION) || "")
         .split(",")

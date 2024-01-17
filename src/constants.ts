@@ -21,3 +21,4 @@ export const SETTINGS_KEY_NAMES = {
 };
 
 export const LOCAL_STORAGE_KEY_FOR_SAVED_LOCATION = "savedLocationIds";
+export const SAVED_LOCATION_MAX_LENGTH = 1;

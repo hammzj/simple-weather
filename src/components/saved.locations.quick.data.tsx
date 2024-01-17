@@ -13,6 +13,7 @@ import PATHS from "../routes/paths";
 import { getLocationName } from "../services/open_meteo_api/utils";
 import { createWeatherPageSearchParams } from "./utils";
 import { DateTime } from "luxon";
+//import {SAVED_LOCATION_MAX_LENGTH} from "../constants";
 
 // type AllCurrentWeatherData = {
 //     id: string | number;
@@ -21,9 +22,10 @@ import { DateTime } from "luxon";
 // }[]
 
 export default function SavedLocationsQuickData({ locationIds }): React.ReactElement {
-    const [allCurrentWeatherData, setAllCurrentWeatherData] = useState({});
+    const [allCurrentWeatherData, setAllCurrentWeatherData] = useState([]);
 
-    //Get location name and weather data
+    //Get location name and weather data for each saved location
+    //Currently, only one saved location is allowed, but it is set up to allow more
     useEffect(() => {
         const getGeocodingAndWeatherDataForAllCurrentWeatherData = async (locationId) => {
             const requestLocationData = async (id) => {
@@ -62,17 +64,23 @@ export default function SavedLocationsQuickData({ locationIds }): React.ReactEle
                 const { latitude, longitude } = locationData;
                 if (latitude && longitude) {
                     const data = await requestWeatherData([latitude, longitude]);
-                    setAllCurrentWeatherData({
+                    allCurrentWeatherData.push({
                         id: locationId,
                         name: getLocationName(locationData),
                         data: data.current_weather,
                     });
+                    setAllCurrentWeatherData(allCurrentWeatherData);
+                    console.log("allCurrentWeatherData", allCurrentWeatherData);
                 }
             }
         };
 
         try {
-            locationIds.map(getGeocodingAndWeatherDataForAllCurrentWeatherData);
+            setAllCurrentWeatherData([]);
+            //Safety check to not allow more than the max in the case a user manipulates local storage
+            locationIds
+                //.slice(0, SAVED_LOCATION_MAX_LENGTH)
+                .map(getGeocodingAndWeatherDataForAllCurrentWeatherData);
         } catch (err) {
             console.log(err);
         }
