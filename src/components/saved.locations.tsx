@@ -12,7 +12,7 @@ type AllCurrentWeatherData = {
     data: CurrentWeatherData;
 };
 
-export default function SavedLocationsQuickData({ locationId }): React.ReactElement {
+export default function SavedLocations({ locationId }): React.ReactElement {
     const [savedCurrentWeatherData, setSavedCurrentWeatherData] = useState<
         AllCurrentWeatherData | object
     >({});
@@ -34,8 +34,8 @@ export default function SavedLocationsQuickData({ locationId }): React.ReactElem
     }, [locationId]);
 
     return (
-        <Box alignContent='center' justifyContent='center' padding='2em'>
-            <Typography variant='h6' sx={{ paddingBottom: "1em" }}>
+        <Box alignContent='center' justifyContent='center' padding='2em' id='saved-locations'>
+            <Typography variant='h6' sx={{ paddingBottom: "1em" }} textAlign='center'>
                 Saved location
             </Typography>
             {["name", "data"].every((k) => k in savedCurrentWeatherData) && (

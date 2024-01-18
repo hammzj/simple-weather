@@ -3,7 +3,7 @@ import { Box, Grid, Typography } from "@mui/material";
 import { isEmpty, isNaN } from "lodash";
 import Page from "../components/page";
 import LocationSearchForm from "../components/location.search.form";
-import SavedLocationsQuickData from "../components/saved.locations.quick.data";
+import SavedLocations from "../components/saved.locations";
 import { getSavedLocationId } from "../components/utils";
 
 export default function IndexPage(): React.ReactElement {
@@ -22,7 +22,7 @@ export default function IndexPage(): React.ReactElement {
                 </Typography>
                 <Box>
                     <LocationSearchForm />
-                    {hasLocationId && <SavedLocationsQuickData locationId={savedLocationId} />}
+                    {hasLocationId && <SavedLocations locationId={savedLocationId} />}
                 </Box>
             </Grid>
         </Page>
