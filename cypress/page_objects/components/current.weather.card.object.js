@@ -6,7 +6,7 @@ const { ComponentObject } = CypressPageObject;
 
 export default class CurrentWeatherCardObject extends ComponentObject {
     constructor() {
-        super(() => cy.get(`#current-weather`));
+        super(() => cy.get(`[id="current-weather"]`));
     }
 
     get location() {
