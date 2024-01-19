@@ -14,7 +14,7 @@ type AllCurrentWeatherData = {
 
 export default function SavedLocations({ locationId }): React.ReactElement {
     const [savedCurrentWeatherData, setSavedCurrentWeatherData] = useState<
-        AllCurrentWeatherData | object
+        AllCurrentWeatherData | any
     >({});
 
     //Get location name and weather data for each saved location
@@ -22,11 +22,12 @@ export default function SavedLocations({ locationId }): React.ReactElement {
     useEffect(() => {
         try {
             getGeocodingAndWeatherData(locationId).then((allData) => {
-                const currentWeatherData = { data: allData.weatherData?.current_weather };
                 if (allData.geocodingData) {
-                    currentWeatherData.name = getLocationName(allData.geocodingData);
+                    setSavedCurrentWeatherData({
+                        data: allData.weatherData?.current_weather,
+                        name: getLocationName(allData.geocodingData),
+                    });
                 }
-                setSavedCurrentWeatherData(currentWeatherData);
             });
         } catch (err) {
             console.log(err);

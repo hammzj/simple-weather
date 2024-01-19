@@ -1,4 +1,4 @@
-import {defineConfig} from "cypress";
+import { defineConfig } from "cypress";
 
 export default defineConfig({
     e2e: {
@@ -6,13 +6,13 @@ export default defineConfig({
         defaultCommandTimeout: 10000,
         chromeWebSecurity: false,
         env: {
-            USE_HASH_ROUTER: true
+            USE_HASH_ROUTER: true,
         },
         retries: {
             runMode: 1,
             openMode: 0,
         },
-        baseUrl: 'http://localhost:3000/simple-weather',
+        baseUrl: "http://localhost:3000/simple-weather",
         reporter: "spec",
         testIsolation: true,
         experimentalInteractiveRunEvents: true,

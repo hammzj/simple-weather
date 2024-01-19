@@ -1547,10 +1547,10 @@
   resolved "https://registry.yarnpkg.com/@fontsource/roboto-mono/-/roboto-mono-5.0.16.tgz#d8a411744b6bf4211dbdb061e2bdd90c05448a3e"
   integrity sha512-unZYfjXts55DQyODz0I9DzbSrS5DRKPNq9crJpNJe/Vy818bLnijprcJv3fvqwdDqTT0dRm2Fhk09QEIdtAc+Q==
 
-"@hammzj/cypress-page-object@^1.0.1":
-  version "1.0.1"
-  resolved "https://npm.pkg.github.com/download/@hammzj/cypress-page-object/1.0.1/d03d88c2fc2dfdc66a00305d1a0a567dfd7af767#d03d88c2fc2dfdc66a00305d1a0a567dfd7af767"
-  integrity sha512-QmAbg+pJeH4D6eje+56+FOBswibKgkb3H6H9mz3SFoMXVa9QeQaE83yulgy/+EydSDN+idxuliWXBdOnYsVu6Q==
+"@hammzj/cypress-page-object@^1.1.0":
+  version "1.1.0"
+  resolved "https://npm.pkg.github.com/download/@hammzj/cypress-page-object/1.1.0/e9cf570ac2bf8e53d9c156dff256afd2ec209131#e9cf570ac2bf8e53d9c156dff256afd2ec209131"
+  integrity sha512-BY3nHkGJHw1b8RhKuFuq+eos1igiKsJdCRQ3ViUuxoEsQN/JdcFzOhpVifbQ9oAV3mljFHxiExrUUONlSmYbkA==
   dependencies:
     lodash "^4.17.21"
 

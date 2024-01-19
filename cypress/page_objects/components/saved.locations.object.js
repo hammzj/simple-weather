@@ -11,6 +11,7 @@ export default class SavedLocationsObject extends ComponentObject {
     get title() {
         return this.container.find(`.MuiTypography-root`);
     }
+
     CurrentWeatherCardObject(fn) {
         this._nestedObject(this.container, new CurrentWeatherCardObject(), fn);
     }

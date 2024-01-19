@@ -112,41 +112,29 @@ export const getSavedLocationId = (): string | null =>
 
 export const getGeocodingAndWeatherData = async (
     locationId: string | number
-): Promise<{ id: number; geocodingData?: LocationData; weatherData?: TotalWeatherData }> => {
-    const allData = { id: locationId };
-    const requestGeocodingData = async (id) => {
-        try {
-            const { data } = await OpenMeteoGeocodingAPI.getLocation(id);
-            return data;
-        } catch (err) {
-            console.log(err);
-        }
+): Promise<{
+    id: string | number;
+    geocodingData?: LocationData;
+    weatherData?: TotalWeatherData;
+}> => {
+    const requestGeocodingData = async (id): Promise<LocationData> => {
+        const { data } = await OpenMeteoGeocodingAPI.getLocation(id);
+        return data;
     };
-    const requestWeatherData = async ([latitude, longitude]) => {
-        try {
-            const opts = {
-                temperature_unit:
-                    TemperatureUnit[localStorage.getItem("temperatureUnit") ?? "fahrenheit"],
-                wind_speed_unit: WindSpeedUnit[localStorage.getItem("windSpeedUnit") ?? "mph"],
-                precipitation_unit:
-                    PrecipitationUnit[localStorage.getItem("precipitationUnit") ?? "inch"],
-            };
-            const systemTimezone = DateTime.local().zoneName || "auto";
-            return await SimpleWeatherAPI.getWeather([latitude, longitude], systemTimezone, opts);
-        } catch (err) {
-            console.error(err);
-        }
+    const requestWeatherData = async ([latitude, longitude]): Promise<TotalWeatherData> => {
+        const opts = {
+            temperature_unit:
+                TemperatureUnit[localStorage.getItem("temperatureUnit") ?? "fahrenheit"],
+            wind_speed_unit: WindSpeedUnit[localStorage.getItem("windSpeedUnit") ?? "mph"],
+            precipitation_unit:
+                PrecipitationUnit[localStorage.getItem("precipitationUnit") ?? "inch"],
+        };
+        const systemTimezone = DateTime.local().zoneName || "auto";
+        return await SimpleWeatherAPI.getWeather([latitude, longitude], systemTimezone, opts);
     };
 
-    console.log("locationId", locationId);
-    const geocodingData = await requestGeocodingData(locationId);
-    console.log(geocodingData);
-    allData.geocodingData = geocodingData;
-    if (geocodingData) {
-        const { latitude, longitude } = geocodingData;
-        if (latitude && longitude) {
-            allData.weatherData = await requestWeatherData([latitude, longitude]);
-        }
-    }
+    const allData = { id: locationId, geocodingData: await requestGeocodingData(locationId) };
+    const { latitude, longitude } = allData.geocodingData;
+    Object.assign(allData, { weatherData: await requestWeatherData([latitude, longitude]) });
     return allData;
 };

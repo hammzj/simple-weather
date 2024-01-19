@@ -146,4 +146,16 @@ describe(WeatherPage.name, function () {
             );
         });
     });
+
+    context("Setting as a saved location", function () {
+        beforeEach(function () {});
+
+        it("saves the location to be able to view current weather from the index page", function () {});
+
+        it("can be accessed from the index page", function () {});
+
+        it("can be unchecked to remove the saved location", function () {});
+
+        specify("only one location can be saved at a time", function () {});
+    });
 });

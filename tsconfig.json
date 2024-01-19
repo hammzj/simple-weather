@@ -18,7 +18,6 @@
     "noImplicitAny": false,
     "strictNullChecks": true,
     "allowSyntheticDefaultImports": true,
-    "compileOnSave": false,
   },
   "exclude": [
     "node_modules",

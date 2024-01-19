@@ -9,7 +9,7 @@ const addSavedLocationId = (id: number | string) => {
 };
 
 const removeSavedLocationId = (id: number | string) => {
-    localStorage.setItem(LOCAL_STORAGE_KEY_FOR_SAVED_LOCATION, id);
+    localStorage.setItem(LOCAL_STORAGE_KEY_FOR_SAVED_LOCATION, id.toString());
 };
 
 export default function SavedLocationCheckbox({ id }): React.ReactElement {
@@ -21,7 +21,7 @@ export default function SavedLocationCheckbox({ id }): React.ReactElement {
     return (
         <Box padding='1.5em'>
             <FormControlLabel
-                label='Set as save location'
+                label='Set as saved location'
                 id={`saved-location-toggle-${id}`}
                 control={
                     <Checkbox

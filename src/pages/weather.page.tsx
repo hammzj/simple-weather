@@ -16,8 +16,10 @@ import {
 import { getLocationName } from "../services/open_meteo_api/utils";
 import { DateTime } from "luxon";
 import SavedLocationCheckbox from "../components/saved.location.checkbox";
+import { isEmpty } from "lodash";
 
 interface WeatherPageContainerProps {
+    locationId: string | number | null;
     locationName: string;
     weatherData: any;
 }
@@ -32,8 +34,7 @@ const WeatherPageContainer = ({
     weatherData = {},
 }: WeatherPageContainerProps): React.ReactElement => {
     const { current_weather } = weatherData;
-    const hasNeededData = weatherData.current_weather && locationName;
-
+    const hasNeededData = current_weather && locationName && !isEmpty(locationId);
     return (
         <Stack direction='column' padding={1}>
             {hasNeededData ? (

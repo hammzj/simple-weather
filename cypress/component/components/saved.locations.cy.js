@@ -21,7 +21,7 @@ describe(SavedLocations.name, function () {
         });
     });
 
-    specify("can display current weather details for a saved location", function () {
+    it("can display current weather details for a saved location", function () {
         cy.get(`@individualLocation`).then((individualLocation) => {
             cy.mount(<SavedLocations locationId={individualLocation.id} />);
 
@@ -34,6 +34,18 @@ describe(SavedLocations.name, function () {
                 cwco.PrecipitationChanceObject((pco) => pco._assertValue("0.1 inch"));
                 cwco.WeatherIconObject((wio) => wio.container.find(`svg`).should("exist"));
                 cwco.time.should("have.text", "Last updated: Nov 14, 2023, 9:30 PM");
+            });
+        });
+
+        it("has a link to the weather page for thesaved location", function () {
+            cy.get(`@individualLocation`).then((individualLocation) => {
+                cy.mount(<SavedLocations locationId={individualLocation.id} />);
+
+                const slo = new SavedLocationsObject();
+                slo.CurrentWeatherCardObject((cwco) => {
+                    cwco.scopedIndex = 0;
+                    cwco.parent().should("have.attr", "href", "/weather?id=2950159");
+                });
             });
         });
     });
