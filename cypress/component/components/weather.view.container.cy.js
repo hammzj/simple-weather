@@ -6,7 +6,7 @@ import WeatherViewContainerObject from "../../page_objects/components/weather.vi
 describe(WeatherViewContainer.name, function () {
     beforeEach(function () {
         cy.stubAndAliasWeatherData({
-            fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.json",
+            fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
         });
         cy.get(`@weatherData`).then((weatherData) => {
             cy.mount(<WeatherViewContainer weatherData={weatherData} />);

@@ -1,9 +1,11 @@
 import WeatherPage from "../../../src/pages/weather.page";
+import IndexPageObject from "../../page_objects/pages/index.page.object";
 import LocationResultsPageObject from "../../page_objects/pages/location.results.page.object";
 import WeatherPageObject from "../../page_objects/pages/weather.page.object";
 import { getThroughAppToWeatherPage } from "../utils";
 import { getLocationName } from "../../../src/services/open_meteo_api/utils";
 
+const indexPageObject = new IndexPageObject();
 const locationResultsPageObject = new LocationResultsPageObject();
 const weatherPageObject = new WeatherPageObject();
 
@@ -26,11 +28,11 @@ describe(WeatherPage.name, function () {
     context("Provided with correct data", function () {
         beforeEach(function () {
             //Stub weather data
-            cy.fixture("/open_meteo_api/forecast_api/fetch.all.weather.for.location.200.json").as(
-                "fetchAllWeatherForLocationData"
-            );
+            cy.fixture(
+                "/open_meteo_api/forecast_api/fetch.all.weather.for.location.200.berlin.json"
+            ).as("fetchAllWeatherForLocationData");
             cy.stubAndAliasWeatherData({
-                fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.json",
+                fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
             });
 
             cy.get("@individualLocation").then((individualLocation) => {
@@ -112,6 +114,134 @@ describe(WeatherPage.name, function () {
                 });
             });
         });
+
+        context("Setting as a saved location", function () {
+            it("saves the location to be able to view current weather from the index page", function () {
+                //Arrange
+                weatherPageObject.SavedLocationCheckboxObject((checkboxObject) => {
+                    //Act
+                    checkboxObject.checkbox.toggleCheckbox(true);
+                    checkboxObject.checkbox.should("be.checked");
+                });
+
+                //Assert
+                cy.get("@individualLocation").then((individualLocation) => {
+                    indexPageObject.__visit();
+                    indexPageObject.SavedLocationsObject((slo) => {
+                        slo.__assertExists();
+                        slo.CurrentWeatherCardObject((cwco) => {
+                            cwco.location.should("have.text", getLocationName(individualLocation));
+                        });
+                    });
+                });
+            });
+
+            it("can be accessed from the index page", function () {
+                //Arrange
+                weatherPageObject.SavedLocationCheckboxObject((slco) => {
+                    slco.checkbox.toggleCheckbox(true);
+                });
+
+                //Act
+                indexPageObject.__visit();
+                indexPageObject.SavedLocationsObject((slo) => {
+                    slo.CurrentWeatherCardObject((cwco) => cwco.container.click());
+                });
+
+                //Assert
+                cy.get("@individualLocation").then((individualLocation) => {
+                    weatherPageObject.CurrentWeatherCardObject((cwco) => {
+                        cy.url().should("include", `?id=${individualLocation.id}`);
+                        cwco.location.should("have.text", getLocationName(individualLocation));
+                    });
+                });
+                weatherPageObject.SavedLocationCheckboxObject((checkboxObject) => {
+                    checkboxObject.checkbox.toggleCheckbox(true);
+                    checkboxObject.checkbox.should("be.checked");
+                });
+            });
+
+            it("can be unchecked to remove the saved location", function () {
+                //Arrange
+                weatherPageObject.SavedLocationCheckboxObject((slco) => {
+                    slco.checkbox.toggleCheckbox(true);
+                });
+                indexPageObject.__visit();
+                cy.get("@individualLocation").then((individualLocation) => {
+                    indexPageObject.__visit();
+                    indexPageObject.SavedLocationsObject((slo) => {
+                        slo.CurrentWeatherCardObject((cwco) => {
+                            cwco.location.should("have.text", getLocationName(individualLocation));
+
+                            //Act
+                            cwco.container.click();
+                        });
+                    });
+                });
+                weatherPageObject.SavedLocationCheckboxObject((slco) => {
+                    slco.checkbox.toggleCheckbox(false);
+                    slco.checkbox.should("not.be.checked");
+                });
+                indexPageObject.__visit();
+
+                //Assert
+                indexPageObject.SavedLocationsObject((slo) => {
+                    slo.__assertExists(false);
+                });
+            });
+
+            specify("only one location can be saved at a time", function () {
+                //Arrange
+                weatherPageObject.SavedLocationCheckboxObject((slco) => {
+                    slco.checkbox.toggleCheckbox(true);
+                });
+                indexPageObject.__visit();
+                cy.get("@individualLocation").then((individualLocation) => {
+                    indexPageObject.SavedLocationsObject((slo) => {
+                        slo.__assertExists(true);
+                        slo.CurrentWeatherCardObject((cwco) => {
+                            cwco.location.should("have.text", getLocationName(individualLocation));
+                        });
+                    });
+                });
+
+                //Act
+                //Restub with the alternate location response
+                //Stub alternate location name
+                cy.fixture(
+                    "/open_meteo_api/geocoding_api/search.for.locations.200.raleigh.json"
+                ).then((alternateLocationDataResults) => {
+                    cy.intercept(`*/search*`, alternateLocationDataResults).as(
+                        `searchForLocations`
+                    );
+                    const alternateIndividualLocation = alternateLocationDataResults.results[0];
+                    cy.wrap(alternateIndividualLocation).as("alternateIndividualLocation");
+                });
+                cy.fixture(
+                    "/open_meteo_api/forecast_api/fetch.all.weather.for.location.200.raleigh.json"
+                ).then((fetchWeatherResponseFixture) => {
+                    cy.intercept(`*/forecast*`, fetchWeatherResponseFixture).as(
+                        "fetchAllWeatherForLocation"
+                    );
+                });
+
+                cy.get("@alternateIndividualLocation").then((alternateIndividualLocation) => {
+                    getThroughAppToWeatherPage(alternateIndividualLocation.name, 0);
+
+                    //Assert
+                    //This is the weather page for the second location
+                    weatherPageObject.CurrentWeatherCardObject((cwco) => {
+                        cwco.location.should(
+                            "have.text",
+                            getLocationName(alternateIndividualLocation)
+                        );
+                    });
+                    weatherPageObject.SavedLocationCheckboxObject((slco) => {
+                        slco.checkbox.should("be.disabled");
+                    });
+                });
+            });
+        });
     });
 
     context("Error handling", function () {
@@ -145,17 +275,5 @@ describe(WeatherPage.name, function () {
                 "An error occurred when loading the data."
             );
         });
-    });
-
-    context("Setting as a saved location", function () {
-        beforeEach(function () {});
-
-        it("saves the location to be able to view current weather from the index page", function () {});
-
-        it("can be accessed from the index page", function () {});
-
-        it("can be unchecked to remove the saved location", function () {});
-
-        specify("only one location can be saved at a time", function () {});
     });
 });

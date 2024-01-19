@@ -23,11 +23,11 @@ describe(SimpleWeatherAPI.name, function () {
     beforeEach(function () {
         //Stubs the open meteo api call
         //the SimpleWeather.getWeather call uses the alias "weatherData"
-        cy.fixture("/open_meteo_api/forecast_api/fetch.all.weather.for.location.200.json").as(
-            "inputData"
-        );
+        cy.fixture(
+            "/open_meteo_api/forecast_api/fetch.all.weather.for.location.200.berlin.json"
+        ).as("inputData");
         cy.stubAndAliasWeatherData({
-            fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.json",
+            fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
         });
     });
 

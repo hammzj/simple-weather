@@ -43,7 +43,7 @@ const WeatherPageContainer = ({
                         locationName={locationName}
                         currentWeatherData={current_weather}
                     />
-                    <SavedLocationCheckbox id={locationId} />
+                    <SavedLocationCheckbox locationId={locationId} />
                     <Divider />
                     <Box marginTop='1.5em'>
                         <WeatherViewContainer weatherData={weatherData} />

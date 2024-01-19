@@ -17,7 +17,7 @@ describe(SavedLocations.name, function () {
         //This will not match the actual options supplied
         //We need to just ensure the request was sent with the wanted options
         cy.stubAndAliasWeatherData({
-            fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.json",
+            fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
         });
     });
 
