@@ -35,12 +35,17 @@ export default function SavedLocations({ locationId }): React.ReactElement {
     }, [locationId]);
 
     return (
-        <Box alignContent='center' justifyContent='center' padding='2em' id='saved-locations'>
+        <Box
+            alignContent='center'
+            justifyContent='center'
+            display='inline'
+            margin='1em'
+            id='saved-locations'>
             <Typography variant='h6' sx={{ paddingBottom: "1em" }} textAlign='center'>
                 Saved location
             </Typography>
             {["name", "data"].every((k) => k in savedCurrentWeatherData) && (
-                <Box padding='0.5em'>
+                <Box>
                     <Link
                         style={{ textDecoration: "none" }}
                         to={{
