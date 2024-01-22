@@ -36,16 +36,16 @@ describe(SavedLocations.name, function () {
                 cwco.time.should("have.text", "Last updated: Nov 14, 2023, 9:30 PM");
             });
         });
+    });
 
-        it("has a link to the weather page for the saved location", function () {
-            cy.get(`@individualLocation`).then((individualLocation) => {
-                cy.mount(<SavedLocations locationId={individualLocation.id} />);
+    it("has a link to the weather page for the saved location", function () {
+        cy.get(`@individualLocation`).then((individualLocation) => {
+            cy.mount(<SavedLocations locationId={individualLocation.id} />);
 
-                const slo = new SavedLocationsObject();
-                slo.CurrentWeatherCardObject((cwco) => {
-                    cwco.scopedIndex = 0;
-                    cwco.parent().should("have.attr", "href", "/weather?id=2950159");
-                });
+            const slo = new SavedLocationsObject();
+            slo.CurrentWeatherCardObject((cwco) => {
+                cwco.scopedIndex = 0;
+                cwco.container.parents("a").should("have.attr", "href", "/weather?id=2950159");
             });
         });
     });
