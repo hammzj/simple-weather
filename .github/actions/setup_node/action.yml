@@ -1,0 +1,25 @@
+name: 'Setup node'
+description: 'Setup the node environment and .npmrc file'
+
+inputs:
+  node-version:
+    description: 'Version of node against which to build'
+    required: true
+    default: '18.x'
+  npm-auth-token:
+    description: 'Needed to connect to the github npm package repository'
+    required: true
+
+runs:
+  using: "composite"
+  steps:
+    - uses: actions/checkout@v4
+    - name: Use Node.js ${{ inputs.node-version }}
+      uses: actions/setup-node@v3
+      with:
+        node-version: ${{ inputs.node-version }}
+    - name: Create .npmrc file
+      shell: bash
+      run: |
+        echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
+        echo "//npm.pkg.github.com/:_authToken=${{ inputs.npm-auth-token }}" >> .npmrc

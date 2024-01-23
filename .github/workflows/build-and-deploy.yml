@@ -28,16 +28,11 @@ jobs:
         node-version: [ 18.x ]
 
     steps:
-      - uses: actions/checkout@v3
-
-      - name: Use Node.js ${{ matrix.node-version }}
-        uses: actions/setup-node@v3
-        with:
+      - uses: actions/checkout@v4
+      - uses: ./.github/actions/setup_node
+      - with:
           node-version: ${{ matrix.node-version }}
-      - name: Create .npmrc file
-        run: |
-          echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
+          npm-auth-token: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Build
         run: |
           yarn install
