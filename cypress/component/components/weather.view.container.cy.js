@@ -38,7 +38,7 @@ describe(WeatherViewContainer.name, function () {
                     obj.scopedIndex = i;
                     obj.time.should("have.text", time);
                     obj.temperature.should("have.text", mapped.temperature);
-                    obj.WeatherIconObject((wio) => wio.svg.should("exist"));
+                    obj.WeatherIconObject((wio) => wio.icon.should("exist"));
                     obj.PrecipitationChanceObject((pio) =>
                         pio._assertValue(precipitationProbability)
                     );
@@ -68,7 +68,7 @@ describe(WeatherViewContainer.name, function () {
                     obj.scopedIndex = i;
                     obj.time.should("have.text", time);
                     obj.temperature.should("have.text", mapped.temperature_range);
-                    obj.WeatherIconObject((wio) => wio.svg.should("exist"));
+                    obj.WeatherIconObject((wio) => wio.icon.should("exist"));
                     obj.PrecipitationChanceObject((pio) =>
                         pio._assertValue(precipitationProbability)
                     );

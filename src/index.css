@@ -8,3 +8,9 @@ body {
 code {
     font-family: source-code-pro, Menlo, Monaco, Consolas, "Courier New", monospace;
 }
+
+.wi {
+    font-weight: bold;
+    font-size: 1.1em;
+    line-height: 1.3;
+}
