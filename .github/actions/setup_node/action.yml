@@ -5,6 +5,9 @@ inputs:
     description: 'Version of node against which to build'
     required: true
     default: '18.x'
+  npm-auth-token:
+    description: 'Needed to connect to the github npm package repository'
+    required: true
 jobs:
   name: "Setup node"
     steps:
@@ -16,4 +19,4 @@ jobs:
       - name: Create .npmrc file
         run: |
           echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ inputs.npm-auth-token }}" >> .npmrc
