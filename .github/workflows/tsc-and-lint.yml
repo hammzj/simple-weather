@@ -10,6 +10,7 @@ jobs:
         node-version: [ 18.x ]
 
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/setup-node
         with:
           node-version: ${{ matrix.node-version }}
@@ -25,6 +26,7 @@ jobs:
       matrix:
         node-version: [ 18.x ]
     steps:
+      - uses: actions/checkout@v4
       - uses: ./.github/workflows/setup-node
         with:
           node-version: ${{ matrix.node-version }}
