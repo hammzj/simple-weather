@@ -31,7 +31,7 @@ describe("Components", function () {
                     const accordion = new WeatherAccordionObject("hourly");
                     accordion.time.should("have.text", formatDateTimeHourly(firstHour.mapped.time));
                     accordion.temperature.should("have.text", "51 °F");
-                    accordion.WeatherIconObject((wio) => wio._assertTooltipText("Overcast"));
+                    accordion.WeatherIconObject((wio) => wio.__assertTooltipText("Overcast"));
                     accordion.PrecipitationChanceObject((pio) => pio._assertValue("15 %"));
                 });
             });
@@ -67,7 +67,7 @@ describe("Components", function () {
                     accordion.time.should("have.text", formatDateTimeDaily(firstDay.mapped.time));
                     accordion.temperature.should("have.text", "48 °F / 55 °F");
                     accordion.WeatherIconObject((wio) =>
-                        wio._assertTooltipText("Slight rain showers")
+                        wio.__assertTooltipText("Slight rain showers")
                     );
                     accordion.PrecipitationChanceObject((pio) => pio._assertValue("100 %"));
                 });

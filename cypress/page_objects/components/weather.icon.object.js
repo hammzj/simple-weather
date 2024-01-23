@@ -10,11 +10,11 @@ export default class WeatherIconObject extends ComponentObject {
         return this.container.find(`i`);
     }
 
-    _assertTooltipText(text) {
+    __assertTooltipText(text) {
         this.container.should("have.attr", "aria-label", text);
     }
 
-    _assertIcon(iconClass) {
+    __assertIcon(iconClass) {
         this.icon.should("have.class", iconClass);
     }
 }

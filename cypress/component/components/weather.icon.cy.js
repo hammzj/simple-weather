@@ -7,6 +7,18 @@ import { WeatherCode } from "../../../src/services/open_meteo_api/forecast_api";
 const stringKeys = Object.keys(WeatherCode).filter((v) => isNaN(Number(v)));
 
 describe(WeatherIcon.name, function () {
+    it('returns "not available" if the weather code does not exist', function () {
+        const wio = new WeatherIconObject();
+
+        //No weather code
+        cy.mount(<WeatherIcon />);
+        wio.__assertIcon("wi wi-na");
+
+        //With a fake weather code
+        cy.mount(<WeatherIcon weatherCode={-1} />);
+        wio.__assertIcon("wi wi-na");
+    });
+
     for (const key of stringKeys) {
         context(`Details per weather code: ${key}`, function () {
             const value = WeatherCode[key];
@@ -19,7 +31,7 @@ describe(WeatherIcon.name, function () {
 
                 wio.icon.should("exist");
                 //Lol so redundant but I'll test "weatherCodeToClassName" in the utils spec
-                wio._assertIcon(weatherCodeToClassName(value));
+                wio.__assertIcon(weatherCodeToClassName(value));
             });
 
             it("has hover text to describe the icon", function () {
@@ -31,16 +43,4 @@ describe(WeatherIcon.name, function () {
             });
         });
     }
-
-    it("does not return anything it cannot match the weather code", function () {
-        const wio = new WeatherIconObject();
-
-        //No weather code
-        cy.mount(<WeatherIcon />);
-        wio.icon.should("not.exist");
-
-        //With a fake weather code
-        cy.mount(<WeatherIcon weatherCode={-1} />);
-        wio.icon.should("not.exist");
-    });
 });
