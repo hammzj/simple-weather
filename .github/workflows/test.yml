@@ -8,31 +8,32 @@ env:
   USE_HASH_ROUTER: true
 
 jobs:
-  cypress-run:
+  cypress-run-component:
     runs-on: ubuntu-22.04
-
     steps:
-      - name: Checkout
-        uses: actions/checkout@v4
-      - name: Create .npmrc file
-        run: |
-          echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.NPM_AUTH_TOKEN }}" >> .npmrc
+      - uses: ./.github/workflows/setup-node
+      - name: Setup node
+        with:
+          node-version: ${{ matrix.node-version }}
       - name: Cypress run component tests
         uses: cypress-io/github-action@v6
         with:
           component: true
-      - name: Cypress run e2e tests, chrome
+
+  cypress-run-e2e:
+    runs-on: ubuntu-22.04
+    strategy:
+      matrix:
+        browser: [ 'chrome', 'firefox' ]
+    steps:
+      - uses: ./.github/workflows/setup-node
+      - name: Setup node
+        with:
+          node-version: ${{ matrix.node-version }}
+      - name: Cypress run e2e tests
         uses: cypress-io/github-action@v6
         with:
-          browser: chrome
-          build: yarn dev:build
-          start: yarn dev:start
-          wait-on: "http://localhost:3000"
-      - name: Cypress run e2e tests, firefox
-        uses: cypress-io/github-action@v6
-        with:
-          browser: firefox
+          browser: ${{ matrix.browser }}
           build: yarn dev:build
           start: yarn dev:start
           wait-on: "http://localhost:3000"
