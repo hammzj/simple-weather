@@ -10,7 +10,8 @@ jobs:
         node-version: [ 18.x ]
 
     steps:
-      - uses: actions/checkout@v4
+      - name: huh
+        run: ls -al ./.github/actions
       - uses: ./.github/actions/setup-node.yml
         with:
           node-version: ${{ matrix.node-version }}
