@@ -30,7 +30,7 @@ jobs:
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup_node
-      - with:
+        with:
           node-version: ${{ matrix.node-version }}
           npm-auth-token: ${{ secrets.NPM_AUTH_TOKEN }}
       - name: Build
