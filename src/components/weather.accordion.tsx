@@ -78,8 +78,13 @@ const WeatherAccordionSummary = ({
             }}
             expandIcon={<ExpandMore />}>
             {isMobile() ? (
-                <Stack direction='column' marginLeft='0.5em'>
-                    <Typography id='time' sx={{ fontSize: "0.9rem", textAlign: "left" }}>
+                <Stack direction='column'>
+                    <Typography
+                        id='time'
+                        sx={{
+                            fontSize: "0.9em",
+                            textAlign: "left",
+                        }}>
                         {timeString}
                     </Typography>
                     <Stack
@@ -101,7 +106,7 @@ const WeatherAccordionSummary = ({
                     direction='row'
                     justifyContent='flex-start'
                     alignItems='center'
-                    spacing={isMobile() ? 1.5 : 2}
+                    spacing={2}
                     marginLeft='0.5em'>
                     <Typography id='time' sx={{ fontSize: "0.9rem" }}>
                         {timeString}
@@ -239,7 +244,7 @@ export default function WeatherAccordion({
                 sx={{
                     border: 0,
                     paddingTop: 1,
-                    paddingInline: isMobile() ? 0 : 2,
+                    paddingInline: isMobile() ? 0 : 3,
                 }}>
                 <Box
                     sx={{

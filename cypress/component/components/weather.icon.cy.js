@@ -37,10 +37,10 @@ describe(WeatherIcon.name, function () {
 
         //No weather code
         cy.mount(<WeatherIcon />);
-        wio.container.find(`svg`).should("not.exist");
+        wio.icon.should("not.exist");
 
         //With a fake weather code
         cy.mount(<WeatherIcon weatherCode={-1} />);
-        wio.container.find(`svg`).should("not.exist");
+        wio.icon.should("not.exist");
     });
 });

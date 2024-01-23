@@ -25,7 +25,7 @@ describe(CurrentWeatherCard.name, function () {
                 cwco.temperature.should("have.text", "51 °F");
                 cwco.temperatureRange.should("have.text", "48 °F / 55 °F");
                 cwco.PrecipitationChanceObject((pco) => pco._assertValue("0.1 inch"));
-                cwco.WeatherIconObject((wio) => wio.container.find(`svg`).should("exist"));
+                cwco.WeatherIconObject((wio) => wio.icon.should("exist"));
                 cwco.time.should("have.text", "Last updated: Nov 14, 2023, 9:30 PM");
             });
         });
