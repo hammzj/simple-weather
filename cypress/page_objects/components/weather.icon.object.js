@@ -6,15 +6,15 @@ export default class WeatherIconObject extends ComponentObject {
         super(() => cy.get(`div#weather-icon-div`));
     }
 
-    get svg() {
-        return this.container.find(`svg`);
+    get icon() {
+        return this.container.find(`i`);
     }
 
     _assertTooltipText(text) {
         this.container.should("have.attr", "aria-label", text);
     }
 
-    _assertIcon(iconName) {
-        this.svg.should("have.attr", "data-testid", iconName);
+    _assertIcon(iconClass) {
+        this.icon.should("have.class", iconClass);
     }
 }

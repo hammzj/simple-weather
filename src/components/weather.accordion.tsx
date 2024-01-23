@@ -79,7 +79,7 @@ const WeatherAccordionSummary = ({
             expandIcon={<ExpandMore />}>
             {isMobile() ? (
                 <Stack direction='column' marginLeft='0.5em'>
-                    <Typography id='time' sx={{ fontSize: "0.9rem" }}>
+                    <Typography id='time' sx={{ fontSize: "0.9rem", textAlign: "left" }}>
                         {timeString}
                     </Typography>
                     <Stack

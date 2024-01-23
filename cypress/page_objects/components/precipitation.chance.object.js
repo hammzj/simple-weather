@@ -6,8 +6,8 @@ export default class PrecipitationChanceObject extends ComponentObject {
         super(() => cy.get(`div#precipitation`));
     }
 
-    get svg() {
-        return this.container.find(`svg`);
+    get icon() {
+        return this.container.find(`i`);
     }
 
     _assertValue(value) {
