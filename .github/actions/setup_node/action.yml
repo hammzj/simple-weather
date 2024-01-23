@@ -19,6 +19,7 @@ runs:
       with:
         node-version: ${{ inputs.node-version }}
     - name: Create .npmrc file
+      shell: bash
       run: |
         echo "@hammzj:registry=https://npm.pkg.github.com" >> .npmrc
         echo "//npm.pkg.github.com/:_authToken=${{ inputs.npm-auth-token }}" >> .npmrc
