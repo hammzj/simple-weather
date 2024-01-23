@@ -27,7 +27,7 @@ jobs:
         browser: [ 'chrome', 'firefox' ]
     steps:
       - uses: actions/checkout@v4
-      - uses: ./.github/actions/setup_node
+      - uses: ./.github/workflows/setup_node
         with:
           node-version: ${{ matrix.node-version }}
       - name: Cypress run e2e tests
