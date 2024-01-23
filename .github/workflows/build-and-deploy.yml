@@ -28,8 +28,7 @@ jobs:
         node-version: [ 18.x ]
 
     steps:
-      - uses: actions/checkout@v4
-      - uses: ./.github/workflows/setup-node
+      - uses: ./.github/workflows/setup-node.yml
       - with:
           node-version: ${{ matrix.node-version }}
       - name: Build
