@@ -7,12 +7,22 @@
 
 This repository contains a simple application that displays weather forecasts.
 
-Search for a city or postal code, select the button that matches the city you want, and forecasts are displayed for the current weather, the next 24 hours, and the next 10 days.
+Search for a city or postal code, select the button that matches the city you want, and forecasts are displayed for the
+current weather, the next 24 hours, and the next 10 days.
 
 Created by Zachary J. Hamm.
 
 ## Attribution
 
 ### The open-meteo API
+
 Weather forecasting and geocoding API provided by [OpenMeteo](https://open-meteo.com). API data provided under the
-Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license. Please [see more about the license here](https://open-meteo.com/en/license).
+Attribution-NonCommercial 4.0 International (CC BY-NC 4.0) license.
+Please [see more about the license here](https://open-meteo.com/en/license).
+
+### Weather icons
+
+Thanks to [Erik Flowers](https://github.com/erikflowers) and Lukas Bischoff for providing
+the [weather icons styling and designs](https://github.com/erikflowers/weather-icons). The icons are licensed
+under [SIL OFL 1.1](https://openfontlicense.org/) and the code licensed under
+the [MIT License](https://opensource.org/license/mit/).
