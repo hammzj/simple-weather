@@ -29,8 +29,7 @@ jobs:
 
     steps:
       - uses: ./.github/workflows/setup-node
-      - name: Setup node
-        with:
+      - with:
           node-version: ${{ matrix.node-version }}
       - name: Build
         run: |

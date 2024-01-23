@@ -12,7 +12,6 @@ jobs:
     runs-on: ubuntu-22.04
     steps:
       - uses: ./.github/workflows/setup-node
-      - name: Setup node
         with:
           node-version: ${{ matrix.node-version }}
       - name: Cypress run component tests
@@ -27,7 +26,6 @@ jobs:
         browser: [ 'chrome', 'firefox' ]
     steps:
       - uses: ./.github/workflows/setup-node
-      - name: Setup node
         with:
           node-version: ${{ matrix.node-version }}
       - name: Cypress run e2e tests
