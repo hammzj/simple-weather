@@ -26,7 +26,12 @@ const PageLink = ({ href, text }) => {
 export default function AboutPage(): React.ReactElement {
     return (
         <Page>
-            <Stack direction='column' justifyContent='center' alignItems='center' padding='1em'>
+            <Stack
+                direction='column'
+                textAlign='start'
+                justifyContent='center'
+                alignItems='center'
+                padding='1em'>
                 <Typography variant='h1' paddingBottom='0.5em'>
                     About
                 </Typography>
