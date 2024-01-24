@@ -20,6 +20,7 @@ import { isMobile, shadows, weatherCodeToText } from "./utils";
 import { DailyWeatherDataMappings, HourlyWeatherDataMappings } from "../services/api";
 import { isEqual } from "lodash";
 import { DateTime, Zone } from "luxon";
+import { WeatherCode } from "../services/open_meteo_api/forecast_api";
 
 type WeatherSummaryTimeType = "hourly" | "daily";
 
@@ -70,6 +71,9 @@ const WeatherAccordionSummary = ({
     const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || "local");
     //@ts-ignore: TS2339 -- We don't need to enforce this. mappedWeatherData can be hourly or daily.
     const temperature = mappedWeatherData.temperature || mappedWeatherData.temperature_range;
+    //@ts-ignore: TS2339 -- We don't need to enforce this.
+    const isDay = mappedWeatherData.is_day ?? true;
+
     return (
         <AccordionSummary
             sx={{
@@ -92,8 +96,8 @@ const WeatherAccordionSummary = ({
                             {temperature}
                         </Typography>
                         <WeatherIcon
-                            weatherCode={mappedWeatherData.weather_code}
-                            isDay={mappedWeatherData.is_day}
+                            weatherCode={mappedWeatherData.weather_code as WeatherCode}
+                            isDay={isDay}
                         />
                         <PrecipitationChance
                             precipitation={mappedWeatherData.precipitation_probability}
@@ -113,7 +117,10 @@ const WeatherAccordionSummary = ({
                     <Typography id='temperature' sx={{ fontSize: "0.9em" }}>
                         {temperature}
                     </Typography>
-                    <WeatherIcon weatherCode={mappedWeatherData.weather_code} />
+                    <WeatherIcon
+                        weatherCode={mappedWeatherData.weather_code as WeatherCode}
+                        isDay={isDay}
+                    />
                     <PrecipitationChance
                         precipitation={mappedWeatherData.precipitation_probability}
                     />

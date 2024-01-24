@@ -2,12 +2,13 @@ import React from "react";
 import { Box, Tooltip } from "@mui/material";
 import { weatherCodeToText } from "./utils";
 import { WeatherCode } from "../services/open_meteo_api/forecast_api";
+import { IsDay } from "../services/api";
 import { includes, isEqual } from "lodash";
 
 interface WeatherIconProps {
     weatherCode: number | WeatherCode;
     modifiers?: string[];
-    isDay?: 0 | 1 | boolean;
+    isDay?: IsDay;
 }
 
 //Exported for testing
@@ -21,8 +22,11 @@ interface WeatherIconProps {
 export const weatherCodeToClassName = (
     weatherCode: number | WeatherCode,
     modifiers: string[] = [],
-    isDay: boolean = true
+    isDay: IsDay = true
 ): string => {
+    if (isEqual(typeof isDay, "number")) {
+        isDay = isEqual(isDay, 0);
+    }
     weatherCode = Number(weatherCode);
     const getBaseClass = (): string => {
         switch (true) {
@@ -104,10 +108,6 @@ export default function WeatherIcon({
     modifiers,
     isDay,
 }: WeatherIconProps): React.ReactElement {
-    if (includes([0, 1], isDay)) {
-        isDay = isEqual(isDay, 0);
-    }
-
     //Why didn't Font Awesome rename this tag??? It conflicts with italics `i` tag!
     return (
         <Tooltip title={weatherCodeToText(weatherCode)}>
