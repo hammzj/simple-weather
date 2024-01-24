@@ -91,7 +91,10 @@ const WeatherAccordionSummary = ({
                         <Typography id='temperature' sx={{ fontSize: "0.9rem" }}>
                             {temperature}
                         </Typography>
-                        <WeatherIcon weatherCode={mappedWeatherData.weather_code} />
+                        <WeatherIcon
+                            weatherCode={mappedWeatherData.weather_code}
+                            isDay={mappedWeatherData.is_day}
+                        />
                         <PrecipitationChance
                             precipitation={mappedWeatherData.precipitation_probability}
                         />
