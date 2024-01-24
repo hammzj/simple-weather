@@ -73,25 +73,21 @@ const WeatherAccordionSummary = ({
     return (
         <AccordionSummary
             sx={{
+                fontSizeAdjust: "auto",
                 border: 1,
                 borderRadius: 0,
             }}
             expandIcon={<ExpandMore />}>
             {isMobile() ? (
-                <Stack direction='column'>
-                    <Typography
-                        id='time'
-                        sx={{
-                            fontSize: "0.9em",
-                            textAlign: "left",
-                        }}>
+                <Stack direction='column' spacing={1}>
+                    <Typography id='time' sx={{ fontSize: "0.9em", textAlign: "left" }}>
                         {timeString}
                     </Typography>
                     <Stack
                         direction='row'
                         justifyContent='flex-start'
                         alignItems='center'
-                        spacing={1.5}>
+                        spacing={2}>
                         <Typography id='temperature' sx={{ fontSize: "0.9rem" }}>
                             {temperature}
                         </Typography>
@@ -106,12 +102,12 @@ const WeatherAccordionSummary = ({
                     direction='row'
                     justifyContent='flex-start'
                     alignItems='center'
-                    spacing={2}
-                    marginLeft='0.5em'>
-                    <Typography id='time' sx={{ fontSize: "0.9rem" }}>
+                    spacing={4}
+                    marginLeft='0.2em'>
+                    <Typography id='time' sx={{ fontSize: "0.9em" }}>
                         {timeString}
                     </Typography>
-                    <Typography id='temperature' sx={{ fontSize: "0.9rem" }}>
+                    <Typography id='temperature' sx={{ fontSize: "0.9em" }}>
                         {temperature}
                     </Typography>
                     <WeatherIcon weatherCode={mappedWeatherData.weather_code} />
