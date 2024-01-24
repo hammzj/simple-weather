@@ -97,7 +97,7 @@ export const weatherCodeToClassName = (
             ):
                 return isDay ? "wi-day-sleet" : "wi-night-alt-sleet";
             default:
-                //Default return nothing
+                //Default an icon for "Not available"
                 return "wi-na";
         }
     };
