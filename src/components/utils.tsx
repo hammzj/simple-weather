@@ -16,6 +16,13 @@ import SimpleWeatherAPI, { TotalWeatherData } from "../services/api";
 import { LocationData } from "../services/open_meteo_api/geocoding_api";
 
 //Needed for testing
+/**
+ *
+ * @param weatherCode {number | WeatherCode}
+ * @param modifiers {string[]} See the "Utility Classes" section on the weather icons page
+ * @param isDay {boolean} if false, use the night variants. Most of the night variants I use have "night-alt" in them in place of "day", but some just have "night".
+ * @see https://erikflowers.github.io/weather-icons/
+ */
 export const weatherCodeToClassName = (
     weatherCode: number | WeatherCode,
     modifiers: string[] = [],
@@ -24,13 +31,13 @@ export const weatherCodeToClassName = (
     weatherCode = Number(weatherCode);
     const getBaseClass = (): string => {
         switch (true) {
-            case isEqual(WeatherCode.CLEAR_SKY, weatherCode):
-                //No "night-alt" variant
+            case includes([WeatherCode.MAINLY_CLEAR, WeatherCode.CLEAR_SKY], weatherCode):
                 return isDay ? "wi-day-sunny" : "wi-night-clear";
-            case includes([WeatherCode.MAINLY_CLEAR, WeatherCode.PARTLY_CLOUDY], weatherCode):
-                return "wi-day-cloudy";
-            case isEqual(WeatherCode.OVERCAST, weatherCode):
-                return "wi-day-cloudy-high";
+            case includes([WeatherCode.PARTLY_CLOUDY], weatherCode):
+                return isDay ? "wi-day-cloudy" : "wi-night-alt-partly-cloudy";
+            case includes([WeatherCode.OVERCAST], weatherCode):
+                //There's no overcast at night, so default to a different variant
+                return isDay ? "wi-day-sunny-overcast" : "wi-night-alt-cloudy";
             case includes([WeatherCode.FOG, WeatherCode.DEPOSITING_RIME_FOG], weatherCode):
                 //No "night-alt" variant
                 return isDay ? "wi-day-fog" : "wi-night-fog";
@@ -42,21 +49,27 @@ export const weatherCodeToClassName = (
                 ],
                 weatherCode
             ):
-                return "wi-day-thunderstorm";
+                return isDay ? "wi-day-thunderstorm" : "wi-night-alt-thunderstorm";
             case includes(
                 [
                     WeatherCode.SLIGHT_RAIN,
                     WeatherCode.HEAVY_RAIN,
                     WeatherCode.MODERATE_RAIN,
-                    WeatherCode.SLIGHT_RAIN_SHOWERS,
-                    WeatherCode.MODERATE_RAIN_SHOWERS,
-                    WeatherCode.VIOLENT_RAIN_SHOWERS,
                     WeatherCode.LIGHT_FREEZING_RAIN,
                     WeatherCode.HEAVY_FREEZING_RAIN,
                 ],
                 weatherCode
             ):
-                return "wi-day-rain";
+                return isDay ? "wi-day-rain" : "wi-night-alt-rain";
+            case includes(
+                [
+                    WeatherCode.SLIGHT_RAIN_SHOWERS,
+                    WeatherCode.MODERATE_RAIN_SHOWERS,
+                    WeatherCode.VIOLENT_RAIN_SHOWERS,
+                ],
+                weatherCode
+            ):
+                return isDay ? "wi-day-showers" : "wi-night-alt-showers";
             case includes(
                 [
                     WeatherCode.LIGHT_DRIZZLE,
@@ -67,26 +80,28 @@ export const weatherCodeToClassName = (
                 ],
                 weatherCode
             ):
-                return "wi-day-sprinkle";
+                return isDay ? "wi-day-sprinkle" : "wi-night-alt-sprinkle";
             case includes(
                 [
                     WeatherCode.SNOW_GRAINS,
                     WeatherCode.SLIGHT_SNOWFALL,
                     WeatherCode.MODERATE_SNOWFALL,
                     WeatherCode.HEAVY_SNOWFALL,
-                    WeatherCode.LIGHT_SNOW_SHOWERS,
-                    WeatherCode.HEAVY_SNOW_SHOWERS,
                 ],
                 weatherCode
             ):
-                return "wi-day-snow";
+                return isDay ? "wi-day-snow" : "wi-night-alt-snow";
+            case includes(
+                [WeatherCode.LIGHT_SNOW_SHOWERS, WeatherCode.HEAVY_SNOW_SHOWERS],
+                weatherCode
+            ):
+                return isDay ? "wi-day-sleet" : "wi-night-alt-sleet";
             default:
                 //Default return nothing
                 return "wi-na";
         }
     };
-    const iconClass = ["wi", getBaseClass(), ...modifiers].join(" ").trim();
-    return isDay ? iconClass : iconClass.replace("day", "night-alt");
+    return ["wi", getBaseClass(), ...modifiers].join(" ").trim();
 };
 
 export const weatherCodeToText = (weatherCode: number | null | undefined): string => {
