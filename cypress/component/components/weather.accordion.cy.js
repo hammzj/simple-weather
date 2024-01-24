@@ -4,6 +4,7 @@ import WeatherAccordion, {
 } from "../../../src/components/weather.accordion";
 import WeatherAccordionObject from "../../page_objects/components/weather.accordion.object";
 import AdditionalWeatherDetailsObject from "../../page_objects/components/additional.weather.details.object";
+import { IsDay } from "../../../src/services/api";
 
 const formatDateTimeHourly = (isoString) =>
     DateTime.fromISO(isoString).toLocaleString(DateTime.DATETIME_MED);
@@ -37,28 +38,33 @@ describe("Components", function () {
                         accordion.temperature.should("have.text", "51 °F");
                         accordion.WeatherIconObject((wio) => {
                             wio.__assertTooltipText("Overcast");
-                            //Daytime variant
-                            wio.__assertIcon("wi wi-day-sunny-overcast");
                         });
                         accordion.PrecipitationChanceObject((pio) => pio._assertValue("15 %"));
                     });
                 });
 
-                it("displays the nighttime weather icon variant when at night", function () {
-                    cy.get(`@weatherData`).then((weatherData) => {
-                        //Force the mapped data to set at night, regardless of what the time is
-                        const firstHour = weatherData.hourly_weather[0];
-                        firstHour.mapped.is_day = 1;
+                [
+                    { key: IsDay.DAY, expectedClassName: "wi wi-day-sunny-overcast" },
+                    { key: IsDay.NIGHT, expectedClassName: "wi wi-night-alt-cloudy" },
+                ].forEach(({ key, expectedClassName }) => {
+                    it(`displays the weather icon variant when at ${IsDay[key]}`, function () {
+                        cy.get(`@weatherData`).then((weatherData) => {
+                            //Force the mapped data to set at night, regardless of what the time is
+                            const firstHour = weatherData.hourly_weather[0];
+                            firstHour.mapped.is_day = key;
 
-                        cy.mount(
-                            <WeatherAccordion type='hourly' mappedWeatherData={firstHour.mapped} />
-                        );
+                            cy.mount(
+                                <WeatherAccordion
+                                    type='hourly'
+                                    mappedWeatherData={firstHour.mapped}
+                                />
+                            );
 
-                        const accordion = new WeatherAccordionObject("hourly");
-                        accordion.WeatherIconObject((wio) => {
-                            wio.__assertTooltipText("Overcast");
-                            //Nighttime variant
-                            wio.__assertIcon("wi wi-night-alt-cloudy");
+                            const accordion = new WeatherAccordionObject("hourly");
+                            accordion.WeatherIconObject((wio) => {
+                                wio.__assertTooltipText("Overcast");
+                                wio.__assertIcon(expectedClassName);
+                            });
                         });
                     });
                 });

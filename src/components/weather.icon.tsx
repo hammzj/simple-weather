@@ -22,24 +22,22 @@ interface WeatherIconProps {
 export const weatherCodeToClassName = (
     weatherCode: number | WeatherCode,
     modifiers: string[] = [],
-    isDay: IsDay = true
+    isDay: IsDay = IsDay.DAY
 ): string => {
-    if (isEqual(typeof isDay, "number")) {
-        isDay = isEqual(isDay, 0);
-    }
     weatherCode = Number(weatherCode);
+    const setAsDay = isEqual(isDay, 1);
     const getBaseClass = (): string => {
         switch (true) {
             case includes([WeatherCode.MAINLY_CLEAR, WeatherCode.CLEAR_SKY], weatherCode):
-                return isDay ? "wi-day-sunny" : "wi-night-clear";
+                return setAsDay ? "wi-day-sunny" : "wi-night-clear";
             case includes([WeatherCode.PARTLY_CLOUDY], weatherCode):
-                return isDay ? "wi-day-cloudy" : "wi-night-alt-partly-cloudy";
+                return setAsDay ? "wi-day-cloudy" : "wi-night-alt-partly-cloudy";
             case includes([WeatherCode.OVERCAST], weatherCode):
                 //There's no overcast at night, so default to a different variant
-                return isDay ? "wi-day-sunny-overcast" : "wi-night-alt-cloudy";
+                return setAsDay ? "wi-day-sunny-overcast" : "wi-night-alt-cloudy";
             case includes([WeatherCode.FOG, WeatherCode.DEPOSITING_RIME_FOG], weatherCode):
                 //No "night-alt" variant
-                return isDay ? "wi-day-fog" : "wi-night-fog";
+                return setAsDay ? "wi-day-fog" : "wi-night-fog";
             case includes(
                 [
                     WeatherCode.THUNDERSTORM,
@@ -48,7 +46,7 @@ export const weatherCodeToClassName = (
                 ],
                 weatherCode
             ):
-                return isDay ? "wi-day-thunderstorm" : "wi-night-alt-thunderstorm";
+                return setAsDay ? "wi-day-thunderstorm" : "wi-night-alt-thunderstorm";
             case includes(
                 [
                     WeatherCode.SLIGHT_RAIN,
@@ -59,7 +57,7 @@ export const weatherCodeToClassName = (
                 ],
                 weatherCode
             ):
-                return isDay ? "wi-day-rain" : "wi-night-alt-rain";
+                return setAsDay ? "wi-day-rain" : "wi-night-alt-rain";
             case includes(
                 [
                     WeatherCode.SLIGHT_RAIN_SHOWERS,
@@ -68,7 +66,7 @@ export const weatherCodeToClassName = (
                 ],
                 weatherCode
             ):
-                return isDay ? "wi-day-showers" : "wi-night-alt-showers";
+                return setAsDay ? "wi-day-showers" : "wi-night-alt-showers";
             case includes(
                 [
                     WeatherCode.LIGHT_DRIZZLE,
@@ -79,7 +77,7 @@ export const weatherCodeToClassName = (
                 ],
                 weatherCode
             ):
-                return isDay ? "wi-day-sprinkle" : "wi-night-alt-sprinkle";
+                return setAsDay ? "wi-day-sprinkle" : "wi-night-alt-sprinkle";
             case includes(
                 [
                     WeatherCode.SNOW_GRAINS,
@@ -89,12 +87,12 @@ export const weatherCodeToClassName = (
                 ],
                 weatherCode
             ):
-                return isDay ? "wi-day-snow" : "wi-night-alt-snow";
+                return setAsDay ? "wi-day-snow" : "wi-night-alt-snow";
             case includes(
                 [WeatherCode.LIGHT_SNOW_SHOWERS, WeatherCode.HEAVY_SNOW_SHOWERS],
                 weatherCode
             ):
-                return isDay ? "wi-day-sleet" : "wi-night-alt-sleet";
+                return setAsDay ? "wi-day-sleet" : "wi-night-alt-sleet";
             default:
                 //Default an icon for "Not available"
                 return "wi-na";

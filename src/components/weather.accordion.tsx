@@ -17,7 +17,7 @@ import PrecipitationChance from "./precipitation.chance";
 import WeatherIcon from "./weather.icon";
 import { NOT_AVAILABLE_TEXT } from "../constants";
 import { isMobile, shadows, weatherCodeToText } from "./utils";
-import { DailyWeatherDataMappings, HourlyWeatherDataMappings } from "../services/api";
+import { DailyWeatherDataMappings, HourlyWeatherDataMappings, IsDay } from "../services/api";
 import { isEqual } from "lodash";
 import { DateTime, Zone } from "luxon";
 import { WeatherCode } from "../services/open_meteo_api/forecast_api";
@@ -71,8 +71,10 @@ const WeatherAccordionSummary = ({
     const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || "local");
     //@ts-ignore: TS2339 -- We don't need to enforce this. mappedWeatherData can be hourly or daily.
     const temperature = mappedWeatherData.temperature || mappedWeatherData.temperature_range;
+
+    //Default to daytime variant
     //@ts-ignore: TS2339 -- We don't need to enforce this.
-    const isDay = mappedWeatherData.is_day ?? true;
+    const isDay = mappedWeatherData.is_day ?? IsDay.DAY;
 
     return (
         <AccordionSummary
