@@ -21,18 +21,46 @@ describe("Components", function () {
         });
 
         context("Hourly", function () {
-            it("displays a summary of the hourly data", function () {
-                cy.get(`@weatherData`).then((weatherData) => {
-                    const firstHour = weatherData.hourly_weather[0];
-                    cy.mount(
-                        <WeatherAccordion type='hourly' mappedWeatherData={firstHour.mapped} />
-                    );
+            context("Summary", function () {
+                it("displays a summary of the hourly data", function () {
+                    cy.get(`@weatherData`).then((weatherData) => {
+                        const firstHour = weatherData.hourly_weather[0];
+                        cy.mount(
+                            <WeatherAccordion type='hourly' mappedWeatherData={firstHour.mapped} />
+                        );
 
-                    const accordion = new WeatherAccordionObject("hourly");
-                    accordion.time.should("have.text", formatDateTimeHourly(firstHour.mapped.time));
-                    accordion.temperature.should("have.text", "51 °F");
-                    accordion.WeatherIconObject((wio) => wio.__assertTooltipText("Overcast"));
-                    accordion.PrecipitationChanceObject((pio) => pio._assertValue("15 %"));
+                        const accordion = new WeatherAccordionObject("hourly");
+                        accordion.time.should(
+                            "have.text",
+                            formatDateTimeHourly(firstHour.mapped.time)
+                        );
+                        accordion.temperature.should("have.text", "51 °F");
+                        accordion.WeatherIconObject((wio) => {
+                            wio.__assertTooltipText("Overcast");
+                            //Daytime variant
+                            wio.__assertIcon("wi wi-day-sunny-overcast");
+                        });
+                        accordion.PrecipitationChanceObject((pio) => pio._assertValue("15 %"));
+                    });
+                });
+
+                it("displays the nighttime weather icon variant when at night", function () {
+                    cy.get(`@weatherData`).then((weatherData) => {
+                        //Force the mapped data to set at night, regardless of what the time is
+                        const firstHour = weatherData.hourly_weather[0];
+                        firstHour.mapped.is_day = 1;
+
+                        cy.mount(
+                            <WeatherAccordion type='hourly' mappedWeatherData={firstHour.mapped} />
+                        );
+
+                        const accordion = new WeatherAccordionObject("hourly");
+                        accordion.WeatherIconObject((wio) => {
+                            wio.__assertTooltipText("Overcast");
+                            //Nighttime variant
+                            wio.__assertIcon("wi wi-night-alt-cloudy");
+                        });
+                    });
                 });
             });
 
@@ -57,19 +85,28 @@ describe("Components", function () {
         });
 
         context("Daily", function () {
-            it("displays a summary of the daily data", function () {
-                cy.get(`@weatherData`).then((weatherData) => {
-                    const firstDay = weatherData.daily_weather[0];
+            context("Summary", function () {
+                it("displays a summary of the daily data", function () {
+                    cy.get(`@weatherData`).then((weatherData) => {
+                        const firstDay = weatherData.daily_weather[0];
 
-                    cy.mount(<WeatherAccordion type='daily' mappedWeatherData={firstDay.mapped} />);
+                        cy.mount(
+                            <WeatherAccordion type='daily' mappedWeatherData={firstDay.mapped} />
+                        );
 
-                    const accordion = new WeatherAccordionObject("daily");
-                    accordion.time.should("have.text", formatDateTimeDaily(firstDay.mapped.time));
-                    accordion.temperature.should("have.text", "48 °F / 55 °F");
-                    accordion.WeatherIconObject((wio) =>
-                        wio.__assertTooltipText("Slight rain showers")
-                    );
-                    accordion.PrecipitationChanceObject((pio) => pio._assertValue("100 %"));
+                        const accordion = new WeatherAccordionObject("daily");
+                        accordion.time.should(
+                            "have.text",
+                            formatDateTimeDaily(firstDay.mapped.time)
+                        );
+                        accordion.temperature.should("have.text", "48 °F / 55 °F");
+                        accordion.WeatherIconObject((wio) => {
+                            wio.__assertTooltipText("Slight rain showers");
+                            //Daytime variant
+                            wio.__assertIcon("wi wi-day-showers");
+                        });
+                        accordion.PrecipitationChanceObject((pio) => pio._assertValue("100 %"));
+                    });
                 });
             });
 

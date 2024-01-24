@@ -11,7 +11,7 @@ import {
 import { DateTime } from "luxon";
 import { gte, isEqual, isNil } from "lodash";
 
-type IsDay = boolean | undefined;
+export type IsDay = boolean | 0 | 1;
 
 type ISOString = string;
 

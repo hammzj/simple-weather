@@ -9,6 +9,7 @@ describe(CurrentWeatherCard.name, function () {
             fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
         });
     });
+
     specify("can display current weather details for a given location", function () {
         cy.get(`@locationData`).then((locationData) => {
             cy.get(`@weatherData`).then((weatherData) => {
@@ -25,8 +26,32 @@ describe(CurrentWeatherCard.name, function () {
                 cwco.temperature.should("have.text", "51 °F");
                 cwco.temperatureRange.should("have.text", "48 °F / 55 °F");
                 cwco.PrecipitationChanceObject((pco) => pco._assertValue("0.1 inch"));
-                cwco.WeatherIconObject((wio) => wio.icon.should("exist"));
+                cwco.WeatherIconObject((wio) => {
+                    wio.__assertTooltipText("Overcast");
+                    wio.__assertIcon("wi wi-day-sunny-overcast");
+                });
                 cwco.time.should("have.text", "Last updated: Nov 14, 2023, 9:30 PM");
+            });
+        });
+    });
+
+    specify("displays the nighttime variant for the weather icon at night", function () {
+        cy.get(`@locationData`).then((locationData) => {
+            cy.get(`@weatherData`).then((weatherData) => {
+                weatherData.current_weather.mapped.is_day = 1;
+                cy.mount(
+                    <CurrentWeatherCard
+                        locationName={getLocationName(locationData)}
+                        currentWeatherData={weatherData.current_weather}
+                    />
+                );
+
+                const cwco = new CurrentWeatherCardObject();
+
+                cwco.WeatherIconObject((wio) => {
+                    wio.__assertTooltipText("Overcast");
+                    wio.__assertIcon("wi wi-night-alt-cloudy");
+                });
             });
         });
     });

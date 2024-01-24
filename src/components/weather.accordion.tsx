@@ -20,6 +20,7 @@ import { isMobile, shadows, weatherCodeToText } from "./utils";
 import { DailyWeatherDataMappings, HourlyWeatherDataMappings } from "../services/api";
 import { isEqual } from "lodash";
 import { DateTime, Zone } from "luxon";
+import { WeatherCode } from "../services/open_meteo_api/forecast_api";
 
 type WeatherSummaryTimeType = "hourly" | "daily";
 
@@ -70,32 +71,34 @@ const WeatherAccordionSummary = ({
     const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || "local");
     //@ts-ignore: TS2339 -- We don't need to enforce this. mappedWeatherData can be hourly or daily.
     const temperature = mappedWeatherData.temperature || mappedWeatherData.temperature_range;
+    //@ts-ignore: TS2339 -- We don't need to enforce this.
+    const isDay = mappedWeatherData.is_day ?? true;
+
     return (
         <AccordionSummary
             sx={{
+                fontSizeAdjust: "auto",
                 border: 1,
                 borderRadius: 0,
             }}
             expandIcon={<ExpandMore />}>
             {isMobile() ? (
-                <Stack direction='column'>
-                    <Typography
-                        id='time'
-                        sx={{
-                            fontSize: "0.9em",
-                            textAlign: "left",
-                        }}>
+                <Stack direction='column' spacing={1}>
+                    <Typography id='time' sx={{ fontSize: "0.9em", textAlign: "left" }}>
                         {timeString}
                     </Typography>
                     <Stack
                         direction='row'
                         justifyContent='flex-start'
                         alignItems='center'
-                        spacing={1.5}>
+                        spacing={2}>
                         <Typography id='temperature' sx={{ fontSize: "0.9rem" }}>
                             {temperature}
                         </Typography>
-                        <WeatherIcon weatherCode={mappedWeatherData.weather_code} />
+                        <WeatherIcon
+                            weatherCode={mappedWeatherData.weather_code as WeatherCode}
+                            isDay={isDay}
+                        />
                         <PrecipitationChance
                             precipitation={mappedWeatherData.precipitation_probability}
                         />
@@ -106,15 +109,18 @@ const WeatherAccordionSummary = ({
                     direction='row'
                     justifyContent='flex-start'
                     alignItems='center'
-                    spacing={2}
-                    marginLeft='0.5em'>
-                    <Typography id='time' sx={{ fontSize: "0.9rem" }}>
+                    spacing={4}
+                    marginLeft='0.2em'>
+                    <Typography id='time' sx={{ fontSize: "0.9em" }}>
                         {timeString}
                     </Typography>
-                    <Typography id='temperature' sx={{ fontSize: "0.9rem" }}>
+                    <Typography id='temperature' sx={{ fontSize: "0.9em" }}>
                         {temperature}
                     </Typography>
-                    <WeatherIcon weatherCode={mappedWeatherData.weather_code} />
+                    <WeatherIcon
+                        weatherCode={mappedWeatherData.weather_code as WeatherCode}
+                        isDay={isDay}
+                    />
                     <PrecipitationChance
                         precipitation={mappedWeatherData.precipitation_probability}
                     />

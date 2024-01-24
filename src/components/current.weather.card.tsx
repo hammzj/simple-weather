@@ -14,9 +14,8 @@ export default function CurrentWeatherCard({
     locationName,
     currentWeatherData,
 }: CurrentWeatherCardParams): React.ReactElement {
-    const timeString = DateTime.fromISO(currentWeatherData.mapped.time).toLocaleString(
-        DateTime.DATETIME_MED
-    );
+    const { mapped } = currentWeatherData;
+    const timeString = DateTime.fromISO(mapped.time).toLocaleString(DateTime.DATETIME_MED);
 
     return (
         <Card
@@ -44,12 +43,10 @@ export default function CurrentWeatherCard({
                     {locationName}
                 </Typography>
                 <Typography id='temperature' align='center' fontSize='2.5rem'>
-                    {currentWeatherData.mapped.temperature}
+                    {mapped.temperature}
                 </Typography>
-                {currentWeatherData.mapped.temperature_range && (
-                    <Typography id='temperature-range'>
-                        {currentWeatherData.mapped.temperature_range}
-                    </Typography>
+                {mapped.temperature_range && (
+                    <Typography id='temperature-range'>{mapped.temperature_range}</Typography>
                 )}
                 <Stack
                     direction='row'
@@ -57,16 +54,14 @@ export default function CurrentWeatherCard({
                     alignItems='center'
                     paddingTop={1}
                     spacing={4}>
-                    {currentWeatherData.mapped.weather_code && (
-                        <WeatherIcon weatherCode={currentWeatherData.mapped.weather_code} />
+                    {mapped.weather_code && (
+                        <WeatherIcon weatherCode={mapped.weather_code} isDay={mapped.is_day} />
                     )}
-                    {currentWeatherData.mapped.precipitation && (
-                        <PrecipitationChance
-                            precipitation={currentWeatherData.mapped.precipitation}
-                        />
+                    {mapped.precipitation && (
+                        <PrecipitationChance precipitation={mapped.precipitation} />
                     )}
                 </Stack>
-                {currentWeatherData.mapped.time && (
+                {mapped.time && (
                     <Typography
                         fontSize='.8rem'
                         fontStyle='italic'
