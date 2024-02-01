@@ -67,7 +67,7 @@ describe(CurrentWeatherCard.name, function () {
         cy.get(`@locationData`).then((locationData) => {
             cy.get(`@weatherData`).then((weatherData) => {
                 weatherData.current_weather.mapped.weather_code = 0;
-                weatherData.current_weather.mapped.is_day = 0;
+                weatherData.current_weather.mapped.is_day = 1;
                 cy.mount(
                     <CurrentWeatherCard
                         locationName={getLocationName(locationData)}
