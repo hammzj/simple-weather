@@ -11,6 +11,7 @@ import {
 import { DateTime } from "luxon";
 import { gte, isEqual, isNil } from "lodash";
 
+//1 if the current time step has daylight, 0 at night.
 export enum IsDay {
     NIGHT = 0,
     DAY = 1,
@@ -364,6 +365,7 @@ export default class SimpleWeatherAPI {
         };
     }
 
+    //TODO: allow for units of measurement and temperature units (m vs inch; C vs F)
     //TODO: pass in timezone from system
     static async getWeather(
         coordinates: Coordinates,

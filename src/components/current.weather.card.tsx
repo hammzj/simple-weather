@@ -4,6 +4,7 @@ import PrecipitationChance from "./precipitation.chance";
 import WeatherIcon from "./weather.icon";
 import { CurrentWeatherData } from "../services/api";
 import { DateTime } from "luxon";
+import { isNil } from "lodash";
 
 type CurrentWeatherCardParams = {
     locationName: string;
@@ -45,7 +46,7 @@ export default function CurrentWeatherCard({
                 <Typography id='temperature' align='center' fontSize='2.5rem'>
                     {mapped.temperature}
                 </Typography>
-                {mapped.temperature_range && (
+                {!isNil(mapped.temperature_range) && (
                     <Typography id='temperature-range'>{mapped.temperature_range}</Typography>
                 )}
                 <Stack
@@ -53,15 +54,16 @@ export default function CurrentWeatherCard({
                     justifyContent='space-around'
                     alignItems='center'
                     paddingTop={1}
+                    useFlexGap
                     spacing={4}>
-                    {mapped.weather_code && (
+                    {!isNil(mapped.weather_code) && (
                         <WeatherIcon weatherCode={mapped.weather_code} isDay={mapped.is_day} />
                     )}
-                    {mapped.precipitation && (
+                    {!isNil(mapped.precipitation) && (
                         <PrecipitationChance precipitation={mapped.precipitation} />
                     )}
                 </Stack>
-                {mapped.time && (
+                {!isNil(mapped.time) && (
                     <Typography
                         fontSize='.8rem'
                         fontStyle='italic'
