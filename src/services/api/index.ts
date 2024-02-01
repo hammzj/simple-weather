@@ -52,6 +52,7 @@ export type HourlyWeatherDataMappings = {
     temperature?: string;
     precipitation?: string;
     precipitation_probability?: string;
+    snow_depth?: string;
     humidity?: string;
     cloud_cover?: string;
     visibility?: string;
@@ -68,6 +69,7 @@ export type DailyWeatherDataMappings = {
     temperature_range?: string;
     precipitation?: string;
     precipitation_probability?: string;
+    snowfall_sum?: string;
     weather_code?: WeatherCode;
     sunrise?: DateTime;
     sunset?: DateTime;
@@ -214,6 +216,7 @@ export default class SimpleWeatherAPI {
                     wind_gusts_10m,
                     precipitation,
                     precipitation_probability,
+                    snow_depth,
                     visibility,
                     weather_code,
                     is_day,
@@ -236,6 +239,9 @@ export default class SimpleWeatherAPI {
                     mapped.precipitation_probability = `${precipitation_probability.toFixed(0)} ${
                         units.precipitation_probability
                     }`;
+                }
+                if (exists(snow_depth)) {
+                    mapped.snow_depth = `${snow_depth.toFixed(2)} ${units.snow_depth}`;
                 }
                 if (exists(visibility)) {
                     mapped.visibility = `${visibility} ${units.visibility}`;
@@ -265,7 +271,7 @@ export default class SimpleWeatherAPI {
             });
 
             //Not using exists(currentWeatherTime) bc tsc produces TS2345
-            if (currentWeatherTime != null) {
+            if (!isNil(currentWeatherTime)) {
                 //Only return hourly data that is equal to or greater than the current hour
                 //No need to show historical hourly data, which is generally returned from the API endpoint
                 const isGteCurrentWeatherTime = (v) => {
@@ -292,6 +298,7 @@ export default class SimpleWeatherAPI {
                         temperature_2m_max,
                         precipitation_sum,
                         precipitation_probability_max,
+                        snowfall_sum,
                         weather_code,
                         sunrise,
                         sunset,
@@ -318,6 +325,9 @@ export default class SimpleWeatherAPI {
                         mapped.precipitation_probability = `${precipitation_probability_max.toFixed(
                             0
                         )} ${units.precipitation_probability_max}`;
+                    }
+                    if (exists(snowfall_sum)) {
+                        mapped.snowfall_sum = `${snowfall_sum.toFixed(2)} ${units.snowfall_sum}`;
                     }
                     if (exists(sunrise)) {
                         mapped.sunrise = DateTime.fromISO(sunrise);

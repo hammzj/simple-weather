@@ -230,7 +230,7 @@ describe("Components", function () {
                         "Conditions:",
                         "Precipitation:",
                         "Precipitation probability:",
-                        "Wind (with dominant direction):",
+                        "Wind:",
                         "Wind gusts:",
                         "Sunrise:",
                         "Sunset:",
@@ -254,7 +254,7 @@ describe("Components", function () {
                     awdo._assertTitleAndValue("Conditions:", "Slight rain showers");
                     awdo._assertTitleAndValue("Precipitation:", "0.1 inch");
                     awdo._assertTitleAndValue("Precipitation probability:", "100 %");
-                    awdo._assertTitleAndValue("Wind (with dominant direction):", "15 mp/h SW");
+                    awdo._assertTitleAndValue("Wind:", "15 mp/h SW");
                     awdo._assertTitleAndValue("Wind gusts:", "41 mp/h");
                     awdo._assertTitleAndValue(
                         "Sunrise:",
