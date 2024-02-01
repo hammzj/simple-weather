@@ -172,7 +172,7 @@ describe(WeatherIcon.name, function () {
             it("has a nighttime icon variant", function () {
                 const wio = new WeatherIconObject();
 
-                cy.mount(<WeatherIcon weatherCode={weatherCode} isDay={false} />);
+                cy.mount(<WeatherIcon weatherCode={weatherCode} isDay={0} />);
 
                 wio.__assertIcon(`wi ${classNameNightVariant}`);
             });
@@ -184,9 +184,7 @@ describe(WeatherIcon.name, function () {
                 cy.mount(<WeatherIcon weatherCode={weatherCode} modifiers={modifiers} />);
                 wio.__assertIcon(`wi ${className} wi-flip-horizontal wi-rotate-90 wi-fw`);
 
-                cy.mount(
-                    <WeatherIcon weatherCode={weatherCode} modifiers={modifiers} isDay={false} />
-                );
+                cy.mount(<WeatherIcon weatherCode={weatherCode} modifiers={modifiers} isDay={0} />);
                 wio.__assertIcon(
                     `wi ${classNameNightVariant} wi-flip-horizontal wi-rotate-90 wi-fw`
                 );
