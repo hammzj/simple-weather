@@ -11,6 +11,7 @@ import {
 import { DateTime } from "luxon";
 import { gte, isEqual, isNil } from "lodash";
 
+//1 if the current time step has daylight, 0 at night.
 export type IsDay = boolean | 0 | 1;
 
 type ISOString = string;

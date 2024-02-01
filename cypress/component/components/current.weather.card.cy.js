@@ -55,4 +55,30 @@ describe(CurrentWeatherCard.name, function () {
             });
         });
     });
+
+    /*
+     * Issue 39: https://github.com/hammzj/simple-weather/issues/39
+     * This is a specific case as I wasn't accounting for JavaScript recognizing "0" as false. Thanks JavaScript
+     */
+    specify("displays an icon for the weather code of 0", function () {
+        cy.get(`@locationData`).then((locationData) => {
+            cy.get(`@weatherData`).then((weatherData) => {
+                weatherData.current_weather.mapped.weather_code = 0;
+                weatherData.current_weather.mapped.is_day = 0;
+                cy.mount(
+                    <CurrentWeatherCard
+                        locationName={getLocationName(locationData)}
+                        currentWeatherData={weatherData.current_weather}
+                    />
+                );
+
+                const cwco = new CurrentWeatherCardObject();
+
+                cwco.WeatherIconObject((wio) => {
+                    wio.__assertTooltipText("Clear sky");
+                    wio.__assertIcon("wi wi-day-sunny");
+                });
+            });
+        });
+    });
 });
