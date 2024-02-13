@@ -15,7 +15,7 @@ import { DateTime } from "luxon";
 import SimpleWeatherAPI, { TotalWeatherData } from "../services/api";
 import { LocationData } from "../services/open_meteo_api/geocoding_api";
 
-export const weatherCodeToText = (weatherCode: number | null | undefined): string => {
+export const weatherCodeToText = (weatherCode?: number): string => {
     if (isNil(weatherCode) || isNil(WeatherCode[weatherCode])) {
         return NOT_AVAILABLE_TEXT;
     } else {
@@ -25,20 +25,20 @@ export const weatherCodeToText = (weatherCode: number | null | undefined): strin
 
 //is mobile viewport
 // todo: -- will use react-device-detect instead
-export const isMobile = () => window.innerWidth <= 768;
+export const isMobile = (): boolean => window.innerWidth <= 768;
 
-export const isDarkModeSettingsEnabled = () => {
+export const isDarkModeSettingsEnabled = (): boolean => {
     return isEqual(localStorage.getItem(SETTINGS_KEY_NAMES.COLOR_MODE), "dark");
 };
 
-export const shadows = (len1, len2, len3, blur) => {
+export const shadows = (len1, len2, len3, blur): string => {
     //This should be improved but the color theme is simple enough
     const color = isDarkModeSettingsEnabled() ? "white" : "black";
     return `${len1} ${len2} ${len3} ${blur} ${color};`;
 };
 
-export const createWeatherPageSearchParams = (id) => {
-    return new URLSearchParams({ id }).toString();
+export const createWeatherPageSearchParams = (id): URLSearchParams => {
+    return new URLSearchParams({ id });
 };
 
 export const getSavedLocationId = (): string | null =>

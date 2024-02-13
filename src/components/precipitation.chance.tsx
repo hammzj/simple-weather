@@ -2,7 +2,7 @@ import React from "react";
 import { Box, Tooltip, Typography } from "@mui/material";
 import { NOT_AVAILABLE_TEXT } from "../constants";
 
-export default function PrecipitationChance({ precipitation }) {
+export default function PrecipitationChance({ precipitation }: { precipitation?: string }) {
     return (
         <Tooltip title='Precipitation chance'>
             <Box id='precipitation' display='flex' justifyContent='center' alignContent='center'>

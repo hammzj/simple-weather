@@ -8,14 +8,20 @@ import {
     Stack,
     Switch,
 } from "@mui/material";
-import { isDarkModeSettingsEnabled } from "./utils";
+import { ColorModeContext } from "../contexts";
 import { SETTINGS_KEY_NAMES } from "../constants";
+import { isDarkModeSettingsEnabled } from "./utils";
 import {
     TemperatureUnit,
     WindSpeedUnit,
     PrecipitationUnit,
 } from "../services/open_meteo_api/forecast_api";
-import { ColorModeContext } from "../contexts";
+
+type SettingsRadioGroupProps = {
+    formLabel: string;
+    settingsKeyName: string;
+    units: (TemperatureUnit | PrecipitationUnit | WindSpeedUnit)[];
+};
 
 const EnableDarkModeSwitch = (): React.ReactElement => {
     const colorMode = useContext(ColorModeContext);
@@ -47,10 +53,9 @@ const EnableDarkModeSwitch = (): React.ReactElement => {
  */
 const SettingsRadioGroup = ({
     settingsKeyName,
-    defaultValue,
     formLabel,
     units,
-}): React.ReactElement => {
+}: SettingsRadioGroupProps): React.ReactElement => {
     const handleChange = (event: React.ChangeEvent<HTMLInputElement>) => {
         console.debug("updated local storage:", event.target.name, event.target.value);
         localStorage.setItem(event.target.name, event.target.value);
@@ -63,15 +68,15 @@ const SettingsRadioGroup = ({
                 name={settingsKeyName}
                 aria-labelledby={`${settingsKeyName}-unit-radio-group-label`}
                 onChange={handleChange}
-                defaultValue={defaultValue}
+                defaultValue={localStorage.getItem(settingsKeyName)}
                 row>
-                {Object.keys(units).map((unit) => {
+                {units.map((u) => {
                     return (
                         <FormControlLabel
-                            key={unit}
-                            value={unit}
+                            key={u}
+                            value={u}
                             control={<Radio color='secondary' />}
-                            label={unit}
+                            label={u}
                         />
                     );
                 })}
@@ -84,24 +89,32 @@ export default function SettingsMenu(): React.ReactElement {
     return (
         <Stack id='settings-menu' direction='column' alignItems='center' spacing={3}>
             <EnableDarkModeSwitch />
-            <SettingsRadioGroup
-                formLabel='Temperature unit'
-                settingsKeyName={SETTINGS_KEY_NAMES.TEMPERATURE_UNIT}
-                defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.TEMPERATURE_UNIT)}
-                units={TemperatureUnit}
-            />
-            <SettingsRadioGroup
-                formLabel='Precipitation unit'
-                settingsKeyName={SETTINGS_KEY_NAMES.PRECIPITATION_UNIT}
-                defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.PRECIPITATION_UNIT)}
-                units={PrecipitationUnit}
-            />
-            <SettingsRadioGroup
-                formLabel='Wind speed unit'
-                settingsKeyName={SETTINGS_KEY_NAMES.WIND_SPEED_UNIT}
-                defaultValue={localStorage.getItem(SETTINGS_KEY_NAMES.WIND_SPEED_UNIT)}
-                units={WindSpeedUnit}
-            />
+            {[
+                {
+                    formLabel: "Temperature unit",
+                    settingsKeyName: SETTINGS_KEY_NAMES.TEMPERATURE_UNIT,
+                    units: Object.values(TemperatureUnit),
+                },
+                {
+                    formLabel: "Precipitation unit",
+                    settingsKeyName: SETTINGS_KEY_NAMES.PRECIPITATION_UNIT,
+                    units: Object.values(PrecipitationUnit),
+                },
+                {
+                    formLabel: "Wind speed unit",
+                    settingsKeyName: SETTINGS_KEY_NAMES.WIND_SPEED_UNIT,
+                    units: Object.values(WindSpeedUnit),
+                },
+            ].map(({ formLabel, settingsKeyName, units }, i) => {
+                return (
+                    <SettingsRadioGroup
+                        formLabel={formLabel}
+                        settingsKeyName={settingsKeyName}
+                        units={units}
+                        key={i}
+                    />
+                );
+            })}
         </Stack>
     );
 }

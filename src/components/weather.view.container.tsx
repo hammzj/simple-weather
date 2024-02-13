@@ -1,41 +1,56 @@
 import React from "react";
-import {Box, Tabs, Tab, Typography} from "@mui/material";
+import { isEqual, isEmpty } from "lodash";
+import { Box, Tabs, Tab } from "@mui/material";
 import WeatherAccordion from "./weather.accordion";
-import {isEqual, isEmpty} from "lodash";
+import { DailyWeatherData, HourlyWeatherData, TotalWeatherData } from "../services/api";
+import Message from "./message";
 
-//TODO: make reusable Message component
-const EmptyDataMessage = (): React.ReactElement => {
-    return (
-        <Box alignContent='center' justifyContent='center'>
-            <Typography align='center'>No data could be returned for the location.</Typography>
-        </Box>
-    )
+interface WeatherRowsTabPanelProps {
+    timeBasedWeatherData: (HourlyWeatherData | DailyWeatherData)[];
+    type: "hourly" | "daily";
+    value: number;
+    index: number;
 }
 
-const WeatherRowsTabPanel = (props): React.ReactElement => {
+interface WeatherViewContainerProps {
+    totalWeatherData: Record<string, never> | TotalWeatherData;
+}
+
+const tabClass = {
+    "&.Mui-selected": {
+        color: "inherit",
+    },
+};
+
+const EmptyDataMessage = (): React.ReactElement => {
+    return <Message value='No data could be returned for the location.' />;
+};
+
+const WeatherRowsTabPanel = ({
+    timeBasedWeatherData,
+    type,
+    value,
+    index,
+}: WeatherRowsTabPanelProps): React.ReactElement => {
     const [expanded, setExpanded] = React.useState<string | boolean>(false);
-    const handleChange =
-        (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
-            setExpanded(isExpanded ? panel : false);
-        };
+    const handleChange = (panel: string) => (event: React.SyntheticEvent, isExpanded: boolean) => {
+        setExpanded(isExpanded ? panel : false);
+    };
 
-
-    const {timeBasedWeatherData, type, value, index} = props;
     return (
         <Box
-            role="tabpanel"
+            role='tabpanel'
             hidden={!isEqual(value, index)}
             id={`tabpanel-${type}`}
-            aria-labelledby={`tabpanel-${type}`}
-        >
-            {isEmpty(timeBasedWeatherData) ?
-                <EmptyDataMessage/> :
-                isEqual(value, index) && timeBasedWeatherData.map((tbwd, i) => {
+            aria-labelledby={`tabpanel-${type}`}>
+            {isEmpty(timeBasedWeatherData) ? (
+                <EmptyDataMessage />
+            ) : (
+                isEqual(value, index) &&
+                timeBasedWeatherData.map((tbwd, i) => {
                     const accordionId = `accordion-${i}`;
                     return (
-                        <Box
-                            paddingBottom='2em'
-                            key={accordionId}>
+                        <Box paddingBottom='2em' key={accordionId}>
                             <WeatherAccordion
                                 expanded={isEqual(expanded, accordionId)}
                                 onChange={handleChange(accordionId)}
@@ -43,48 +58,41 @@ const WeatherRowsTabPanel = (props): React.ReactElement => {
                                 mappedWeatherData={tbwd.mapped}
                             />
                         </Box>
-                    )
-                })}
+                    );
+                })
+            )}
         </Box>
-    )
-}
+    );
+};
 
-export default function WeatherViewContainer({weatherData}): React.ReactElement {
+export default function WeatherViewContainer({
+    totalWeatherData,
+}: WeatherViewContainerProps): React.ReactElement {
     const [value, setValue] = React.useState(0);
-
     const handleChange = (event: React.SyntheticEvent, newValue: number) => {
         setValue(newValue);
-    }
-
-    const {hourly_weather, daily_weather} = weatherData;
+    };
 
     return (
         <Box id='weather-view'>
             <Box paddingBottom='1em'>
-                <Tabs
-                    value={value}
-                    onChange={handleChange}
-                    centered
-                    indicatorColor='secondary'
-                >
-                    <Tab label="Hourly"
-                         sx={{
-                             "&.Mui-selected": {
-                                 color: "inherit"
-                             }
-                         }}
-                    />
-                    <Tab label="Daily"
-                         sx={{
-                             "&.Mui-selected": {
-                                 color: "inherit"
-                             }
-                         }}
-                    />
+                <Tabs value={value} onChange={handleChange} centered indicatorColor='secondary'>
+                    <Tab label='Hourly' sx={tabClass} />
+                    <Tab label='Daily' sx={tabClass} />
                 </Tabs>
             </Box>
-            <WeatherRowsTabPanel value={value} index={0} type="hourly" timeBasedWeatherData={hourly_weather}/>
-            <WeatherRowsTabPanel value={value} index={1} type="daily" timeBasedWeatherData={daily_weather}/>
+            <WeatherRowsTabPanel
+                type='hourly'
+                timeBasedWeatherData={totalWeatherData.hourly_weather}
+                value={value}
+                index={0}
+            />
+            <WeatherRowsTabPanel
+                type='daily'
+                timeBasedWeatherData={totalWeatherData.daily_weather}
+                value={value}
+                index={1}
+            />
         </Box>
-    )
+    );
 }

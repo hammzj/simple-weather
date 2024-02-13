@@ -9,7 +9,7 @@ describe(WeatherViewContainer.name, function () {
             fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
         });
         cy.get(`@weatherData`).then((weatherData) => {
-            cy.mount(<WeatherViewContainer weatherData={weatherData} />);
+            cy.mount(<WeatherViewContainer totalWeatherData={weatherData} />);
         });
     });
 
@@ -111,7 +111,7 @@ describe(WeatherViewContainer.name, function () {
 
     it(`will display a warning message when no data has been returned for Hourly weather`, function () {
         //Replace original mounted component
-        cy.mount(<WeatherViewContainer weatherData={{}} />);
+        cy.mount(<WeatherViewContainer totalWeatherData={{}} />);
 
         const wvco = new WeatherViewContainerObject();
 
