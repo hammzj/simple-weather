@@ -18,7 +18,7 @@ export default function LocationDataButton({
             <Link
                 to={{
                     pathname: PATHS.WEATHER,
-                    search: createWeatherPageSearchParams(locationData.id),
+                    search: createWeatherPageSearchParams(locationData.id).toString(),
                 }}>
                 <Button
                     sx={{

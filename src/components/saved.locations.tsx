@@ -62,7 +62,7 @@ export default function SavedLocations({ locationId }): React.ReactElement {
                                 style={{ textDecoration: "none" }}
                                 to={{
                                     pathname: PATHS.WEATHER,
-                                    search: createWeatherPageSearchParams(locationId),
+                                    search: createWeatherPageSearchParams(locationId).toString(),
                                 }}>
                                 <CurrentWeatherCard
                                     locationName={savedCurrentWeatherData.name}
