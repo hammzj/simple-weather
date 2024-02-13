@@ -1,27 +1,27 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+import { isEmpty } from "lodash";
+import { DateTime } from "luxon";
 import { Box, Divider, Stack } from "@mui/material";
 import Page from "../components/page";
 import Message from "../components/message";
 import LoadingMessage from "../components/loading.message";
 import CurrentWeatherCard from "../components/current.weather.card";
 import WeatherViewContainer from "../components/weather.view.container";
-import SimpleWeatherAPI from "../services/api";
+import SavedLocationCheckbox from "../components/saved.location.checkbox";
+import { getLocationName } from "../services/open_meteo_api/utils";
+import SimpleWeatherAPI, { TotalWeatherData } from "../services/api";
 import { OpenMeteoGeocodingAPI } from "../services/open_meteo_api";
 import {
     PrecipitationUnit,
     TemperatureUnit,
     WindSpeedUnit,
 } from "../services/open_meteo_api/forecast_api";
-import { getLocationName } from "../services/open_meteo_api/utils";
-import { DateTime } from "luxon";
-import SavedLocationCheckbox from "../components/saved.location.checkbox";
-import { isEmpty } from "lodash";
 
 interface WeatherPageContainerProps {
     locationId: string | number | null;
     locationName: string;
-    weatherData: any;
+    totalWeatherData: Record<string, never> | TotalWeatherData;
 }
 
 const ErrorMessage = () => {
@@ -31,9 +31,9 @@ const ErrorMessage = () => {
 const WeatherPageContainer = ({
     locationId,
     locationName,
-    weatherData = {},
+    totalWeatherData = {},
 }: WeatherPageContainerProps): React.ReactElement => {
-    const { current_weather } = weatherData;
+    const { current_weather } = totalWeatherData;
     const hasNeededData = current_weather && locationName && !isEmpty(locationId);
     return (
         <Stack direction='column' padding={1}>
@@ -46,7 +46,7 @@ const WeatherPageContainer = ({
                     <SavedLocationCheckbox locationId={locationId} />
                     <Divider />
                     <Box marginTop='1.5em'>
-                        <WeatherViewContainer weatherData={weatherData} />
+                        <WeatherViewContainer totalWeatherData={totalWeatherData} />
                     </Box>
                 </Box>
             ) : (
@@ -61,7 +61,7 @@ export default function WeatherPage(): React.ReactElement {
     const id = new URLSearchParams(search).get("id");
     const [isLoading, setIsLoading] = useState<boolean>(true);
     const [locationName, setLocationName] = useState("");
-    const [weatherData, setWeatherData] = useState({});
+    const [totalWeatherData, setTotalWeatherData] = useState({});
 
     //Get location name and weather data
     useEffect(() => {
@@ -93,7 +93,7 @@ export default function WeatherPage(): React.ReactElement {
                         opts
                     );
                     //@ts-ignore
-                    setWeatherData(data);
+                    setTotalWeatherData(data);
                 } catch (err) {
                     console.error(err);
                 }
@@ -129,7 +129,7 @@ export default function WeatherPage(): React.ReactElement {
                 <WeatherPageContainer
                     locationId={id}
                     locationName={locationName}
-                    weatherData={weatherData}
+                    totalWeatherData={totalWeatherData}
                 />
             )}
         </Page>

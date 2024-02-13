@@ -82,9 +82,9 @@ export interface DailyWeatherData extends GenericWeatherData {
 export interface TotalWeatherData {
     latitude: number;
     longitude: number;
-    current_weather?: CurrentWeatherData;
-    hourly_weather?: HourlyWeatherData[];
-    daily_weather?: DailyWeatherData[];
+    current_weather: CurrentWeatherData;
+    hourly_weather: HourlyWeatherData[];
+    daily_weather: DailyWeatherData[];
 }
 
 export interface GetWeatherOpts {
