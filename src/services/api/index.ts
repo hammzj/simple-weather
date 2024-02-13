@@ -34,11 +34,11 @@ interface GenericWeatherData {
 
 export type CurrentWeatherDataMappings = {
     time: ISOString;
-    weather_code?: WeatherCode;
-    is_day?: IsDay;
-    temperature?: string;
-    temperature_range?: string;
-    precipitation?: string;
+    weather_code: WeatherCode;
+    is_day: IsDay;
+    temperature: string;
+    temperature_range: string;
+    precipitation: string;
 };
 
 export interface CurrentWeatherData extends GenericWeatherData {
@@ -47,16 +47,16 @@ export interface CurrentWeatherData extends GenericWeatherData {
 
 export type HourlyWeatherDataMappings = {
     time: ISOString;
-    weather_code?: WeatherCode;
-    is_day?: IsDay;
-    temperature?: string;
-    precipitation?: string;
-    precipitation_probability?: string;
-    humidity?: string;
-    cloud_cover?: string;
-    visibility?: string;
-    wind?: string;
-    wind_gusts?: string;
+    weather_code: WeatherCode;
+    is_day: IsDay;
+    temperature: string;
+    precipitation: string;
+    precipitation_probability: string;
+    humidity: string;
+    cloud_cover: string;
+    visibility: string;
+    wind: string;
+    wind_gusts: string;
 };
 
 export interface HourlyWeatherData extends GenericWeatherData {
@@ -65,14 +65,14 @@ export interface HourlyWeatherData extends GenericWeatherData {
 
 export type DailyWeatherDataMappings = {
     time: ISOString;
-    temperature_range?: string;
-    precipitation?: string;
-    precipitation_probability?: string;
-    weather_code?: WeatherCode;
-    sunrise?: DateTime;
-    sunset?: DateTime;
-    wind?: string;
-    wind_gusts?: string;
+    temperature_range: string;
+    precipitation: string;
+    precipitation_probability: string;
+    weather_code: WeatherCode;
+    sunrise: DateTime;
+    sunset: DateTime;
+    wind: string;
+    wind_gusts: string;
 };
 
 export interface DailyWeatherData extends GenericWeatherData {
