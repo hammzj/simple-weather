@@ -33,21 +33,17 @@ export default function BottomNavBar(): React.ReactElement {
                 textAlign='center'
                 padding={2}
                 spacing={3}>
-                <Grid item>
-                    <TextLink href={PATHS.INDEX}>Home</TextLink>
-                </Grid>
-                <Grid item>
-                    <TextLink href={PATHS.ABOUT}>About</TextLink>
-                </Grid>
-                <Grid item>
-                    <TextLink href={PATHS.SETTINGS}>Settings</TextLink>
-                </Grid>
-                <Grid item>
-                    <GitHubIconLink />
-                </Grid>
-                <Grid item>
-                    <OpenMeteoAttributionLink />
-                </Grid>
+                {[
+                    <TextLink href={PATHS.INDEX}>Home</TextLink>,
+                    <TextLink href={PATHS.ABOUT}>About</TextLink>,
+                    <TextLink href={PATHS.SETTINGS}>Settings</TextLink>,
+                    <GitHubIconLink />,
+                    <OpenMeteoAttributionLink />,
+                ].map((element, i) => (
+                    <Grid item key={i}>
+                        {element}
+                    </Grid>
+                ))}
             </Grid>
         </Container>
     );

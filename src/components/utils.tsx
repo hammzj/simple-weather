@@ -15,7 +15,7 @@ import { DateTime } from "luxon";
 import SimpleWeatherAPI, { TotalWeatherData } from "../services/api";
 import { LocationData } from "../services/open_meteo_api/geocoding_api";
 
-export const weatherCodeToText = (weatherCode: number | null | undefined): string => {
+export const weatherCodeToText = (weatherCode?: number): string => {
     if (isNil(weatherCode) || isNil(WeatherCode[weatherCode])) {
         return NOT_AVAILABLE_TEXT;
     } else {

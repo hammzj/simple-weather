@@ -34,12 +34,7 @@ export default function CurrentWeatherCard({
                     margin: "0.5em",
                     textSizeAdjust: "auto",
                 }}>
-                <Typography
-                    id='location'
-                    align='center'
-                    variant='h4'
-                    //fontSize='1.5rem'
-                >
+                <Typography id='location' align='center' variant='h4'>
                     {locationName}
                 </Typography>
                 <Typography id='temperature' align='center' fontSize='2.5rem'>
