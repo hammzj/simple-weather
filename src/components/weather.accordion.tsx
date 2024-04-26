@@ -53,21 +53,24 @@ interface WeatherAccordionSummaryProps {
 const getTimeStringForSummary = (
     type: WeatherSummaryTimeType,
     dateTime: string,
-    timezone?: Zone | string
+    timezone?: Zone | string,
 ): string => {
     const isDaily = isEqual(type, "daily");
+    const isToday = isEqual(DateTime.fromISO(dateTime).toISODate(), DateTime.local().toISODate());
     const localeString = isDaily ? DateTime.DATE_MED : DateTime.DATETIME_MED; //Consider 24-hour format
     let dt = DateTime.fromISO(dateTime);
     if (timezone) dt = dt.setZone(timezone);
-    return dt.toLocaleString(localeString);
+    return (isDaily && isToday) ?
+        `${dt.toLocaleString(localeString)} (Today)` :
+        dt.toLocaleString(localeString);
 };
 
 //Changes layout based on mobile viewport
 const WeatherAccordionSummary = ({
-    type,
-    mappedWeatherData,
-    timezone,
-}: WeatherAccordionSummaryProps): React.ReactElement => {
+                                     type,
+                                     mappedWeatherData,
+                                     timezone,
+                                 }: WeatherAccordionSummaryProps): React.ReactElement => {
     const timeString = getTimeStringForSummary(type, mappedWeatherData.time, timezone || "local");
     //@ts-ignore: TS2339 -- We don't need to enforce this. mappedWeatherData can be hourly or daily.
     const temperature = mappedWeatherData.temperature || mappedWeatherData.temperature_range;
@@ -85,16 +88,16 @@ const WeatherAccordionSummary = ({
             }}
             expandIcon={<ExpandMore />}>
             {isMobile() ? (
-                <Stack direction='column' spacing={1}>
-                    <Typography id='time' sx={{ fontSize: "0.9em", textAlign: "left" }}>
+                <Stack direction="column" spacing={1}>
+                    <Typography id="time" sx={{ fontSize: "0.9em", textAlign: "left" }}>
                         {timeString}
                     </Typography>
                     <Stack
-                        direction='row'
-                        justifyContent='flex-start'
-                        alignItems='center'
+                        direction="row"
+                        justifyContent="flex-start"
+                        alignItems="center"
                         spacing={2}>
-                        <Typography id='temperature' sx={{ fontSize: "0.9rem" }}>
+                        <Typography id="temperature" sx={{ fontSize: "0.9rem" }}>
                             {temperature}
                         </Typography>
                         <WeatherIcon
@@ -108,15 +111,15 @@ const WeatherAccordionSummary = ({
                 </Stack>
             ) : (
                 <Stack
-                    direction='row'
-                    justifyContent='flex-start'
-                    alignItems='center'
+                    direction="row"
+                    justifyContent="flex-start"
+                    alignItems="center"
                     spacing={4}
-                    marginLeft='0.2em'>
-                    <Typography id='time' sx={{ fontSize: "0.9em" }}>
+                    marginLeft="0.2em">
+                    <Typography id="time" sx={{ fontSize: "0.9em" }}>
                         {timeString}
                     </Typography>
-                    <Typography id='temperature' sx={{ fontSize: "0.9em" }}>
+                    <Typography id="temperature" sx={{ fontSize: "0.9em" }}>
                         {temperature}
                     </Typography>
                     <WeatherIcon
@@ -133,9 +136,9 @@ const WeatherAccordionSummary = ({
 };
 
 const AdditionalWeatherDetailsRow = ({
-    title,
-    value,
-}: AdditionalWeatherDetailsRowProps): React.ReactElement => {
+                                         title,
+                                         value,
+                                     }: AdditionalWeatherDetailsRowProps): React.ReactElement => {
     const id = `${title.replace(":", "").replace(/\s/g, "-").toLowerCase()}`;
     return (
         <TableRow id={id}>
@@ -154,9 +157,9 @@ const AdditionalWeatherDetailsRow = ({
  * Exporting for use in testing
  */
 export const AdditionalWeatherDetails = ({
-    type,
-    mappedWeatherData = {},
-}: AdditionalWeatherDetailsProps): React.ReactElement => {
+                                             type,
+                                             mappedWeatherData = {},
+                                         }: AdditionalWeatherDetailsProps): React.ReactElement => {
     //handle state change when updated by newly selected row
     const hourlyDetails = (mappedWeatherData) => {
         const {
@@ -212,7 +215,7 @@ export const AdditionalWeatherDetails = ({
         ? hourlyDetails(mappedWeatherData)
         : dailyDetails(mappedWeatherData);
     return (
-        <Box id='additional-weather-details'>
+        <Box id="additional-weather-details">
             <TableContainer>
                 <Table>
                     <TableBody>
@@ -228,11 +231,11 @@ export const AdditionalWeatherDetails = ({
 
 //TODO: fix typing to correctly include "expanded" and "onChange"
 export default function WeatherAccordion({
-    type,
-    mappedWeatherData,
-    timezone,
-    ...props
-}: WeatherAccordionProps | any) {
+                                             type,
+                                             mappedWeatherData,
+                                             timezone,
+                                             ...props
+                                         }: WeatherAccordionProps | any) {
     return (
         <Accordion
             id={`${type}-weather-summary-accordion`}
