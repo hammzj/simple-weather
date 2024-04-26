@@ -44,35 +44,35 @@ describe(WeatherPage.name, function () {
             cy.get("@weatherData").then((weatherData) => {
                 cy.get("@individualLocation").then((individualLocation) => {
                     //Assert
-                    weatherPageObject.container.should(
+                    weatherPageObject.container().should(
                         "not.have.text",
                         "An error occurred when loading the data."
                     );
-                    weatherPageObject.TopNavBarObject((tnbo) => {
-                        tnbo.container.should("exist");
-                        tnbo.LocationSearchFormObject((lsfo) => lsfo.container.should("exist"));
+                    weatherPageObject.components.TopNavBarObject((tnbo) => {
+                        tnbo.container().should("exist");
+                        tnbo.components.LocationSearchFormObject((lsfo) => lsfo.container().should("exist"));
                     });
-                    weatherPageObject.BottomNavBarObject((bnvo) => {
-                        bnvo.container.should("exist");
+                    weatherPageObject.components.BottomNavBarObject((bnvo) => {
+                        bnvo.container().should("exist");
                     });
-                    weatherPageObject.CurrentWeatherCardObject((cwco) => {
-                        cwco.container.should("exist");
-                        cwco.location.should("have.text", getLocationName(individualLocation));
-                        cwco.temperature.should(
+                    weatherPageObject.components.CurrentWeatherCardObject((cwco) => {
+                        cwco.container().should("exist");
+                        cwco.elements.location().should("have.text", getLocationName(individualLocation));
+                        cwco.elements.temperature().should(
                             "have.text",
                             weatherData.current_weather.mapped.temperature
                         );
                     });
-                    weatherPageObject.WeatherViewContainerObject((wvco) => {
-                        wvco.container.should("exist");
+                    weatherPageObject.components.WeatherViewContainerObject((wvco) => {
+                        wvco.elements.container().should("exist");
 
-                        wvco.hourlyButton.click();
-                        wvco.HourlyWeatherAccordionObject((obj) =>
+                        wvco.elements.hourlyButton().click();
+                        wvco.components.HourlyWeatherAccordionObject((obj) =>
                             obj.getAllContainers().should("have.lengthOf", 25)
                         );
 
-                        wvco.dailyButton.click();
-                        wvco.DailyWeatherAccordionObject((obj) =>
+                        wvco.elements.dailyButton().click();
+                        wvco.components.DailyWeatherAccordionObject((obj) =>
                             obj.getAllContainers().should("have.lengthOf", 7)
                         );
                     });
@@ -92,24 +92,24 @@ describe(WeatherPage.name, function () {
                     const newLocationData = newLocationDataResults.results[0];
                     //Arrange: make sure the page displays a different name than the new search.
                     ////Redundant check but good for sanity
-                    weatherPageObject.container.should(
+                    weatherPageObject.container().should(
                         "contain.text",
                         getLocationName(oldLocationData)
                     );
 
                     //Action: search for new location
-                    weatherPageObject.TopNavBarObject((navBar) => {
-                        navBar.LocationSearchFormObject(function (locationSearchFormObject) {
-                            locationSearchFormObject._search(newLocationData.name);
+                    weatherPageObject.components.TopNavBarObject((navBar) => {
+                        navBar.components.LocationSearchFormObject(function (locationSearchFormObject) {
+                            locationSearchFormObject.search(newLocationData.name);
                             cy.wait(1000);
                         });
                     });
 
                     //Assert: Check the first button exists
                     //cy.location('pathname').should('include', locationResultsPageObject._path);
-                    cy.hash().should("include", locationResultsPageObject._path);
-                    locationResultsPageObject.LocationButtonsListObject((list) => {
-                        list._assertButtonText(getLocationName(newLocationData));
+                    cy.hash().should("include", locationResultsPageObject.metadata.path);
+                    locationResultsPageObject.components.LocationButtonsListObject((list) => {
+                        list.assertButtonText(getLocationName(newLocationData));
                     });
                 });
             });
@@ -118,19 +118,19 @@ describe(WeatherPage.name, function () {
         context("Setting as a saved location", function () {
             it("saves the location to be able to view current weather from the index page", function () {
                 //Arrange
-                weatherPageObject.SavedLocationCheckboxObject((checkboxObject) => {
+                weatherPageObject.components.SavedLocationCheckboxObject((checkboxObject) => {
                     //Act
-                    checkboxObject.checkbox.toggleCheckbox(true);
-                    checkboxObject.checkbox.should("be.checked");
+                    checkboxObject.elements.checkbox().toggleCheckbox(true);
+                    checkboxObject.elements.checkbox().should("be.checked");
                 });
 
                 //Assert
                 cy.get("@individualLocation").then((individualLocation) => {
-                    indexPageObject.__visit();
-                    indexPageObject.SavedLocationsObject((slo) => {
-                        slo.__assertExists();
-                        slo.CurrentWeatherCardObject((cwco) => {
-                            cwco.location.should("have.text", getLocationName(individualLocation));
+                    cy.visit(indexPageObject.url())
+                    indexPageObject.components.SavedLocationsObject((slo) => {
+                        slo.assertExists();
+                        slo.components.CurrentWeatherCardObject((cwco) => {
+                            cwco.elements.location().should("have.text", getLocationName(individualLocation));
                         });
                     });
                 });
@@ -138,69 +138,69 @@ describe(WeatherPage.name, function () {
 
             it("can be accessed from the index page", function () {
                 //Arrange
-                weatherPageObject.SavedLocationCheckboxObject((slco) => {
-                    slco.checkbox.toggleCheckbox(true);
+                weatherPageObject.components.SavedLocationCheckboxObject((slco) => {
+                    slco.elements.checkbox().toggleCheckbox(true);
                 });
 
                 //Act
-                indexPageObject.__visit();
-                indexPageObject.SavedLocationsObject((slo) => {
-                    slo.CurrentWeatherCardObject((cwco) => cwco.container.click());
+                cy.visit(indexPageObject.url());
+                indexPageObject.components.SavedLocationsObject((slo) => {
+                    slo.components.CurrentWeatherCardObject((cwco) => cwco.container().click());
                 });
 
                 //Assert
                 cy.get("@individualLocation").then((individualLocation) => {
-                    weatherPageObject.CurrentWeatherCardObject((cwco) => {
+                    weatherPageObject.components.CurrentWeatherCardObject((cwco) => {
                         cy.url().should("include", `?id=${individualLocation.id}`);
-                        cwco.location.should("have.text", getLocationName(individualLocation));
+                        cwco.elements.location().should("have.text", getLocationName(individualLocation));
                     });
                 });
-                weatherPageObject.SavedLocationCheckboxObject((checkboxObject) => {
-                    checkboxObject.checkbox.toggleCheckbox(true);
-                    checkboxObject.checkbox.should("be.checked");
+                weatherPageObject.components.SavedLocationCheckboxObject((checkboxObject) => {
+                    checkboxObject.elements.checkbox().toggleCheckbox(true);
+                    checkboxObject.elements.checkbox().should("be.checked");
                 });
             });
 
             it("can be unchecked to remove the saved location", function () {
                 //Arrange
-                weatherPageObject.SavedLocationCheckboxObject((slco) => {
-                    slco.checkbox.toggleCheckbox(true);
+                weatherPageObject.components.SavedLocationCheckboxObject((slco) => {
+                    slco.elements.checkbox().toggleCheckbox(true);
                 });
-                indexPageObject.__visit();
+                cy.visit(indexPageObject.url())
                 cy.get("@individualLocation").then((individualLocation) => {
-                    indexPageObject.__visit();
-                    indexPageObject.SavedLocationsObject((slo) => {
-                        slo.CurrentWeatherCardObject((cwco) => {
-                            cwco.location.should("have.text", getLocationName(individualLocation));
+                    cy.visit(indexPageObject.url())
+                    indexPageObject.components.SavedLocationsObject((slo) => {
+                        slo.components.CurrentWeatherCardObject((cwco) => {
+                            cwco.elements.location().should("have.text", getLocationName(individualLocation));
 
                             //Act
-                            cwco.container.click();
+                            cwco.container().click();
                         });
                     });
                 });
-                weatherPageObject.SavedLocationCheckboxObject((slco) => {
-                    slco.checkbox.toggleCheckbox(false);
-                    slco.checkbox.should("not.be.checked");
+                weatherPageObject.components.SavedLocationCheckboxObject((slco) => {
+                    slco.elements.checkbox().toggleCheckbox(false);
+                    slco.elements.checkbox().should("not.be.checked");
                 });
-                indexPageObject.__visit();
+                cy.visit(indexPageObject.url())
 
                 //Assert
-                indexPageObject.SavedLocationsObject((slo) => {
-                    slo.__assertExists(false);
+                indexPageObject.components.SavedLocationsObject((slo) => {
+                    slo.assertExists(false);
                 });
             });
 
             specify("only one location can be saved at a time", function () {
                 //Arrange
-                weatherPageObject.SavedLocationCheckboxObject((slco) => {
-                    slco.checkbox.toggleCheckbox(true);
+                weatherPageObject.components.SavedLocationCheckboxObject((slco) => {
+                    slco.elements.checkbox().toggleCheckbox(true);
                 });
-                indexPageObject.__visit();
+                cy.visit(indexPageObject.url())
                 cy.get("@individualLocation").then((individualLocation) => {
-                    indexPageObject.SavedLocationsObject((slo) => {
-                        slo.__assertExists(true);
-                        slo.CurrentWeatherCardObject((cwco) => {
-                            cwco.location.should("have.text", getLocationName(individualLocation));
+                    indexPageObject.components.SavedLocationsObject((slo) => {
+                        slo.assertExists(true);
+                        slo.components.CurrentWeatherCardObject((cwco) => {
+                            cwco.elements.location().should("have.text", getLocationName(individualLocation));
                         });
                     });
                 });
@@ -230,14 +230,14 @@ describe(WeatherPage.name, function () {
 
                     //Assert
                     //This is the weather page for the second location
-                    weatherPageObject.CurrentWeatherCardObject((cwco) => {
-                        cwco.location.should(
+                    weatherPageObject.components.CurrentWeatherCardObject((cwco) => {
+                        cwco.elements.location().should(
                             "have.text",
                             getLocationName(alternateIndividualLocation)
                         );
                     });
-                    weatherPageObject.SavedLocationCheckboxObject((slco) => {
-                        slco.checkbox.should("be.disabled");
+                    weatherPageObject.components.SavedLocationCheckboxObject((slco) => {
+                        slco.elements.checkbox().should("be.disabled");
                     });
                 });
             });
@@ -256,7 +256,7 @@ describe(WeatherPage.name, function () {
             });
 
             //Assert
-            weatherPageObject.CurrentWeatherCardObject((cwco) =>
+            weatherPageObject.components.CurrentWeatherCardObject((cwco) =>
                 cwco.getAllContainers().should("not.exist")
             );
             cy.get(".MuiTypography-root").should(

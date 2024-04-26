@@ -23,29 +23,29 @@ describe(SavedLocations.name, function () {
 
     it("can display current weather details for a saved location", function () {
         cy.get(`@individualLocation`).then((individualLocation) => {
-            cy.mount(<SavedLocations locationId={individualLocation.id} />);
+            cy.mount(<SavedLocations locationId={individualLocation.id}/>);
 
             const slo = new SavedLocationsObject();
-            slo.CurrentWeatherCardObject((cwco) => {
+            slo.components.CurrentWeatherCardObject((cwco) => {
                 cwco.scopedIndex = 0;
-                cwco.location.should("have.text", "Berlin, Land Berlin, Germany");
-                cwco.temperature.should("have.text", "51 °F");
-                cwco.temperatureRange.should("have.text", "48 °F / 55 °F");
-                cwco.PrecipitationChanceObject((pco) => pco._assertValue("0.1 inch"));
-                cwco.WeatherIconObject((wio) => wio.icon.should("exist"));
-                cwco.time.should("have.text", "Last updated: Nov 14, 2023, 9:30 PM");
+                cwco.elements.location().should("have.text", "Berlin, Land Berlin, Germany");
+                cwco.elements.temperature().should("have.text", "51 °F");
+                cwco.elements.temperatureRange().should("have.text", "48 °F / 55 °F");
+                cwco.components.PrecipitationChanceObject((pco) => pco.assertValue("0.1 inch"));
+                cwco.components.WeatherIconObject((wio) => wio.elements.icon().should("exist"));
+                cwco.elements.time().should("have.text", "Last updated: Nov 14, 2023, 9:30 PM");
             });
         });
     });
 
     it("has a link to the weather page for the saved location", function () {
         cy.get(`@individualLocation`).then((individualLocation) => {
-            cy.mount(<SavedLocations locationId={individualLocation.id} />);
+            cy.mount(<SavedLocations locationId={individualLocation.id}/>);
 
             const slo = new SavedLocationsObject();
-            slo.CurrentWeatherCardObject((cwco) => {
+            slo.components.CurrentWeatherCardObject((cwco) => {
                 cwco.scopedIndex = 0;
-                cwco.container.parents("a").should("have.attr", "href", "/weather?id=2950159");
+                cwco.container().parents("a").should("have.attr", "href", "/weather?id=2950159");
             });
         });
     });

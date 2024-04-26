@@ -8,26 +8,23 @@ import BottomNavBarObject from "../components/bottom.nav.bar.object";
 
 export default class WeatherPageObject extends PageObject {
     constructor() {
-        super(`/weather`);
-    }
-
-    TopNavBarObject(fn) {
-        this._nestedObject(this.container, new TopNavBarObject(), fn);
-    }
-
-    BottomNavBarObject(fn) {
-        this._nestedObject(this.container, new BottomNavBarObject(), fn);
-    }
-
-    CurrentWeatherCardObject(fn) {
-        this._nestedObject(this.container, new CurrentWeatherCardObject(), fn);
-    }
-
-    SavedLocationCheckboxObject(fn) {
-        this._nestedObject(this.container, new SavedLocationCheckboxObject(), fn);
-    }
-
-    WeatherViewContainerObject(fn) {
-        this._nestedObject(this.container, new WeatherViewContainerObject(), fn);
+        super({ path: `/weather` });
+        this.addComponents = {
+            TopNavBarObject: (fn) => {
+                this.performWithin(this.container(), new TopNavBarObject(), fn);
+            },
+            BottomNavBarObject: (fn) => {
+                this.performWithin(this.container(), new BottomNavBarObject(), fn);
+            },
+            CurrentWeatherCardObject: (fn) => {
+                this.performWithin(this.container(), new CurrentWeatherCardObject(), fn);
+            },
+            SavedLocationCheckboxObject: (fn) => {
+                this.performWithin(this.container(), new SavedLocationCheckboxObject(), fn);
+            },
+            WeatherViewContainerObject: (fn) => {
+                this.performWithin(this.container(), new WeatherViewContainerObject(), fn);
+            },
+        };
     }
 }

@@ -1,29 +1,31 @@
-import CypressPageObject from "@hammzj/cypress-page-object";
+import { ComponentObject } from "@hammzj/cypress-page-object";
 import LocationDataButtonObject from "./location.data.button.object";
-
-const { ComponentObject } = CypressPageObject;
 
 export default class LocationButtonsListObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`form#location-data-form`));
+        this.components = {
+            /**
+             * @param fn {function}
+             * @param [buttonText=] {string} Allows scoping the list of buttons by their text
+             * @example LocationButtonsListObject.LocationDataButtonObject(function(button){
+             *     //...
+             * }, buttonText);
+             */
+            LocationDataButtonObject: (fn, buttonText) => {
+                this.performWithin(this.container(), new LocationDataButtonObject(buttonText), fn);
+            },
+        };
     }
 
-    /**
-     * @param fn {function}
-     * @param [buttonText=] {string} Allows scoping the list of buttons by their text
-     * @example LocationButtonsListObject.LocationDataButtonObject(function(button){
-     *     //...
-     * }, buttonText);
-     */
-    LocationDataButtonObject(buttonText, fn) {
-        this._nestedObject(this.container, new LocationDataButtonObject(buttonText), fn);
-    }
 
-    _assertButtonText(...buttonTextContents) {
+    assertButtonText(...buttonTextContents) {
+        cy.log("button text contents to validate", buttonTextContents);
         buttonTextContents.forEach((buttonText) => {
-            this.LocationDataButtonObject(buttonText, (button) => {
-                button.name.should("have.text", buttonText);
-            });
+            cy.log("current button text", buttonText);
+            this.components.LocationDataButtonObject(function(button) {
+                button.elements.name().should("have.text", buttonText);
+            }, buttonText)
         });
     }
 }

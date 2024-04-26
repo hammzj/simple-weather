@@ -1,74 +1,55 @@
-import { isNil } from "lodash";
-import CypressPageObject from "@hammzj/cypress-page-object";
-const { ComponentObject } = CypressPageObject;
+import {ComponentObject} from "@hammzj/cypress-page-object";
+import {isNil} from "lodash";
 
 export default class SettingsMenuObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`#settings-menu`));
+        this.addElements = {
+            darkModeToggle: () => cy.contains(".MuiFormControlLabel-root", "Enable dark mode")
+                .find("input"),
+            temperatureUnitRadioGroup: () => cy
+                .contains(".MuiFormControl-root", "Temperature unit")
+                .find('div[role="radiogroup"]'),
+            //Label and value are the same
+            temperatureUnitOption: (value) => this.elements.temperatureUnitRadioGroup().find(`input[value="${value}"]`),
+            windSpeedUnitRadioGroup: () => cy
+                .contains(".MuiFormControl-root", "Wind speed unit")
+                .find('div[role="radiogroup"]'),
+            //Label and value are the same
+            windSpeedUnitOption: (value) => this.elements.windSpeedUnitRadioGroup().find(`input[value="${value}"]`),
+            precipitationUnitRadioGroup: () => cy
+                .contains(".MuiFormControl-root", "Precipitation unit")
+                .find('div[role="radiogroup"]'),
+            //Label and value are the same
+            precipitationUnitOption: (value) => this.elements.precipitationUnitRadioGroup().find(`input[value="${value}"]`)
+        }
     }
 
-    get darkModeToggle() {
-        return cy.contains(".MuiFormControlLabel-root", "Enable dark mode").find("input");
-    }
-
-    get temperatureUnitRadioGroup() {
-        return cy
-            .contains(".MuiFormControl-root", "Temperature unit")
-            .find('div[role="radiogroup"]');
-    }
-
-    //Label and value are the same
-    temperatureUnitOption(value) {
-        return this.temperatureUnitRadioGroup.find(`input[value="${value}"]`);
-    }
-
-    get windSpeedUnitRadioGroup() {
-        return cy
-            .contains(".MuiFormControl-root", "Wind speed unit")
-            .find('div[role="radiogroup"]');
-    }
-
-    //Label and value are the same
-    windSpeedUnitOption(value) {
-        return this.windSpeedUnitRadioGroup.find(`input[value="${value}"]`);
-    }
-
-    get precipitationUnitRadioGroup() {
-        return cy
-            .contains(".MuiFormControl-root", "Precipitation unit")
-            .find('div[role="radiogroup"]');
-    }
-
-    //Label and value are the same
-    precipitationUnitOption(value) {
-        return this.precipitationUnitRadioGroup.find(`input[value="${value}"]`);
-    }
-
-    _selectSettings({
-        darkModeToggle,
-        temperatureUnitOption,
-        windSpeedUnitOption,
-        precipitationUnitOption,
-    }) {
+    selectSettings({
+                       darkModeToggle,
+                       temperatureUnitOption,
+                       windSpeedUnitOption,
+                       precipitationUnitOption,
+                   }) {
         if (!isNil(darkModeToggle)) {
-            this.darkModeToggle.toggleCheckbox(darkModeToggle);
+            this.elements.darkModeToggle().toggleCheckbox(darkModeToggle);
         }
         if (!isNil(temperatureUnitOption)) {
-            this.temperatureUnitOption(temperatureUnitOption).click({ force: true });
+            this.elements.temperatureUnitOption(temperatureUnitOption).click({force: true});
         }
         if (!isNil(windSpeedUnitOption)) {
-            this.windSpeedUnitOption(windSpeedUnitOption).click({ force: true });
+            this.elements.windSpeedUnitOption(windSpeedUnitOption).click({force: true});
         }
         if (!isNil(precipitationUnitOption)) {
-            this.precipitationUnitOption(precipitationUnitOption).click({ force: true });
+            this.elements.precipitationUnitOption(precipitationUnitOption).click({force: true});
         }
     }
 
     /**
      * @param expectation {boolean}
      */
-    _assertDarkModeIsSelected(expectation) {
-        this.darkModeToggle.should(expectation ? "be.checked" : "not.be.checked");
+    assertDarkModeIsSelected(expectation) {
+        this.elements.darkModeToggle().should(expectation ? "be.checked" : "not.be.checked");
     }
 
     /**
@@ -78,15 +59,19 @@ export default class SettingsMenuObject extends ComponentObject {
      * @param precipitationUnitOption {string=}
      * @param expectation {boolean}
      */
-    _assertRadioButtonIsSelected(
-        { temperatureUnitOption, windSpeedUnitOption, precipitationUnitOption },
+    assertRadioButtonIsSelected(
+        {temperatureUnitOption, windSpeedUnitOption, precipitationUnitOption},
         expectation
     ) {
         const matcher = expectation ? "be.checked" : "not.be.checked";
-        if (temperatureUnitOption)
-            this.temperatureUnitOption(temperatureUnitOption).should(matcher);
-        if (windSpeedUnitOption) this.windSpeedUnitOption(windSpeedUnitOption).should(matcher);
-        if (precipitationUnitOption)
-            this.precipitationUnitOption(precipitationUnitOption).should(matcher);
+        if (temperatureUnitOption) {
+            this.elements.temperatureUnitOption(temperatureUnitOption).should(matcher);
+        }
+        if (windSpeedUnitOption) {
+            this.elements.windSpeedUnitOption(windSpeedUnitOption).should(matcher);
+        }
+        if (precipitationUnitOption) {
+            this.elements.precipitationUnitOption(precipitationUnitOption).should(matcher);
+        }
     }
 }

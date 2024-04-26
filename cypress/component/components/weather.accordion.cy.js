@@ -31,15 +31,15 @@ describe("Components", function () {
                         );
 
                         const accordion = new WeatherAccordionObject("hourly");
-                        accordion.time.should(
+                        accordion.elements.time().should(
                             "have.text",
                             formatDateTimeHourly(firstHour.mapped.time)
                         );
-                        accordion.temperature.should("have.text", "51 °F");
-                        accordion.WeatherIconObject((wio) => {
-                            wio.__assertTooltipText("Overcast");
+                        accordion.elements.temperature().should("have.text", "51 °F");
+                        accordion.components.WeatherIconObject((wio) => {
+                            wio.assertTooltipText("Overcast");
                         });
-                        accordion.PrecipitationChanceObject((pio) => pio._assertValue("15 %"));
+                        accordion.components.PrecipitationChanceObject((pio) => pio.assertValue("15 %"));
                     });
                 });
 
@@ -61,9 +61,9 @@ describe("Components", function () {
                             );
 
                             const accordion = new WeatherAccordionObject("hourly");
-                            accordion.WeatherIconObject((wio) => {
-                                wio.__assertTooltipText("Overcast");
-                                wio.__assertIcon(expectedClassName);
+                            accordion.components.WeatherIconObject((wio) => {
+                                wio.assertTooltipText("Overcast");
+                                wio.assertIcon(expectedClassName);
                             });
                         });
                     });
@@ -79,12 +79,12 @@ describe("Components", function () {
                     );
 
                     const accordion = new WeatherAccordionObject("hourly");
-                    accordion.summary.click();
+                    accordion.elements.summary().click();
 
-                    accordion.AdditionalWeatherDetailsObject((awdo) => {
-                        awdo._assertTitleAndValue("Temperature:", `51 °F`);
-                        awdo._assertTitleAndValue("Precipitation:", `0 inch`);
-                        awdo._assertTitleAndValue("Precipitation probability:", `15 %`);
+                    accordion.components.AdditionalWeatherDetailsObject((awdo) => {
+                        awdo.assertTitleAndValue("Temperature:", `51 °F`);
+                        awdo.assertTitleAndValue("Precipitation:", `0 inch`);
+                        awdo.assertTitleAndValue("Precipitation probability:", `15 %`);
                     });
                 });
             });
@@ -101,17 +101,17 @@ describe("Components", function () {
                         );
 
                         const accordion = new WeatherAccordionObject("daily");
-                        accordion.time.should(
+                        accordion.elements.time().should(
                             "have.text",
                             formatDateTimeDaily(firstDay.mapped.time)
                         );
-                        accordion.temperature.should("have.text", "48 °F / 55 °F");
-                        accordion.WeatherIconObject((wio) => {
-                            wio.__assertTooltipText("Slight rain showers");
+                        accordion.elements.temperature().should("have.text", "48 °F / 55 °F");
+                        accordion.components.WeatherIconObject((wio) => {
+                            wio.assertTooltipText("Slight rain showers");
                             //Daytime variant
-                            wio.__assertIcon("wi wi-day-showers");
+                            wio.assertIcon("wi wi-day-showers");
                         });
-                        accordion.PrecipitationChanceObject((pio) => pio._assertValue("100 %"));
+                        accordion.components.PrecipitationChanceObject((pio) => pio.assertValue("100 %"));
                     });
                 });
             });
@@ -123,12 +123,12 @@ describe("Components", function () {
                     cy.mount(<WeatherAccordion type='daily' mappedWeatherData={firstDay.mapped} />);
 
                     const accordion = new WeatherAccordionObject("daily");
-                    accordion.summary.click();
+                    accordion.elements.summary().click();
 
-                    accordion.AdditionalWeatherDetailsObject((awdo) => {
-                        awdo._assertTitleAndValue("Temperature Low/High:", `48 °F / 55 °F`);
-                        awdo._assertTitleAndValue("Precipitation:", `0.1 inch`);
-                        awdo._assertTitleAndValue("Precipitation probability:", `100 %`);
+                    accordion.components.AdditionalWeatherDetailsObject((awdo) => {
+                        awdo.assertTitleAndValue("Temperature Low/High:", `48 °F / 55 °F`);
+                        awdo.assertTitleAndValue("Precipitation:", `0.1 inch`);
+                        awdo.assertTitleAndValue("Precipitation probability:", `100 %`);
                     });
                 });
             });
@@ -155,7 +155,7 @@ describe("Components", function () {
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
-                    awdo._assertRowTitlesInOrder([
+                    awdo.assertRowTitlesInOrder([
                         "Temperature:",
                         "Conditions:",
                         "Precipitation:",
@@ -180,14 +180,14 @@ describe("Components", function () {
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
-                    awdo._assertTitleAndValue("Temperature:", "51 °F");
-                    awdo._assertTitleAndValue("Conditions:", "Overcast");
-                    awdo._assertTitleAndValue("Precipitation:", "0 inch");
-                    awdo._assertTitleAndValue("Precipitation probability:", "15 %");
-                    awdo._assertTitleAndValue("Wind:", "8 mp/h SW");
-                    awdo._assertTitleAndValue("Wind gusts:", "20 mp/h");
-                    awdo._assertTitleAndValue("Humidity:", "78 %");
-                    awdo._assertTitleAndValue("Cloud cover:", "100 %");
+                    awdo.assertTitleAndValue("Temperature:", "51 °F");
+                    awdo.assertTitleAndValue("Conditions:", "Overcast");
+                    awdo.assertTitleAndValue("Precipitation:", "0 inch");
+                    awdo.assertTitleAndValue("Precipitation probability:", "15 %");
+                    awdo.assertTitleAndValue("Wind:", "8 mp/h SW");
+                    awdo.assertTitleAndValue("Wind gusts:", "20 mp/h");
+                    awdo.assertTitleAndValue("Humidity:", "78 %");
+                    awdo.assertTitleAndValue("Cloud cover:", "100 %");
                 });
             });
 
@@ -205,9 +205,9 @@ describe("Components", function () {
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
-                    awdo._assertTitleAndValue("Temperature:", "51 °F"); //Spot check that nothing else is affected
-                    awdo._assertTitleAndValue("Precipitation:", "N/A");
-                    awdo._assertTitleAndValue("Precipitation probability:", "N/A");
+                    awdo.assertTitleAndValue("Temperature:", "51 °F"); //Spot check that nothing else is affected
+                    awdo.assertTitleAndValue("Precipitation:", "N/A");
+                    awdo.assertTitleAndValue("Precipitation probability:", "N/A");
                 });
             });
         });
@@ -225,7 +225,7 @@ describe("Components", function () {
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
-                    awdo._assertRowTitlesInOrder([
+                    awdo.assertRowTitlesInOrder([
                         "Temperature Low/High:",
                         "Conditions:",
                         "Precipitation:",
@@ -250,17 +250,17 @@ describe("Components", function () {
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
-                    awdo._assertTitleAndValue("Temperature Low/High:", "48 °F / 55 °F");
-                    awdo._assertTitleAndValue("Conditions:", "Slight rain showers");
-                    awdo._assertTitleAndValue("Precipitation:", "0.1 inch");
-                    awdo._assertTitleAndValue("Precipitation probability:", "100 %");
-                    awdo._assertTitleAndValue("Wind (with dominant direction):", "15 mp/h SW");
-                    awdo._assertTitleAndValue("Wind gusts:", "41 mp/h");
-                    awdo._assertTitleAndValue(
+                    awdo.assertTitleAndValue("Temperature Low/High:", "48 °F / 55 °F");
+                    awdo.assertTitleAndValue("Conditions:", "Slight rain showers");
+                    awdo.assertTitleAndValue("Precipitation:", "0.1 inch");
+                    awdo.assertTitleAndValue("Precipitation probability:", "100 %");
+                    awdo.assertTitleAndValue("Wind (with dominant direction):", "15 mp/h SW");
+                    awdo.assertTitleAndValue("Wind gusts:", "41 mp/h");
+                    awdo.assertTitleAndValue(
                         "Sunrise:",
                         formatDateTimeAsTime(firstDay.mapped.sunrise)
                     );
-                    awdo._assertTitleAndValue(
+                    awdo.assertTitleAndValue(
                         "Sunset:",
                         formatDateTimeAsTime(firstDay.mapped.sunset)
                     );
@@ -281,9 +281,9 @@ describe("Components", function () {
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
-                    awdo._assertTitleAndValue("Temperature Low/High:", "48 °F / 55 °F"); //Spot check that nothing else is affected
-                    awdo._assertTitleAndValue("Precipitation:", "N/A");
-                    awdo._assertTitleAndValue("Precipitation probability:", "N/A");
+                    awdo.assertTitleAndValue("Temperature Low/High:", "48 °F / 55 °F"); //Spot check that nothing else is affected
+                    awdo.assertTitleAndValue("Precipitation:", "N/A");
+                    awdo.assertTitleAndValue("Precipitation probability:", "N/A");
                 });
             });
         });
