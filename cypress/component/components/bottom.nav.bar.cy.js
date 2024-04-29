@@ -8,10 +8,10 @@ describe(BottomNavBar.name, function () {
 
         //No weather code
         cy.mount(<BottomNavBar/>);
-        bottomNavBarObject.homeLink.should('exist').and('have.attr', 'href', '/');
-        bottomNavBarObject.aboutLink.should('exist').and('have.attr', 'href', '/about');
-        bottomNavBarObject.gitHubAuthorLink.should('exist').and('have.attr', 'href', GITHUB_REPOSITORY_LINK);
-        bottomNavBarObject.apiAttributionLink.should('exist').and('have.attr', 'href', OPEN_METEO_HOMEPAGE);
+        bottomNavBarObject.elements.homeLink().should('exist').and('have.attr', 'href', '/');
+        bottomNavBarObject.elements.aboutLink().should('exist').and('have.attr', 'href', '/about');
+        bottomNavBarObject.elements.gitHubAuthorLink().should('exist').and('have.attr', 'href', GITHUB_REPOSITORY_LINK);
+        bottomNavBarObject.elements.apiAttributionLink().should('exist').and('have.attr', 'href', OPEN_METEO_HOMEPAGE);
     });
 
     context('mobile view', function () {
@@ -24,10 +24,10 @@ describe(BottomNavBar.name, function () {
 
             //No weather code
             cy.mount(<BottomNavBar/>);
-            bottomNavBarObject.homeLink.should('exist').and('be.visible');
-            bottomNavBarObject.aboutLink.should('exist').and('be.visible');
-            bottomNavBarObject.gitHubAuthorLink.should('exist').and('be.visible');
-            bottomNavBarObject.apiAttributionLink.should('exist').and('be.visible');
+            bottomNavBarObject.elements.homeLink().should('exist').and('be.visible');
+            bottomNavBarObject.elements.aboutLink().should('exist').and('be.visible');
+            bottomNavBarObject.elements.gitHubAuthorLink().should('exist').and('be.visible');
+            bottomNavBarObject.elements.apiAttributionLink().should('exist').and('be.visible');
         });
     });
 });

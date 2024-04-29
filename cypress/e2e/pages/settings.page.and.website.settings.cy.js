@@ -48,26 +48,26 @@ describe("Website settings", function () {
         });
 
         it("renders correctly", function () {
-            settingsPageObject.TopNavBarObject((navBar) => navBar.container.should("exist"));
-            settingsPageObject.BottomNavBarObject((navBar) => navBar.container.should("exist"));
-            settingsPageObject.SettingsMenuObject((smo) => {
-                smo.container.should("exist");
+            settingsPageObject.components.TopNavBarObject((navBar) => navBar.container().should("exist"));
+            settingsPageObject.components.BottomNavBarObject((navBar) => navBar.container().should("exist"));
+            settingsPageObject.components.SettingsMenuObject((smo) => {
+                smo.container().should("exist");
             });
         });
 
         context("Enabling dark color mode", function () {
             it('defaults to "light" color mode', function () {
                 //Assert
-                settingsPageObject.SettingsMenuObject((smo) =>
-                    smo._assertDarkModeIsSelected(false)
+                settingsPageObject.components.SettingsMenuObject((smo) =>
+                    smo.assertDarkModeIsSelected(false)
                 );
                 cy.get("body").should("have.css", "background-color").and("be.colored", "#ffffff");
             });
 
             it("changes the theme and saves the setting to local storage", function () {
                 //Act 1
-                settingsPageObject.SettingsMenuObject((smo) =>
-                    smo._selectSettings({ darkModeToggle: true })
+                settingsPageObject.components.SettingsMenuObject((smo) =>
+                    smo.selectSettings({ darkModeToggle: true })
                 );
                 //Assert 1
                 cy.get("body").should("have.css", "background-color").and("be.colored", "#121212");
@@ -76,8 +76,8 @@ describe("Website settings", function () {
                 });
 
                 //Act 2
-                settingsPageObject.SettingsMenuObject((smo) =>
-                    smo._selectSettings({ darkModeToggle: false })
+                settingsPageObject.components.SettingsMenuObject((smo) =>
+                    smo.selectSettings({ darkModeToggle: false })
                 );
                 //Assert 2
                 cy.get("body").should("have.css", "background-color").and("be.colored", "#ffffff");
@@ -87,11 +87,11 @@ describe("Website settings", function () {
             });
 
             it("persists on other pages", function () {
-                settingsPageObject.SettingsMenuObject((smo) =>
-                    smo._selectSettings({ darkModeToggle: true })
+                settingsPageObject.components.SettingsMenuObject((smo) =>
+                    smo.selectSettings({ darkModeToggle: true })
                 );
-                settingsPageObject.BottomNavBarObject((navBar) => {
-                    navBar.aboutLink.click();
+                settingsPageObject.components.BottomNavBarObject((navBar) => {
+                    navBar.elements.aboutLink().click();
                     cy.url().then((url) => {
                         expect(url).to.include("/about");
                     });
@@ -101,15 +101,15 @@ describe("Website settings", function () {
 
             it("persists dark mode on page reload", function () {
                 //Arrange
-                settingsPageObject.SettingsMenuObject((smo) =>
-                    smo._selectSettings({ darkModeToggle: true })
+                settingsPageObject.components.SettingsMenuObject((smo) =>
+                    smo.selectSettings({ darkModeToggle: true })
                 );
 
                 //Act
                 cy.reload();
 
                 //Assert
-                settingsPageObject.SettingsMenuObject((smo) => smo._assertDarkModeIsSelected(true));
+                settingsPageObject.components.SettingsMenuObject((smo) => smo.assertDarkModeIsSelected(true));
                 cy.get("body").should("have.css", "background-color").and("be.colored", "#121212");
             });
         });
@@ -117,8 +117,8 @@ describe("Website settings", function () {
         context("Setting options for the weather forecast API", function () {
             const selectSettingAndGetToWeatherPage = (key, value) => {
                 cy.visit(settingsPageObject.url());
-                settingsPageObject.SettingsMenuObject((smo) => {
-                    smo._selectSettings({ [key]: value });
+                settingsPageObject.components.SettingsMenuObject((smo) => {
+                    smo.selectSettings({ [key]: value });
                 });
                 cy.get(`@individualLocation`).then((individualLocation) => {
                     getThroughAppToWeatherPage(individualLocation.name, 0);

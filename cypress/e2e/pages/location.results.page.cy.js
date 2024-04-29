@@ -21,12 +21,12 @@ describe('LocationResultsPage', function () {
         it('renders the search form', function () {
             cy.get('@locationResultsPageUrl').then(url => {
                 cy.visit(url);
-                locationResultsPageObject.TopNavBarObject((tnbo) => {
-                    tnbo.container.should('exist');
-                    tnbo.LocationSearchFormObject(lsfo => lsfo.container.should('exist'));
+                locationResultsPageObject.components.TopNavBarObject((tnbo) => {
+                    tnbo.container().should('exist');
+                    tnbo.components.LocationSearchFormObject(lsfo => lsfo.container().should('exist'));
                 });
-                locationResultsPageObject.BottomNavBarObject(bnvo => {
-                    bnvo.container.should('exist');
+                locationResultsPageObject.components.BottomNavBarObject(bnvo => {
+                    bnvo.container().should('exist');
                 });
             });
         });
@@ -36,9 +36,9 @@ describe('LocationResultsPage', function () {
                 cy.get(`@locationDataResults`).then(locationDataResults => {
                     cy.visit(url);
 
-                    locationResultsPageObject.LocationButtonsListObject(locationButtonsListObject => {
+                    locationResultsPageObject.components.LocationButtonsListObject(locationButtonsListObject => {
                         const locationNames = locationDataResults.results.map(getLocationName);
-                        locationButtonsListObject._assertButtonText(...locationNames);
+                        locationButtonsListObject.assertButtonText(...locationNames);
                     });
                 });
             });
@@ -52,25 +52,25 @@ describe('LocationResultsPage', function () {
                     cy.get(`@locationDataResultsAlternate`).then(locationDataResultsAlternate => {
                         //Visit and validate initial results
                         cy.visit(url);
-                        locationResultsPageObject.LocationButtonsListObject(locationButtonsListObject => {
+                        locationResultsPageObject.components.LocationButtonsListObject(locationButtonsListObject => {
                             const locationNames = locationDataResults.results.map(getLocationName);
-                            locationButtonsListObject._assertButtonText(...locationNames);
+                            locationButtonsListObject.assertButtonText(...locationNames);
                         });
 
                         //When searching in the form, return new results on page redirect
                         cy.intercept(`*/search*`, locationDataResultsAlternate).as('searchForLocations');
 
-                        locationResultsPageObject.TopNavBarObject((navBar) => {
-                            navBar.LocationSearchFormObject(function (locationSearchFormObject) {
-                                locationSearchFormObject._search('raleigh');
+                        locationResultsPageObject.components.TopNavBarObject((navBar) => {
+                            navBar.components.LocationSearchFormObject(function (locationSearchFormObject) {
+                                locationSearchFormObject.search('raleigh');
                                 cy.wait(1000);
                             });
                         });
 
                         //Check buttons have new results
-                        locationResultsPageObject.LocationButtonsListObject(locationButtonsListObject => {
+                        locationResultsPageObject.components.LocationButtonsListObject(locationButtonsListObject => {
                             const locationNames = locationDataResultsAlternate.results.map(getLocationName);
-                            locationButtonsListObject._assertButtonText(...locationNames);
+                            locationButtonsListObject.assertButtonText(...locationNames);
                         });
                     });
                 });

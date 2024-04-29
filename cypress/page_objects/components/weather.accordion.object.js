@@ -1,9 +1,8 @@
-import CypressPageObject from "@hammzj/cypress-page-object";
+import { ComponentObject } from "@hammzj/cypress-page-object";
 import WeatherIconObject from "./weather.icon.object";
 import PrecipitationChanceObject from "./precipitation.chance.object";
 import AdditionalWeatherDetailsObject from "./additional.weather.details.object";
 
-const { ComponentObject } = CypressPageObject;
 
 export default class WeatherAccordionObject extends ComponentObject {
     constructor(type) {
@@ -16,33 +15,22 @@ export default class WeatherAccordionObject extends ComponentObject {
                 return cy.get(`[id^="-weather-summary-accordion"]`);
             }
         };
-    }
-
-    get summary() {
-        return this.container.find(`.MuiAccordionSummary-root`);
-    }
-
-    get time() {
-        return this.summary.find(`#time`);
-    }
-
-    get temperature() {
-        return this.summary.find(`#temperature`);
-    }
-
-    WeatherIconObject(fn) {
-        this._nestedObject(this.summary, new WeatherIconObject(), fn);
-    }
-
-    PrecipitationChanceObject(fn) {
-        this._nestedObject(this.summary, new PrecipitationChanceObject(), fn);
-    }
-
-    get details() {
-        return this.container.find(`.MuiAccordionDetails-root`);
-    }
-
-    AdditionalWeatherDetailsObject(fn) {
-        this._nestedObject(this.details, new AdditionalWeatherDetailsObject(), fn);
+        this.addElements = {
+            summary: () => this.container().find(`.MuiAccordionSummary-root`),
+            time: () => this.elements.summary().find(`#time`),
+            temperature: () => this.elements.summary().find(`#temperature`),
+            details: () => this.container().find(`.MuiAccordionDetails-root`),
+        };
+        this.addComponents = {
+            WeatherIconObject: (fn) => {
+                this.performWithin(this.elements.summary(), new WeatherIconObject(), fn);
+            },
+            PrecipitationChanceObject: (fn) => {
+                this.performWithin(this.elements.summary(), new PrecipitationChanceObject(), fn);
+            },
+            AdditionalWeatherDetailsObject: (fn) => {
+                this.performWithin(this.elements.details(), new AdditionalWeatherDetailsObject(), fn);
+            },
+        };
     }
 }

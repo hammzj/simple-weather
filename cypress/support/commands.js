@@ -1,27 +1,5 @@
-// React 16, 17
-import { mount } from "cypress/react18";
-import { MemoryRouter } from "react-router-dom";
-import { CssBaseline, ThemeProvider } from "@mui/material";
 import { OpenMeteoWeatherForecastAPI } from "../../src/services/open_meteo_api";
 import SimpleWeatherAPI from "../../src/services/api";
-import { lightTheme as baseTheme } from "../../src/theme";
-
-Cypress.Commands.add("mount", (component, options = {}) => {
-    const { routerProps = { initialEntries: ["/"] }, theme, ...mountOptions } = options;
-    //Default to base theme if not given
-    const wrapped = (
-        <MemoryRouter {...routerProps}>
-            <ThemeProvider theme={theme ?? baseTheme}>
-                <CssBaseline />
-                {component}
-            </ThemeProvider>
-        </MemoryRouter>
-    );
-
-    // Wrap any parent components needed
-    // ie: return mount(<MyProvider>{component}</MyProvider>, options)
-    return mount(wrapped, mountOptions);
-});
 
 /**
  * coordinatesFixture {string}
@@ -33,46 +11,43 @@ Cypress.Commands.add(
     "stubAndAliasWeatherData",
     (
         { coordinatesFixture = "coordinates.berlin.json", fetchWeatherResponseFixture },
-        alias = "weatherData"
+        alias = "weatherData",
     ) => {
         cy.fixture(`/open_meteo_api/forecast_api/${fetchWeatherResponseFixture}`).then(
             (fetchWeatherResponseFixture) => {
                 cy.stub(OpenMeteoWeatherForecastAPI, "fetchAllWeatherForLocation").returns(
-                    fetchWeatherResponseFixture
+                    fetchWeatherResponseFixture,
                 );
                 cy.intercept(`*/forecast*`, fetchWeatherResponseFixture).as(
-                    "fetchAllWeatherForLocation"
+                    "fetchAllWeatherForLocation",
                 );
                 cy.fixture(`/open_meteo_api/forecast_api/${coordinatesFixture}`).then(
                     (coordinatesFixture) => {
                         cy.wrap(SimpleWeatherAPI.getWeather(coordinatesFixture)).as(alias);
-                    }
-                );
-            }
-        );
-    }
-);
+                    });
+            });
+    });
 
-Cypress.Commands.add("setValue", { prevSubject: true }, function (subject, text, opts = {}) {
+Cypress.Commands.add("setValue", { prevSubject: true }, function(subject, text, opts = {}) {
     cy.wrap(subject).clear();
     cy.wrap(subject).type(text, opts);
 });
 
-Cypress.Commands.add("toggleCheckbox", { prevSubject: true }, function (subject, check) {
+Cypress.Commands.add("toggleCheckbox", { prevSubject: true }, function(subject, check) {
     check ? cy.wrap(subject).check({ force: true }) : cy.wrap(subject).uncheck({ force: true });
 });
 
 Cypress.Commands.add(
     "assertLocalStorageItem",
     { prevSubject: false },
-    function (url, key, value, expectation = true) {
+    function(url, key, value, expectation = true) {
         cy.getAllLocalStorage().then((result) => {
             cy.wrap(result[url][key]).should(expectation ? "eq" : "not.eq", value);
         });
-    }
+    },
 );
 
 //Needed for testing local storage items
-Cypress.Commands.add("getBaseUrlOrigin", { prevSubject: false }, function () {
+Cypress.Commands.add("getBaseUrlOrigin", { prevSubject: false }, function() {
     return new URL(Cypress.config().baseUrl).origin.toString();
 });

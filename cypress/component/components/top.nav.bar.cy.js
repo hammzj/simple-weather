@@ -7,8 +7,8 @@ describe(TopNavBar.name, function () {
 
         //No weather code
         cy.mount(<TopNavBar/>);
-        topNavBar.LocationSearchFormObject(locationSearchFormObject => {
-            locationSearchFormObject.container.should('exist');
+        topNavBar.components.LocationSearchFormObject(locationSearchFormObject => {
+            locationSearchFormObject.container().should('exist');
         });
     });
 });

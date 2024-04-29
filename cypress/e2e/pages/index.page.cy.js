@@ -13,16 +13,16 @@ describe(IndexPage.name, function () {
     });
 
     it("renders correctly", function () {
-        indexPage.LocationSearchFormObject((locationSearchFormObject) => {
-            locationSearchFormObject.container.should("exist");
+        indexPage.components.LocationSearchFormObject((locationSearchFormObject) => {
+            locationSearchFormObject.container().should("exist");
         });
-        indexPage.BottomNavBarObject((bottomNavBarObject) => {
-            bottomNavBarObject.container.should("exist");
+        indexPage.components.BottomNavBarObject((bottomNavBarObject) => {
+            bottomNavBarObject.container().should("exist");
         });
     });
 
     it("does not display a saved location when none exist", function () {
-        indexPage.SavedLocationsObject((slo) => slo.__assertExists(false));
+        indexPage.components.SavedLocationsObject((slo) => slo.assertExists(false));
     });
 
     context("Searching for a location", function () {
@@ -36,28 +36,28 @@ describe(IndexPage.name, function () {
         });
 
         it("can search for a location correctly", function () {
-            indexPage.LocationSearchFormObject((locationSearchFormObject) => {
-                locationSearchFormObject._search("Berlin");
+            indexPage.components.LocationSearchFormObject((locationSearchFormObject) => {
+                locationSearchFormObject.search("Berlin");
             });
 
-            locationResultsPageObject.container.should("exist");
-            locationResultsPageObject.LocationButtonsListObject((lblo) => {
-                lblo._assertButtonText("Berlin, Land Berlin, Germany");
+            locationResultsPageObject.container().should("exist");
+            locationResultsPageObject.components.LocationButtonsListObject((lblo) => {
+                lblo.assertButtonText("Berlin, Land Berlin, Germany");
             });
         });
     });
 
     context("Bottom nav bar", function () {
         it("renders correctly", function () {
-            indexPage.BottomNavBarObject((bottomNavBarObject) => {
-                bottomNavBarObject.container.should("exist");
+            indexPage.components.BottomNavBarObject((bottomNavBarObject) => {
+                bottomNavBarObject.container().should("exist");
             });
         });
 
         //TODO: make this more robust
         it("can go to the about page", function () {
-            indexPage.BottomNavBarObject((bottomNavBarObject) => {
-                bottomNavBarObject.aboutLink.click();
+            indexPage.components.BottomNavBarObject((bottomNavBarObject) => {
+                bottomNavBarObject.elements.aboutLink().click();
                 cy.url().then((url) => {
                     expect(url).to.include("/about");
                 });

@@ -1,26 +1,18 @@
-import CypressPageObject from "@hammzj/cypress-page-object";
-const { ComponentObject } = CypressPageObject;
+import { ComponentObject } from "@hammzj/cypress-page-object";
 
 export default class LocationDataButtonObject extends ComponentObject {
-    #BASE_CONTAINER_ID = "#location-data-button";
+    static BASE_CONTAINER_ID = `div[id="location-data-button"]`;
 
-    constructor(buttonText = undefined) {
-        super(() => cy.get('div[id="location-data-button"]'));
-
-        //Select only the button(s) with the specified buttonText
-        if (buttonText) {
-            this._buttonText = buttonText;
-            this.updateBaseContainerFunction = (origFn) => {
-                return origFn().contains("span", this._buttonText).parents(this.#BASE_CONTAINER_ID);
-            };
-        }
-    }
-
-    get link() {
-        return this.container.find(`a`);
-    }
-
-    get name() {
-        return this.container.contains(`span`, this._buttonText);
+    constructor(buttonText) {
+        super(() => buttonText ?
+            cy.get(LocationDataButtonObject.BASE_CONTAINER_ID)
+                .contains("span", buttonText)
+                .parents(LocationDataButtonObject.BASE_CONTAINER_ID) :
+            cy.get(LocationDataButtonObject.BASE_CONTAINER_ID),
+        );
+        this.addElements = {
+            link: () => this.container().find(`a`),
+            name: () => this.container().find(`span`).eq(0),
+        };
     }
 }

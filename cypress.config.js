@@ -17,6 +17,7 @@ export default defineConfig({
         testIsolation: true,
         experimentalInteractiveRunEvents: true,
         watchForFileChanges: false,
+        specPattern: "cypress/e2e/**/*.cy.{js,jsx,ts,tsx}"
     },
 
     component: {
@@ -25,5 +26,6 @@ export default defineConfig({
             framework: "create-react-app",
             bundler: "webpack",
         },
+        specPattern: "cypress/component/**/*.cy.{js,jsx,ts,tsx}"
     },
 });

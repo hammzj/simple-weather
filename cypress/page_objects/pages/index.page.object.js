@@ -6,17 +6,17 @@ import BottomNavBarObject from "../components/bottom.nav.bar.object";
 export default class IndexPageObject extends PageObject {
     constructor() {
         super();
+        this.addComponents = {
+            LocationSearchFormObject: (fn) => {
+                this.performWithin(this.container(), new LocationSearchFormObject(), fn);
+            },
+            SavedLocationsObject: (fn) => {
+                this.performWithin(this.container(), new SavedLocationsObject(), fn);
+            },
+            BottomNavBarObject: (fn) => {
+                this.performWithin(this.container(), new BottomNavBarObject(), fn);
+            },
+        };
     }
 
-    LocationSearchFormObject(fn) {
-        this._nestedObject(this.container, new LocationSearchFormObject(), fn);
-    }
-
-    SavedLocationsObject(fn) {
-        this._nestedObject(this.container, new SavedLocationsObject(), fn);
-    }
-
-    BottomNavBarObject(fn) {
-        this._nestedObject(this.container, new BottomNavBarObject(), fn);
-    }
 }

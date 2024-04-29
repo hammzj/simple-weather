@@ -1,19 +1,18 @@
-import CypressPageObject from "@hammzj/cypress-page-object";
-
-const { ComponentObject } = CypressPageObject;
+import {ComponentObject} from "@hammzj/cypress-page-object";
 
 export default class AdditionalWeatherDetailsObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`#additional-weather-details`));
+        this.addElements = {
+            trs: () => this.container().find(`tr`),
+            tr: (title) => this.container().contains(`td`, title).parents(`tr`)
+        }
     }
 
-    tr(title) {
-        return this.container.contains(`td`, title).parents(`tr`);
-    }
 
-    _assertRowTitlesInOrder(expectedTitles) {
+    assertRowTitlesInOrder(expectedTitles) {
         cy.wrap([]).as("additionalWeatherDetailsRowTitles");
-        this.container.find(`tr`).each(($tr) => {
+        this.elements.trs().each(($tr) => {
             cy.wrap($tr)
                 .find(`td`)
                 .eq(0)
@@ -30,8 +29,8 @@ export default class AdditionalWeatherDetailsObject extends ComponentObject {
         });
     }
 
-    _assertTitleAndValue(title, value) {
-        this.tr(title).find(`td`).eq(0).should("have.text", title);
-        this.tr(title).find(`td`).eq(1).should("have.text", value);
+    assertTitleAndValue(title, value) {
+        this.elements.tr(title).find(`td`).eq(0).should("have.text", title);
+        this.elements.tr(title).find(`td`).eq(1).should("have.text", value);
     }
 }

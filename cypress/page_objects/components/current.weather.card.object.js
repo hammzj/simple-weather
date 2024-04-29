@@ -1,35 +1,23 @@
-import CypressPageObject from "@hammzj/cypress-page-object";
+import { ComponentObject } from "@hammzj/cypress-page-object";
 import WeatherIconObject from "./weather.icon.object";
 import PrecipitationChanceObject from "./precipitation.chance.object";
-
-const { ComponentObject } = CypressPageObject;
 
 export default class CurrentWeatherCardObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`[id="current-weather"]`));
-    }
-
-    get location() {
-        return this.container.find(`#location`);
-    }
-
-    get temperature() {
-        return this.container.find(`#temperature`);
-    }
-
-    get temperatureRange() {
-        return this.container.find(`#temperature-range`);
-    }
-
-    WeatherIconObject(fn) {
-        this._nestedObject(this.container, new WeatherIconObject(), fn);
-    }
-
-    PrecipitationChanceObject(fn) {
-        this._nestedObject(this.container, new PrecipitationChanceObject(), fn);
-    }
-
-    get time() {
-        return this.container.find(`#last-updated-time`);
+        this.addElements = {
+            location: () => this.container().find(`#location`),
+            temperature: () => this.container().find(`#temperature`),
+            temperatureRange: () => this.container().find(`#temperature-range`),
+            time: () => this.container().find(`#last-updated-time`),
+        };
+        this.addComponents = {
+            WeatherIconObject: (fn) => {
+                this.performWithin(this.container(), new WeatherIconObject(), fn);
+            },
+            PrecipitationChanceObject: (fn) => {
+                this.performWithin(this.container(), new PrecipitationChanceObject(), fn);
+            },
+        };
     }
 }

@@ -9,11 +9,11 @@ describe(WeatherIcon.name, function () {
 
         //No weather code
         cy.mount(<WeatherIcon />);
-        wio.__assertIcon("wi wi-na");
+        wio.assertIcon("wi wi-na");
 
         //With a fake weather code
         cy.mount(<WeatherIcon weatherCode={-1} />);
-        wio.__assertIcon("wi wi-na");
+        wio.assertIcon("wi wi-na");
     });
 
     [
@@ -165,8 +165,8 @@ describe(WeatherIcon.name, function () {
 
                 cy.mount(<WeatherIcon weatherCode={weatherCode} />);
 
-                wio.icon.should("exist");
-                wio.__assertIcon(`wi ${className}`);
+                wio.elements.icon().should("exist");
+                wio.assertIcon(`wi ${className}`);
             });
 
             it("has a nighttime icon variant", function () {
@@ -174,7 +174,7 @@ describe(WeatherIcon.name, function () {
 
                 cy.mount(<WeatherIcon weatherCode={weatherCode} isDay={0} />);
 
-                wio.__assertIcon(`wi ${classNameNightVariant}`);
+                wio.assertIcon(`wi ${classNameNightVariant}`);
             });
 
             it("allows modifiers to be added", function () {
@@ -182,10 +182,10 @@ describe(WeatherIcon.name, function () {
                 const wio = new WeatherIconObject();
 
                 cy.mount(<WeatherIcon weatherCode={weatherCode} modifiers={modifiers} />);
-                wio.__assertIcon(`wi ${className} wi-flip-horizontal wi-rotate-90 wi-fw`);
+                wio.assertIcon(`wi ${className} wi-flip-horizontal wi-rotate-90 wi-fw`);
 
                 cy.mount(<WeatherIcon weatherCode={weatherCode} modifiers={modifiers} isDay={0} />);
-                wio.__assertIcon(
+                wio.assertIcon(
                     `wi ${classNameNightVariant} wi-flip-horizontal wi-rotate-90 wi-fw`
                 );
             });
@@ -195,7 +195,7 @@ describe(WeatherIcon.name, function () {
 
                 cy.mount(<WeatherIcon weatherCode={weatherCode} />);
 
-                wio.container.trigger("mouseover");
+                wio.container().trigger("mouseover");
 
                 cy.get(`.MuiTooltip-tooltip`)
                     .should("contain.text", weatherCodeToText(weatherCode))

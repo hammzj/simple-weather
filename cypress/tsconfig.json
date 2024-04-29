@@ -1,15 +1,16 @@
 {
   "include": [
-    "../node_modules/cypress",
-    "**/*.cy.js"
+    "**/*.js",
+    "**/*.jsx",
+    "**/*.ts",
+    "**/*.tsx"
   ],
-  
   "compilerOptions": {
-    "noEmit": false,
+    "noEmit": true,
     "sourceMap": false,
-    "target": "es5",
+    "target": "es6",
     "lib": [
-      "es5",
+      "es6",
       "dom"
     ],
     "types": [

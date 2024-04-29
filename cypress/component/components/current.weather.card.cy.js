@@ -22,13 +22,12 @@ describe(CurrentWeatherCard.name, function () {
                 );
 
                 const cwco = new CurrentWeatherCardObject();
-
-                cwco.location.should("have.text", "Berlin, Land Berlin, Germany");
-                cwco.temperature.should("have.text", "51 °F");
-                cwco.temperatureRange.should("have.text", "48 °F / 55 °F");
-                cwco.PrecipitationChanceObject((pco) => pco._assertValue("0.1 inch"));
-                cwco.WeatherIconObject((wio) => wio.__assertTooltipText("Overcast"));
-                cwco.time.should("have.text", "Last updated: Nov 14, 2023, 9:30 PM");
+                cwco.elements.location().should("have.text", "Berlin, Land Berlin, Germany");
+                cwco.elements.temperature().should("have.text", "51 °F");
+                cwco.elements.temperatureRange().should("have.text", "48 °F / 55 °F");
+                cwco.components.PrecipitationChanceObject((pco) => pco.assertValue("0.1 inch"));
+                cwco.components.WeatherIconObject((wio) => wio.assertTooltipText("Overcast"));
+                cwco.elements.time().should("have.text", "Last updated: Nov 14, 2023, 9:30 PM");
             });
         });
     });
@@ -49,10 +48,9 @@ describe(CurrentWeatherCard.name, function () {
                     );
 
                     const cwco = new CurrentWeatherCardObject();
-
-                    cwco.WeatherIconObject((wio) => {
-                        wio.__assertTooltipText("Overcast");
-                        wio.__assertIcon(expectedClassName);
+                    cwco.components.WeatherIconObject((wio) => {
+                        wio.assertTooltipText("Overcast");
+                        wio.assertIcon(expectedClassName);
                     });
                 });
             });
@@ -76,10 +74,9 @@ describe(CurrentWeatherCard.name, function () {
                 );
 
                 const cwco = new CurrentWeatherCardObject();
-
-                cwco.WeatherIconObject((wio) => {
-                    wio.__assertTooltipText("Clear sky");
-                    wio.__assertIcon("wi wi-day-sunny");
+                cwco.components.WeatherIconObject((wio) => {
+                    wio.assertTooltipText("Clear sky");
+                    wio.assertIcon("wi wi-day-sunny");
                 });
             });
         });

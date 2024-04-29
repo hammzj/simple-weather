@@ -69,7 +69,7 @@ export const darkTheme: Theme = responsiveFontSizes(createTheme(Object.assign(ba
 })));
 
 export const getTheme = (mode): Theme => {
-    console.debug('What is the mode?', mode);
+    //console.debug('What is the mode?', mode);
     return isEqual(mode, 'dark') ? darkTheme : lightTheme;
 }
 
