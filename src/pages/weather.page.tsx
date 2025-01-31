@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { isEmpty } from "lodash";
-import { DateTime } from "luxon";
+//import { DateTime } from "luxon";
 import { Box, Divider, Stack } from "@mui/material";
 import Page from "../components/page";
 import Message from "../components/message";
@@ -86,7 +86,8 @@ export default function WeatherPage(): React.ReactElement {
                         precipitation_unit:
                             PrecipitationUnit[localStorage.getItem("precipitationUnit") ?? "inch"],
                     };
-                    const systemTimezone = DateTime.local().zoneName || "auto";
+                    //const systemTimezone = DateTime.local().zoneName || "auto";
+                    const systemTimezone = 'auto'
                     const data = await SimpleWeatherAPI.getWeather(
                         [latitude, longitude],
                         systemTimezone,
