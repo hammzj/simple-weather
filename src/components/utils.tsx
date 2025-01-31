@@ -63,7 +63,8 @@ export const getGeocodingAndWeatherData = async (
             precipitation_unit:
                 PrecipitationUnit[localStorage.getItem("precipitationUnit") ?? "inch"],
         };
-        const systemTimezone = DateTime.local().zoneName || "auto";
+        // const systemTimezone = DateTime.local().zoneName || "auto";
+         const systemTimezone = "auto";
         return await SimpleWeatherAPI.getWeather([latitude, longitude], systemTimezone, opts);
     };
 
