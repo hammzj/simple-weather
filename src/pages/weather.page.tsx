@@ -87,7 +87,7 @@ export default function WeatherPage(): React.ReactElement {
                             PrecipitationUnit[localStorage.getItem("precipitationUnit") ?? "inch"],
                     };
                     //const systemTimezone = DateTime.local().zoneName || "auto";
-                    const systemTimezone = 'auto'
+                    const systemTimezone = "auto";
                     const data = await SimpleWeatherAPI.getWeather(
                         [latitude, longitude],
                         systemTimezone,

@@ -1,5 +1,5 @@
 import React from "react";
-import {createHashRouter} from "react-router-dom";
+import { createHashRouter } from "react-router-dom";
 import PATHS from "./paths";
 import AboutPage from "../pages/about.page";
 import ErrorPage from "../pages/error.page";
@@ -19,28 +19,28 @@ const routerCreator = createHashRouter;
 const router = routerCreator([
     {
         path: PATHS.INDEX,
-        element: <IndexPage/>,
+        element: <IndexPage />,
     },
     {
         path: PATHS.ABOUT,
-        element: <AboutPage/>
+        element: <AboutPage />,
     },
     {
         path: PATHS.RESULTS,
-        element: <LocationResultsPage/>,
+        element: <LocationResultsPage />,
     },
     {
         path: PATHS.SETTINGS,
-        element: <SettingsPage/>,
+        element: <SettingsPage />,
     },
     {
         path: PATHS.WEATHER,
-        element: <WeatherPage/>,
+        element: <WeatherPage />,
     },
     {
         path: PATHS.WILDCARD,
-        element: <ErrorPage/>
-    }
+        element: <ErrorPage />,
+    },
 ]);
 
 export default router;

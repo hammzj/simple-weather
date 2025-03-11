@@ -185,9 +185,7 @@ describe(WeatherIcon.name, function () {
                 wio.assertIcon(`wi ${className} wi-flip-horizontal wi-rotate-90 wi-fw`);
 
                 cy.mount(<WeatherIcon weatherCode={weatherCode} modifiers={modifiers} isDay={0} />);
-                wio.assertIcon(
-                    `wi ${classNameNightVariant} wi-flip-horizontal wi-rotate-90 wi-fw`
-                );
+                wio.assertIcon(`wi ${classNameNightVariant} wi-flip-horizontal wi-rotate-90 wi-fw`);
             });
 
             it("has hover text to describe the icon", function () {

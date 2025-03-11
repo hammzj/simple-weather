@@ -3,7 +3,6 @@ import WeatherIconObject from "./weather.icon.object";
 import PrecipitationChanceObject from "./precipitation.chance.object";
 import AdditionalWeatherDetailsObject from "./additional.weather.details.object";
 
-
 export default class WeatherAccordionObject extends ComponentObject {
     constructor(type) {
         super();
@@ -29,7 +28,11 @@ export default class WeatherAccordionObject extends ComponentObject {
                 this.performWithin(this.elements.summary(), new PrecipitationChanceObject(), fn);
             },
             AdditionalWeatherDetailsObject: (fn) => {
-                this.performWithin(this.elements.details(), new AdditionalWeatherDetailsObject(), fn);
+                this.performWithin(
+                    this.elements.details(),
+                    new AdditionalWeatherDetailsObject(),
+                    fn
+                );
             },
         };
     }

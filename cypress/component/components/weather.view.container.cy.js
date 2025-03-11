@@ -1,5 +1,5 @@
-import {DateTime} from "luxon";
-import {NOT_AVAILABLE_TEXT} from "../../../src/constants";
+import { DateTime } from "luxon";
+import { NOT_AVAILABLE_TEXT } from "../../../src/constants";
 import WeatherViewContainer from "../../../src/components/weather.view.container";
 import WeatherViewContainerObject from "../../page_objects/components/weather.view.container.object";
 
@@ -9,7 +9,7 @@ describe(WeatherViewContainer.name, function () {
             fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
         });
         cy.get(`@weatherData`).then((weatherData) => {
-            cy.mount(<WeatherViewContainer totalWeatherData={weatherData}/>);
+            cy.mount(<WeatherViewContainer totalWeatherData={weatherData} />);
         });
     });
 
@@ -26,10 +26,12 @@ describe(WeatherViewContainer.name, function () {
         wvco.components.HourlyWeatherAccordionObject((obj) =>
             obj.getAllContainers().should("have.lengthOf", 25)
         );
-        wvco.components.DailyWeatherAccordionObject((obj) => obj.getAllContainers().should("not.exist"));
+        wvco.components.DailyWeatherAccordionObject((obj) =>
+            obj.getAllContainers().should("not.exist")
+        );
         cy.get(`@weatherData`).then((weatherData) => {
-            const {hourly_weather} = weatherData;
-            for (const [i, {mapped}] of hourly_weather.entries()) {
+            const { hourly_weather } = weatherData;
+            for (const [i, { mapped }] of hourly_weather.entries()) {
                 const time = DateTime.fromISO(mapped.time).toLocaleString(DateTime.DATETIME_MED);
                 const precipitationProbability =
                     mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
@@ -56,11 +58,15 @@ describe(WeatherViewContainer.name, function () {
         wvco.components.DailyWeatherAccordionObject((obj) =>
             obj.getAllContainers().should("have.lengthOf", 7)
         );
-        wvco.components.HourlyWeatherAccordionObject((obj) => obj.getAllContainers().should("not.exist"));
+        wvco.components.HourlyWeatherAccordionObject((obj) =>
+            obj.getAllContainers().should("not.exist")
+        );
         cy.get(`@weatherData`).then((weatherData) => {
-            const {daily_weather} = weatherData;
-            for (const [i, {mapped}] of daily_weather.entries()) {
-                const time = DateTime.fromISO(mapped.time).toLocaleString(DateTime.DATE_MED);
+            const { daily_weather } = weatherData;
+            for (const [i, { mapped }] of daily_weather.entries()) {
+                const time = DateTime.fromISO(mapped.time).toLocaleString(
+                    DateTime.DATE_MED_WITH_WEEKDAY
+                );
                 const precipitationProbability =
                     mapped.precipitation_probability || NOT_AVAILABLE_TEXT;
 
@@ -112,20 +118,18 @@ describe(WeatherViewContainer.name, function () {
 
     it(`will display a warning message when no data has been returned for Hourly weather`, function () {
         //Replace original mounted component
-        cy.mount(<WeatherViewContainer totalWeatherData={{}}/>);
+        cy.mount(<WeatherViewContainer totalWeatherData={{}} />);
 
         const wvco = new WeatherViewContainerObject();
 
         wvco.elements.hourlyButton().click();
-        wvco.elements.weatherTabPanelHourly().should(
-            "have.text",
-            "No data could be returned for the location."
-        );
+        wvco.elements
+            .weatherTabPanelHourly()
+            .should("have.text", "No data could be returned for the location.");
 
         wvco.elements.dailyButton().click();
-        wvco.elements.weatherTabPanelDaily().should(
-            "have.text",
-            "No data could be returned for the location."
-        );
+        wvco.elements
+            .weatherTabPanelDaily()
+            .should("have.text", "No data could be returned for the location.");
     });
 });

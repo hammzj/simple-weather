@@ -1,14 +1,13 @@
-import {ComponentObject} from "@hammzj/cypress-page-object";
+import { ComponentObject } from "@hammzj/cypress-page-object";
 
 export default class AdditionalWeatherDetailsObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`#additional-weather-details`));
         this.addElements = {
             trs: () => this.container().find(`tr`),
-            tr: (title) => this.container().contains(`td`, title).parents(`tr`)
-        }
+            tr: (title) => this.container().contains(`td`, title).parents(`tr`),
+        };
     }
-
 
     assertRowTitlesInOrder(expectedTitles) {
         cy.wrap([]).as("additionalWeatherDetailsRowTitles");

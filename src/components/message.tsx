@@ -1,5 +1,5 @@
 import React from "react";
-import {Box, Typography} from "@mui/material";
+import { Box, Typography } from "@mui/material";
 
 interface MessageProps {
     boxProps?: any;
@@ -10,7 +10,9 @@ interface MessageProps {
 export default function Message(props: MessageProps): React.ReactElement {
     return (
         <Box alignContent='center' justifyContent='center' padding='0.5em' {...props.boxProps}>
-            <Typography align='center' {...props.typographyProps}>{props.value}</Typography>
+            <Typography align='center' {...props.typographyProps}>
+                {props.value}
+            </Typography>
         </Box>
-    )
+    );
 }
