@@ -1,7 +1,6 @@
 import { ComponentObject } from "@hammzj/cypress-page-object";
 import CurrentWeatherCardObject from "./current.weather.card.object";
 
-
 export default class SavedLocationsObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`#saved-locations`));

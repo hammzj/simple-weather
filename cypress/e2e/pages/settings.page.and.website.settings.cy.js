@@ -48,8 +48,12 @@ describe("Website settings", function () {
         });
 
         it("renders correctly", function () {
-            settingsPageObject.components.TopNavBarObject((navBar) => navBar.container().should("exist"));
-            settingsPageObject.components.BottomNavBarObject((navBar) => navBar.container().should("exist"));
+            settingsPageObject.components.TopNavBarObject((navBar) =>
+                navBar.container().should("exist")
+            );
+            settingsPageObject.components.BottomNavBarObject((navBar) =>
+                navBar.container().should("exist")
+            );
             settingsPageObject.components.SettingsMenuObject((smo) => {
                 smo.container().should("exist");
             });
@@ -109,7 +113,9 @@ describe("Website settings", function () {
                 cy.reload();
 
                 //Assert
-                settingsPageObject.components.SettingsMenuObject((smo) => smo.assertDarkModeIsSelected(true));
+                settingsPageObject.components.SettingsMenuObject((smo) =>
+                    smo.assertDarkModeIsSelected(true)
+                );
                 cy.get("body").should("have.css", "background-color").and("be.colored", "#121212");
             });
         });

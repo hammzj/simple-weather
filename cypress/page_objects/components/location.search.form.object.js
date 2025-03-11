@@ -1,4 +1,4 @@
-import {ComponentObject} from "@hammzj/cypress-page-object";
+import { ComponentObject } from "@hammzj/cypress-page-object";
 
 export default class LocationSearchFormObject extends ComponentObject {
     constructor() {
@@ -6,7 +6,7 @@ export default class LocationSearchFormObject extends ComponentObject {
         this.addElements = {
             inputField: () => this.container().find(`input[id="location-input"][type="text"]`),
             submitButton: () => this.container().find(`button[type="submit"]`),
-        }
+        };
     }
 
     search(text, submit = true) {

@@ -1,7 +1,6 @@
 import { ComponentObject } from "@hammzj/cypress-page-object";
 import WeatherAccordionObject from "./weather.accordion.object";
 
-
 export default class WeatherViewContainerObject extends ComponentObject {
     constructor() {
         super(() => cy.get(`#weather-view`));
@@ -13,10 +12,18 @@ export default class WeatherViewContainerObject extends ComponentObject {
         };
         this.addComponents = {
             HourlyWeatherAccordionObject: (fn) => {
-                this.performWithin(this.elements.weatherTabPanelHourly(), new WeatherAccordionObject("hourly"), fn);
+                this.performWithin(
+                    this.elements.weatherTabPanelHourly(),
+                    new WeatherAccordionObject("hourly"),
+                    fn
+                );
             },
             DailyWeatherAccordionObject: (fn) => {
-                this.performWithin(this.elements.weatherTabPanelDaily(), new WeatherAccordionObject("daily"), fn);
+                this.performWithin(
+                    this.elements.weatherTabPanelDaily(),
+                    new WeatherAccordionObject("daily"),
+                    fn
+                );
             },
         };
     }

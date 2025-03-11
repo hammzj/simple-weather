@@ -18,14 +18,13 @@ export default class LocationButtonsListObject extends ComponentObject {
         };
     }
 
-
     assertButtonText(...buttonTextContents) {
         cy.log("button text contents to validate", buttonTextContents);
         buttonTextContents.forEach((buttonText) => {
             cy.log("current button text", buttonText);
-            this.components.LocationDataButtonObject(function(button) {
+            this.components.LocationDataButtonObject(function (button) {
                 button.elements.name().should("have.text", buttonText);
-            }, buttonText)
+            }, buttonText);
         });
     }
 }

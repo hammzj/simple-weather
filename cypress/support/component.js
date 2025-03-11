@@ -1,8 +1,8 @@
 import chaiColors from "chai-colors";
-import {MemoryRouter} from "react-router-dom";
-import {CssBaseline, ThemeProvider} from "@mui/material";
-import {lightTheme as baseTheme} from "../../src/theme";
-import {mount} from "cypress/react18";
+import { MemoryRouter } from "react-router-dom";
+import { CssBaseline, ThemeProvider } from "@mui/material";
+import { lightTheme as baseTheme } from "../../src/theme";
+import { mount } from "cypress/react18";
 import "../../src/fonts";
 import "../../src/index.css";
 import "../../src/weather_icons/index.jsx";
