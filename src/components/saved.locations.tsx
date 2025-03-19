@@ -1,20 +1,22 @@
-import React, { useState, useEffect } from "react";
-import { Box, Typography } from "@mui/material";
-import { Link } from "react-router-dom";
+import React, {useState, useEffect} from "react";
+import {Box, Typography} from "@mui/material";
+import {Link} from "react-router-dom";
 import CurrentWeatherCard from "./current.weather.card";
+import Message from "./message";
 import LoadingMessage from "./loading.message";
 import PATHS from "../routes/paths";
-import { getLocationName } from "../services/open_meteo_api/utils";
-import { createWeatherPageSearchParams, getGeocodingAndWeatherData } from "./utils";
-import { CurrentWeatherData } from "../services/api";
+import {getLocationName} from "../services/open_meteo_api/utils";
+import {createWeatherPageSearchParams, getGeocodingAndWeatherData} from "./utils";
+import {CurrentWeatherData} from "../services/api";
 
 type AllCurrentWeatherData = {
     name: string;
     data: CurrentWeatherData;
 };
 
-export default function SavedLocations({ locationId }): React.ReactElement {
+export default function SavedLocations({locationId}): React.ReactElement {
     const [isLoading, setIsLoading] = useState<boolean>(true);
+    const [hasError, setHasError] = useState<boolean>(false);
     const [savedCurrentWeatherData, setSavedCurrentWeatherData] = useState<
         AllCurrentWeatherData | any
     >({});
@@ -34,6 +36,7 @@ export default function SavedLocations({ locationId }): React.ReactElement {
                 }
             } catch (err) {
                 console.log(err);
+                setHasError(true)
             } finally {
                 setIsLoading(false);
             }
@@ -42,6 +45,10 @@ export default function SavedLocations({ locationId }): React.ReactElement {
         setData();
     }, [locationId]);
 
+    function ErrorMessage() {
+        return <Message value="Data could not be loaded."/>
+    }
+
     return (
         <Box
             alignContent='center'
@@ -49,30 +56,33 @@ export default function SavedLocations({ locationId }): React.ReactElement {
             display='inline'
             margin='1em'
             id='saved-locations'>
-            <Typography variant='h6' sx={{ paddingBottom: "1em" }} textAlign='center'>
+            <Typography variant='h6' sx={{paddingBottom: "1em"}} textAlign='center'>
                 Saved location
             </Typography>
             {isLoading ? (
-                <LoadingMessage />
-            ) : (
-                <>
-                    {["name", "data"].every((k) => k in savedCurrentWeatherData) && (
-                        <Box padding='0.5em'>
-                            <Link
-                                style={{ textDecoration: "none" }}
-                                to={{
-                                    pathname: PATHS.WEATHER,
-                                    search: createWeatherPageSearchParams(locationId).toString(),
-                                }}>
-                                <CurrentWeatherCard
-                                    locationName={savedCurrentWeatherData.name}
-                                    currentWeatherData={savedCurrentWeatherData.data}
-                                />
-                            </Link>
-                        </Box>
+                    <LoadingMessage/>
+                ) :
+                hasError ? <ErrorMessage/>
+                    :
+                    (
+                        <>
+                            {["name", "data"].every((k) => k in savedCurrentWeatherData) && (
+                                <Box padding='0.5em'>
+                                    <Link
+                                        style={{textDecoration: "none"}}
+                                        to={{
+                                            pathname: PATHS.WEATHER,
+                                            search: createWeatherPageSearchParams(locationId).toString(),
+                                        }}>
+                                        <CurrentWeatherCard
+                                            locationName={savedCurrentWeatherData.name}
+                                            currentWeatherData={savedCurrentWeatherData.data}
+                                        />
+                                    </Link>
+                                </Box>
+                            )}
+                        </>
                     )}
-                </>
-            )}
         </Box>
     );
 }
