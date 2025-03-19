@@ -49,4 +49,14 @@ describe(SavedLocations.name, function () {
             });
         });
     });
+
+    it('has a fallback message when the component or data fails to load', function () {
+        cy.intercept(`*/forecast*`, {forceNetworkError: true})
+        cy.intercept('https://geocoding-api.open-meteo.com/v1/*', {forceNetworkError: true})
+        cy.get(`@individualLocation`).then((individualLocation) => {
+            cy.mount(<SavedLocations locationId={individualLocation.id}/>);
+            const slo = new SavedLocationsObject();
+            slo.container().should('contain.text', 'Data could not be loaded.')
+        })
+    })
 });
