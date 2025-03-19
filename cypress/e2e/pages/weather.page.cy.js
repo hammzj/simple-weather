@@ -44,24 +44,26 @@ describe(WeatherPage.name, function () {
             cy.get("@weatherData").then((weatherData) => {
                 cy.get("@individualLocation").then((individualLocation) => {
                     //Assert
-                    weatherPageObject.container().should(
-                        "not.have.text",
-                        "An error occurred when loading the data."
-                    );
+                    weatherPageObject
+                        .container()
+                        .should("not.have.text", "An error occurred when loading the data.");
                     weatherPageObject.components.TopNavBarObject((tnbo) => {
                         tnbo.container().should("exist");
-                        tnbo.components.LocationSearchFormObject((lsfo) => lsfo.container().should("exist"));
+                        tnbo.components.LocationSearchFormObject((lsfo) =>
+                            lsfo.container().should("exist")
+                        );
                     });
                     weatherPageObject.components.BottomNavBarObject((bnvo) => {
                         bnvo.container().should("exist");
                     });
                     weatherPageObject.components.CurrentWeatherCardObject((cwco) => {
                         cwco.container().should("exist");
-                        cwco.elements.location().should("have.text", getLocationName(individualLocation));
-                        cwco.elements.temperature().should(
-                            "have.text",
-                            weatherData.current_weather.mapped.temperature
-                        );
+                        cwco.elements
+                            .location()
+                            .should("have.text", getLocationName(individualLocation));
+                        cwco.elements
+                            .temperature()
+                            .should("have.text", weatherData.current_weather.mapped.temperature);
                     });
                     weatherPageObject.components.WeatherViewContainerObject((wvco) => {
                         wvco.elements.container().should("exist");
@@ -92,17 +94,18 @@ describe(WeatherPage.name, function () {
                     const newLocationData = newLocationDataResults.results[0];
                     //Arrange: make sure the page displays a different name than the new search.
                     ////Redundant check but good for sanity
-                    weatherPageObject.container().should(
-                        "contain.text",
-                        getLocationName(oldLocationData)
-                    );
+                    weatherPageObject
+                        .container()
+                        .should("contain.text", getLocationName(oldLocationData));
 
                     //Action: search for new location
                     weatherPageObject.components.TopNavBarObject((navBar) => {
-                        navBar.components.LocationSearchFormObject(function (locationSearchFormObject) {
-                            locationSearchFormObject.search(newLocationData.name);
-                            cy.wait(1000);
-                        });
+                        navBar.components.LocationSearchFormObject(
+                            function (locationSearchFormObject) {
+                                locationSearchFormObject.search(newLocationData.name);
+                                cy.wait(1000);
+                            }
+                        );
                     });
 
                     //Assert: Check the first button exists
@@ -126,11 +129,13 @@ describe(WeatherPage.name, function () {
 
                 //Assert
                 cy.get("@individualLocation").then((individualLocation) => {
-                    cy.visit(indexPageObject.url())
+                    cy.visit(indexPageObject.url());
                     indexPageObject.components.SavedLocationsObject((slo) => {
                         slo.assertExists();
                         slo.components.CurrentWeatherCardObject((cwco) => {
-                            cwco.elements.location().should("have.text", getLocationName(individualLocation));
+                            cwco.elements
+                                .location()
+                                .should("have.text", getLocationName(individualLocation));
                         });
                     });
                 });
@@ -152,7 +157,9 @@ describe(WeatherPage.name, function () {
                 cy.get("@individualLocation").then((individualLocation) => {
                     weatherPageObject.components.CurrentWeatherCardObject((cwco) => {
                         cy.url().should("include", `?id=${individualLocation.id}`);
-                        cwco.elements.location().should("have.text", getLocationName(individualLocation));
+                        cwco.elements
+                            .location()
+                            .should("have.text", getLocationName(individualLocation));
                     });
                 });
                 weatherPageObject.components.SavedLocationCheckboxObject((checkboxObject) => {
@@ -166,12 +173,14 @@ describe(WeatherPage.name, function () {
                 weatherPageObject.components.SavedLocationCheckboxObject((slco) => {
                     slco.elements.checkbox().toggleCheckbox(true);
                 });
-                cy.visit(indexPageObject.url())
+                cy.visit(indexPageObject.url());
                 cy.get("@individualLocation").then((individualLocation) => {
-                    cy.visit(indexPageObject.url())
+                    cy.visit(indexPageObject.url());
                     indexPageObject.components.SavedLocationsObject((slo) => {
                         slo.components.CurrentWeatherCardObject((cwco) => {
-                            cwco.elements.location().should("have.text", getLocationName(individualLocation));
+                            cwco.elements
+                                .location()
+                                .should("have.text", getLocationName(individualLocation));
 
                             //Act
                             cwco.container().click();
@@ -182,7 +191,7 @@ describe(WeatherPage.name, function () {
                     slco.elements.checkbox().toggleCheckbox(false);
                     slco.elements.checkbox().should("not.be.checked");
                 });
-                cy.visit(indexPageObject.url())
+                cy.visit(indexPageObject.url());
 
                 //Assert
                 indexPageObject.components.SavedLocationsObject((slo) => {
@@ -195,12 +204,14 @@ describe(WeatherPage.name, function () {
                 weatherPageObject.components.SavedLocationCheckboxObject((slco) => {
                     slco.elements.checkbox().toggleCheckbox(true);
                 });
-                cy.visit(indexPageObject.url())
+                cy.visit(indexPageObject.url());
                 cy.get("@individualLocation").then((individualLocation) => {
                     indexPageObject.components.SavedLocationsObject((slo) => {
                         slo.assertExists(true);
                         slo.components.CurrentWeatherCardObject((cwco) => {
-                            cwco.elements.location().should("have.text", getLocationName(individualLocation));
+                            cwco.elements
+                                .location()
+                                .should("have.text", getLocationName(individualLocation));
                         });
                     });
                 });
@@ -231,10 +242,9 @@ describe(WeatherPage.name, function () {
                     //Assert
                     //This is the weather page for the second location
                     weatherPageObject.components.CurrentWeatherCardObject((cwco) => {
-                        cwco.elements.location().should(
-                            "have.text",
-                            getLocationName(alternateIndividualLocation)
-                        );
+                        cwco.elements
+                            .location()
+                            .should("have.text", getLocationName(alternateIndividualLocation));
                     });
                     weatherPageObject.components.SavedLocationCheckboxObject((slco) => {
                         slco.elements.checkbox().should("be.disabled");

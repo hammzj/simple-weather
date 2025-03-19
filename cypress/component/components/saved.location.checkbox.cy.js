@@ -19,7 +19,9 @@ describe(SavedLocationCheckbox.name, function () {
         cy.mount(<SavedLocationCheckbox locationId={1234} />);
 
         savedLocationCheckboxObject.elements.checkbox().toggleCheckbox(true);
-        savedLocationCheckboxObject.elements.container().should("have.text", "Set as saved location");
+        savedLocationCheckboxObject.elements
+            .container()
+            .should("have.text", "Set as saved location");
         cy.getBaseUrlOrigin().then((baseUrl) => {
             cy.assertLocalStorageItem(baseUrl, "savedLocationId", "1234");
         });
@@ -49,9 +51,8 @@ describe(SavedLocationCheckbox.name, function () {
 
         cy.mount(<SavedLocationCheckbox locationId={5678} />);
         savedLocationCheckboxObject2.elements.checkbox().should("be.disabled");
-        savedLocationCheckboxObject2.container().should(
-            "have.text",
-            "A saved location already exists"
-        );
+        savedLocationCheckboxObject2
+            .container()
+            .should("have.text", "A saved location already exists");
     });
 });

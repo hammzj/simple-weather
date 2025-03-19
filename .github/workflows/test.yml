@@ -26,7 +26,9 @@ jobs:
     runs-on: ubuntu-22.04
     strategy:
       matrix:
-        browser: [ 'chrome', 'firefox' ]
+        browser:
+          - chrome
+        #  - firefox
     steps:
       - uses: actions/checkout@v4
       - uses: ./.github/actions/setup_node

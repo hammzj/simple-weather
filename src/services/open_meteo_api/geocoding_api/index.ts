@@ -1,5 +1,5 @@
-import axios, {AxiosResponse} from "axios";
-import {isNil} from "lodash";
+import axios, { AxiosResponse } from "axios";
+import { isNil } from "lodash";
 
 export interface GetLocationsParams {
     name: string;
@@ -7,7 +7,7 @@ export interface GetLocationsParams {
     language?: string;
 }
 
-export type LocationId = string | number
+export type LocationId = string | number;
 
 export interface LocationData {
     id: number;
@@ -29,15 +29,15 @@ export interface LocationData {
 
 export const OPEN_METEO_GEOCODING_API_URL = "https://geocoding-api.open-meteo.com";
 
-const api = axios.create({baseURL: OPEN_METEO_GEOCODING_API_URL});
+const api = axios.create({ baseURL: OPEN_METEO_GEOCODING_API_URL });
 
 export default class OpenMeteoGeocodingAPI {
     static async searchForLocations(params: GetLocationsParams): Promise<AxiosResponse> {
         if (isNil(params.count)) params.count = 25;
-        return await api.get(`/v1/search`, {params});
+        return await api.get(`/v1/search`, { params });
     }
 
     static async getLocation(id: LocationId): Promise<AxiosResponse> {
-        return await api.get(`/v1/get`, {params: {id}});
+        return await api.get(`/v1/get`, { params: { id } });
     }
 }

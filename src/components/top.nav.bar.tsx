@@ -1,23 +1,22 @@
-import React from 'react';
-import {AppBar, Box, Stack} from '@mui/material';
+import React from "react";
+import { AppBar, Box, Stack } from "@mui/material";
 import LocationSearchForm from "./location.search.form";
 
 export default function TopNavBar(): React.ReactElement {
     return (
-        <Box
-            id='top-nav-bar'
-            sx={{marginBottom: 1, border: 1}}>
-            <AppBar position='static'
-                    color='transparent'
-                    sx={{
-                        margin: 1,
-                        alignItems: 'center',
-                        boxShadow: 0,
-                    }}>
+        <Box id='top-nav-bar' sx={{ marginBottom: 1, border: 1 }}>
+            <AppBar
+                position='static'
+                color='transparent'
+                sx={{
+                    margin: 1,
+                    alignItems: "center",
+                    boxShadow: 0,
+                }}>
                 <Stack justifyContent='center'>
-                    <LocationSearchForm/>
+                    <LocationSearchForm />
                 </Stack>
             </AppBar>
         </Box>
-    )
+    );
 }

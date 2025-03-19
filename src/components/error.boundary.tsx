@@ -2,19 +2,18 @@ import React from "react";
 
 interface ErrorBoundaryState {
     hasError: boolean;
-    error?: Error
+    error?: Error;
 }
-
 
 export default class ErrorBoundary extends React.Component<any, Readonly<ErrorBoundaryState>> {
     constructor(props) {
         super(props);
-        this.state = {hasError: false, error: undefined};
+        this.state = { hasError: false, error: undefined };
     }
 
     static getDerivedStateFromError(error: Error) {
         // Update state so the next render will show the fallback UI.
-        return {hasError: true, error: error};
+        return { hasError: true, error: error };
     }
 
     componentDidCatch(error, info) {
@@ -29,4 +28,3 @@ export default class ErrorBoundary extends React.Component<any, Readonly<ErrorBo
         return this.props.children;
     }
 }
-

@@ -18,5 +18,4 @@ export default class IndexPageObject extends PageObject {
             },
         };
     }
-
 }

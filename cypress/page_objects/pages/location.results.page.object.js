@@ -20,7 +20,6 @@ export default class LocationResultsPageObject extends PageObject {
         };
     }
 
-
     //TODO: make this work
     selectLocation(locationName) {
         this.components.LocationButtonsListObject((locationButtonsListObject) => {

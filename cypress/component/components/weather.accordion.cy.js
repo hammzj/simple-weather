@@ -9,37 +9,40 @@ import { IsDay } from "../../../src/services/api";
 const formatDateTimeHourly = (isoString) =>
     DateTime.fromISO(isoString).toLocaleString(DateTime.DATETIME_MED);
 const formatDateTimeDaily = (isoString) =>
-    DateTime.fromISO(isoString).toLocaleString(DateTime.DATE_MED);
+    DateTime.fromISO(isoString).toLocaleString(DateTime.DATE_MED_WITH_WEEKDAY);
+const formatDateTimeToday = (isoString) =>
+    `${DateTime.fromISO(isoString).toLocaleString(DateTime.DATE_MED)} (Today)`;
 const formatDateTimeAsTime = (isoString) =>
     DateTime.fromISO(isoString).toLocaleString(DateTime.TIME_SIMPLE);
 
-describe("Components", function() {
-    describe(WeatherAccordion.name, function() {
-        beforeEach(function() {
+describe("Components", function () {
+    describe(WeatherAccordion.name, function () {
+        beforeEach(function () {
             cy.stubAndAliasWeatherData({
                 fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
             });
         });
 
-        context("Hourly", function() {
-            context("Summary", function() {
-                it("displays a summary of the hourly data", function() {
+        context("Hourly", function () {
+            context("Summary", function () {
+                it("displays a summary of the hourly data", function () {
                     cy.get(`@weatherData`).then((weatherData) => {
                         const firstHour = weatherData.hourly_weather[0];
                         cy.mount(
-                            <WeatherAccordion type="hourly" mappedWeatherData={firstHour.mapped} />,
+                            <WeatherAccordion type='hourly' mappedWeatherData={firstHour.mapped} />
                         );
 
                         const accordion = new WeatherAccordionObject("hourly");
-                        accordion.elements.time().should(
-                            "have.text",
-                            formatDateTimeHourly(firstHour.mapped.time),
-                        );
+                        accordion.elements
+                            .time()
+                            .should("have.text", formatDateTimeHourly(firstHour.mapped.time));
                         accordion.elements.temperature().should("have.text", "51 °F");
                         accordion.components.WeatherIconObject((wio) => {
                             wio.assertTooltipText("Overcast");
                         });
-                        accordion.components.PrecipitationChanceObject((pio) => pio.assertValue("15 %"));
+                        accordion.components.PrecipitationChanceObject((pio) =>
+                            pio.assertValue("15 %")
+                        );
                     });
                 });
 
@@ -47,7 +50,7 @@ describe("Components", function() {
                     { key: IsDay.DAY, expectedClassName: "wi wi-day-sunny-overcast" },
                     { key: IsDay.NIGHT, expectedClassName: "wi wi-night-alt-cloudy" },
                 ].forEach(({ key, expectedClassName }) => {
-                    it(`displays the weather icon variant when at ${IsDay[key]}`, function() {
+                    it(`displays the weather icon variant when at ${IsDay[key]}`, function () {
                         cy.get(`@weatherData`).then((weatherData) => {
                             //Force the mapped data to set at night, regardless of what the time is
                             const firstHour = weatherData.hourly_weather[0];
@@ -55,9 +58,9 @@ describe("Components", function() {
 
                             cy.mount(
                                 <WeatherAccordion
-                                    type="hourly"
+                                    type='hourly'
                                     mappedWeatherData={firstHour.mapped}
-                                />,
+                                />
                             );
 
                             const accordion = new WeatherAccordionObject("hourly");
@@ -70,12 +73,12 @@ describe("Components", function() {
                 });
             });
 
-            it("displays the additional weather details when opened", function() {
+            it("displays the additional weather details when opened", function () {
                 cy.get(`@weatherData`).then((weatherData) => {
                     const firstHour = weatherData.hourly_weather[0];
 
                     cy.mount(
-                        <WeatherAccordion type="hourly" mappedWeatherData={firstHour.mapped} />,
+                        <WeatherAccordion type='hourly' mappedWeatherData={firstHour.mapped} />
                     );
 
                     const accordion = new WeatherAccordionObject("hourly");
@@ -90,32 +93,33 @@ describe("Components", function() {
             });
         });
 
-        context("Daily", function() {
-            context("Summary", function() {
-                it("displays a summary of the daily data", function() {
+        context("Daily", function () {
+            context("Summary", function () {
+                it("displays a summary of the daily data", function () {
                     cy.get(`@weatherData`).then((weatherData) => {
                         const firstDay = weatherData.daily_weather[0];
 
                         cy.mount(
-                            <WeatherAccordion type="daily" mappedWeatherData={firstDay.mapped} />,
+                            <WeatherAccordion type='daily' mappedWeatherData={firstDay.mapped} />
                         );
 
                         const accordion = new WeatherAccordionObject("daily");
-                        accordion.elements.time().should(
-                            "have.text",
-                            formatDateTimeDaily(firstDay.mapped.time),
-                        );
+                        accordion.elements
+                            .time()
+                            .should("have.text", formatDateTimeDaily(firstDay.mapped.time));
                         accordion.elements.temperature().should("have.text", "48 °F / 55 °F");
                         accordion.components.WeatherIconObject((wio) => {
                             wio.assertTooltipText("Slight rain showers");
                             //Daytime variant
                             wio.assertIcon("wi wi-day-showers");
                         });
-                        accordion.components.PrecipitationChanceObject((pio) => pio.assertValue("100 %"));
+                        accordion.components.PrecipitationChanceObject((pio) =>
+                            pio.assertValue("100 %")
+                        );
                     });
                 });
 
-                it("lets the user know when the summary is for the current day", function() {
+                it("lets the user know when the summary is for the current day", function () {
                     cy.get(`@weatherData`).then((weatherData) => {
                         const firstDay = weatherData.daily_weather[0];
                         const secondDay = weatherData.daily_weather[1];
@@ -123,23 +127,27 @@ describe("Components", function() {
                         cy.clock(DateTime.fromISO(firstDay.mapped.time).toMillis());
 
                         cy.mount(
-                            <WeatherAccordion type="daily" mappedWeatherData={firstDay.mapped} />,
+                            <WeatherAccordion type='daily' mappedWeatherData={firstDay.mapped} />
                         );
-                        accordion.elements.time().should("have.text", `${formatDateTimeDaily(firstDay.mapped.time)} (Today)`);
+                        accordion.elements
+                            .time()
+                            .should("have.text", formatDateTimeToday(firstDay.mapped.time));
 
                         cy.mount(
-                            <WeatherAccordion type="daily" mappedWeatherData={secondDay.mapped} />,
+                            <WeatherAccordion type='daily' mappedWeatherData={secondDay.mapped} />
                         );
-                        accordion.elements.time().should("have.text", formatDateTimeDaily(secondDay.mapped.time));
+                        accordion.elements
+                            .time()
+                            .should("have.text", formatDateTimeDaily(secondDay.mapped.time));
                     });
                 });
             });
 
-            it("displays the additional weather details when opened", function() {
+            it("displays the additional weather details when opened", function () {
                 cy.get(`@weatherData`).then((weatherData) => {
                     const firstDay = weatherData.daily_weather[0];
 
-                    cy.mount(<WeatherAccordion type="daily" mappedWeatherData={firstDay.mapped} />);
+                    cy.mount(<WeatherAccordion type='daily' mappedWeatherData={firstDay.mapped} />);
 
                     const accordion = new WeatherAccordionObject("daily");
                     accordion.elements.summary().click();
@@ -154,23 +162,23 @@ describe("Components", function() {
         });
     });
 
-    describe(AdditionalWeatherDetails.name, function() {
-        beforeEach(function() {
+    describe(AdditionalWeatherDetails.name, function () {
+        beforeEach(function () {
             cy.stubAndAliasWeatherData({
                 fetchWeatherResponseFixture: "fetch.all.weather.for.location.200.berlin.json",
             });
         });
 
-        context("Hourly", function() {
-            specify("the row order is correct", function() {
+        context("Hourly", function () {
+            specify("the row order is correct", function () {
                 cy.get(`@weatherData`).then((weatherData) => {
                     const firstHour = weatherData.hourly_weather[0];
 
                     cy.mount(
                         <AdditionalWeatherDetails
-                            type="hourly"
+                            type='hourly'
                             mappedWeatherData={firstHour.mapped}
-                        />,
+                        />
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
@@ -187,15 +195,15 @@ describe("Components", function() {
                 });
             });
 
-            it("can display details for a set of hourly data", function() {
+            it("can display details for a set of hourly data", function () {
                 cy.get(`@weatherData`).then((weatherData) => {
                     const firstHour = weatherData.hourly_weather[0];
 
                     cy.mount(
                         <AdditionalWeatherDetails
-                            type="hourly"
+                            type='hourly'
                             mappedWeatherData={firstHour.mapped}
-                        />,
+                        />
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
@@ -210,7 +218,7 @@ describe("Components", function() {
                 });
             });
 
-            specify("rows have default text when the data has a missing value", function() {
+            specify("rows have default text when the data has a missing value", function () {
                 cy.get(`@weatherData`).then((weatherData) => {
                     const firstHourWithMissingData = weatherData.hourly_weather[0];
                     delete firstHourWithMissingData.mapped.precipitation;
@@ -218,9 +226,9 @@ describe("Components", function() {
 
                     cy.mount(
                         <AdditionalWeatherDetails
-                            type="hourly"
+                            type='hourly'
                             mappedWeatherData={firstHourWithMissingData.mapped}
-                        />,
+                        />
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
@@ -231,16 +239,16 @@ describe("Components", function() {
             });
         });
 
-        context("Daily", function() {
-            specify("the row order is correct", function() {
+        context("Daily", function () {
+            specify("the row order is correct", function () {
                 cy.get(`@weatherData`).then((weatherData) => {
                     const firstDay = weatherData.daily_weather[0];
 
                     cy.mount(
                         <AdditionalWeatherDetails
-                            type="daily"
+                            type='daily'
                             mappedWeatherData={firstDay.mapped}
-                        />,
+                        />
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
@@ -257,15 +265,15 @@ describe("Components", function() {
                 });
             });
 
-            it("can display details for a set of hourly data", function() {
+            it("can display details for a set of hourly data", function () {
                 cy.get(`@weatherData`).then((weatherData) => {
                     const firstDay = weatherData.daily_weather[0];
 
                     cy.mount(
                         <AdditionalWeatherDetails
-                            type="daily"
+                            type='daily'
                             mappedWeatherData={firstDay.mapped}
-                        />,
+                        />
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();
@@ -277,16 +285,16 @@ describe("Components", function() {
                     awdo.assertTitleAndValue("Wind gusts:", "41 mp/h");
                     awdo.assertTitleAndValue(
                         "Sunrise:",
-                        formatDateTimeAsTime(firstDay.mapped.sunrise),
+                        formatDateTimeAsTime(firstDay.mapped.sunrise)
                     );
                     awdo.assertTitleAndValue(
                         "Sunset:",
-                        formatDateTimeAsTime(firstDay.mapped.sunset),
+                        formatDateTimeAsTime(firstDay.mapped.sunset)
                     );
                 });
             });
 
-            specify("rows have default text when the data has a missing value", function() {
+            specify("rows have default text when the data has a missing value", function () {
                 cy.get(`@weatherData`).then((weatherData) => {
                     const firstDayWithMissingData = weatherData.daily_weather[0];
                     delete firstDayWithMissingData.mapped.precipitation;
@@ -294,9 +302,9 @@ describe("Components", function() {
 
                     cy.mount(
                         <AdditionalWeatherDetails
-                            type="daily"
+                            type='daily'
                             mappedWeatherData={firstDayWithMissingData.mapped}
-                        />,
+                        />
                     );
 
                     const awdo = new AdditionalWeatherDetailsObject();

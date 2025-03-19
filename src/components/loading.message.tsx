@@ -1,6 +1,6 @@
 import React from "react";
-import Message from './message'
+import Message from "./message";
 
 export default function LoadingMessage(): React.ReactElement {
-    return <Message value='Loading...'/>
+    return <Message value='Loading...' />;
 }

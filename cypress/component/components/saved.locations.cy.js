@@ -23,7 +23,7 @@ describe(SavedLocations.name, function () {
 
     it("can display current weather details for a saved location", function () {
         cy.get(`@individualLocation`).then((individualLocation) => {
-            cy.mount(<SavedLocations locationId={individualLocation.id}/>);
+            cy.mount(<SavedLocations locationId={individualLocation.id} />);
 
             const slo = new SavedLocationsObject();
             slo.components.CurrentWeatherCardObject((cwco) => {
@@ -40,7 +40,7 @@ describe(SavedLocations.name, function () {
 
     it("has a link to the weather page for the saved location", function () {
         cy.get(`@individualLocation`).then((individualLocation) => {
-            cy.mount(<SavedLocations locationId={individualLocation.id}/>);
+            cy.mount(<SavedLocations locationId={individualLocation.id} />);
 
             const slo = new SavedLocationsObject();
             slo.components.CurrentWeatherCardObject((cwco) => {
